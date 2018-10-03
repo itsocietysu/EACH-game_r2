@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ActivityIndicator} from 'react-native'
-import List from './List/List';
-import ListItem from './ListItem';
-
-
+import {ActivityIndicator, View, Text} from 'react-native';
+import ScrollList from './ScrollList';
+import RenderFeedItem from './../containers/RenderFeedItem';
 function DataList({ loading, error, data, component, scroll, array }) {
     if (loading) {
-        return <List component={ActivityIndicator} scroll={scroll} />;
+        return <View><ActivityIndicator/></View>;
     }
 
     if (error !== false) {
-        const ErrorComponent = () => <ListItem item="Something went wrong" />;
         console.error(error);
-        return <List component={ErrorComponent} scroll={scroll} />;
+        return <Text>Something went wrong</Text>;
     }
 
     if (data !== false) {
         return (
-            <List items={data} array={array} component={component} scroll={scroll} />
+            <ScrollList component = {component} data = {data}/>
         );
     }
 

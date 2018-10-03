@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import styled from 'styled-components/native';
 import { createStructuredSelector } from 'reselect';
-import ScrollView from 'react-native';
+import ScrollView, {FlatList} from 'react-native';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-
+import {Text, View} from 'react-native';
 // import { withRequest } from '../../utils/auth';
-import RenderFeed from "../RenderFeedItem";
+import RenderFeedItem from "../RenderFeedItem";
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
 import DataList from "./../../components/DataList"
@@ -47,12 +47,12 @@ class HomeScreen extends Component {
     }
     render() {
       const { loading, error, data } = this.props;
-      const setData = data ? separateData(data) : false;
+      // const setData = data ? separateData(data) : false;
       const dataListProps = {
           loading,
           error,
-          data: setData,
-          component: RenderFeed,
+          data,
+          component: RenderFeedItem,
           scroll: false,
           array: true,
       };
