@@ -32,7 +32,7 @@ class Registration extends Component {
         }
     }
     componentDidMount(){
-        this._loadInitialState().done();
+        // this._loadInitialState().done();
     }
 
     validateEmail = (text) => {
@@ -49,12 +49,12 @@ class Registration extends Component {
         return true;
     };
 
-    _loadInitialState = async ()=>{
+    /*_loadInitialState = async ()=>{
         const value = await AsyncStorage.getItem('user');
         if (value != null){
             this.props.navigation.navigate('Home')
         }
-    };
+    };*/
     render() {
         return (
             <View style={styles.wrapper}>

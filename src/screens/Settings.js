@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 
 import { changeLanguage } from '../actions'
-import { Button } from '../components/List/List';
+
 import messages from '../Messages';
 
 const ContainerView = styled.View`
@@ -26,7 +26,7 @@ class SettingsScreen extends Component {
           <TitleText><FormattedMessage
             message="Settings"
           /></TitleText>
-				  <Button text="Change language to es" onPress={() => {this.props.changeLanguage('es')}} />
+				  /* <Button text="Change language to es" onPress={() => {this.props.changeLanguage('es')}} />*/
         </ContainerView>
 			</FormattedWrapper>
     );

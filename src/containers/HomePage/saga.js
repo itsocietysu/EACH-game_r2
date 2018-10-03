@@ -7,7 +7,6 @@ import request from './../../utils/request';
  * Feeds data load handler
  */
 export function* loadFeeds() {
-    console.log(5);
     const requestURL = `http://each.itsociety.su:4201/each/feed/all`;
     try {
         const feeds = yield call(request, requestURL);
