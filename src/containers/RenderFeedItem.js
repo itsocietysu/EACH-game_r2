@@ -53,28 +53,5 @@ class RenderFeedItem extends Component{
         );
     }
 }
-/*function RenderFeedItem(props) {
-    const item = props;
-    const width = Dimensions.get('window').width;
-    // Render the content into a list item
-    return (
-       <View style={{flex: 1}}>
-            <ImageBackground source={{uri: item.image}}
-                             style={{width: width, height: width}}>
-                <TextContainer>
-                    <TittleText>{item.title["EN"]}</TittleText>
-                </TextContainer>
-                <TextContainer>
-                    <DescriptionText>{item.desc["EN"]}</DescriptionText>
-                </TextContainer>
-            </ImageBackground>
-       </View>
-    );
-}*/
-
-/*RenderFeedItem.propTypes = {
-    item: PropTypes.array,
-    // history: PropTypes.object,
-};*/
 
 export default RenderFeedItem;
