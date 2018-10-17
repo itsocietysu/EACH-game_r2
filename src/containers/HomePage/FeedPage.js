@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import styled from 'styled-components/native';
 import { createStructuredSelector } from 'reselect';
-import ScrollView, {FlatList} from 'react-native';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import {Text, View} from 'react-native';
 // import { withRequest } from '../../utils/auth';
 import RenderFeedItem from "./RenderFeedItem";
 import injectReducer from '../../utils/injectReducer';
@@ -27,7 +25,7 @@ const ContainerView = styled.View`
   alignItems: center;
 `;
 
-function separateData(data) {
+/* function separateData(data) {
     const derData = [];
     let item = [];
     data.forEach(element => {
@@ -39,7 +37,7 @@ function separateData(data) {
     });
     if (item.length) derData.push(item);
     return derData;
-}
+} */
 
 class HomeScreen extends Component {
     componentDidMount() {
