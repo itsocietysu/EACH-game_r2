@@ -18,7 +18,7 @@ export function* loadFeeds() {
                 text: item.text,
                 desc: item.desc,
                 image: `${
-                    item.image[0] ? `http://${item.image[0].url}` : '/Photo.png'
+                    item.image[0] ? `http://${item.image[0].url}` : 'assets/images/DefaultPhoto.png'
                     }`,
                 priority: `${item.priority[0] ? item.priority[0] : 0}`,
             }));
