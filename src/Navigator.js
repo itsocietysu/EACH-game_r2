@@ -9,7 +9,7 @@ import {
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import WelcomeScreen from './screens/Welcome';
-import HomeScreen from './containers/HomePage/Home';
+import HomeScreen from './containers/HomePage/FeedPage';
 import ProfileScreen from './screens/Profile';
 import FavoritesScreen from './screens/Favorites';
 import SettingsScreen from './screens/Settings';

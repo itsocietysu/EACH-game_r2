@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, Text, FlatList} from 'react-native';
 import PropTypes from 'prop-types';
-import RenderFeedItem from './../containers/RenderFeedItem';
+// import RenderFeedItem from '../containers/HomePage/RenderFeedItem';
 
 export default function ScrollList(props) {
     const ComponentToRender = props.component;

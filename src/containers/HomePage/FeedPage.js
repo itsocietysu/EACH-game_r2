@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {Text, View} from 'react-native';
 // import { withRequest } from '../../utils/auth';
-import RenderFeedItem from "../RenderFeedItem";
+import RenderFeedItem from "./RenderFeedItem";
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
 import DataList from "./../../components/DataList"
@@ -46,21 +46,21 @@ class HomeScreen extends Component {
         this.props.init();
     }
     render() {
-      const { loading, error, data } = this.props;
-      // const setData = data ? separateData(data) : false;
-      const dataListProps = {
-          loading,
-          error,
-          data,
-          component: RenderFeedItem,
-          scroll: false,
-          array: true,
-      };
-      return (
-        <ContainerView>
-            <DataList {...dataListProps} />
-        </ContainerView>
-      );
+        const { loading, error, data } = this.props;
+        // const setData = data ? separateData(data) : false;
+        const dataListProps = {
+            loading,
+            error,
+            data,
+            component: RenderFeedItem,
+            scroll: false,
+            array: true,
+        };
+        return (
+            <ContainerView>
+                <DataList {...dataListProps} />
+            </ContainerView>
+        );
     }
 }
 HomeScreen.propTypes = {
