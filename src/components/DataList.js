@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ActivityIndicator, View, Text} from 'react-native';
 import ScrollList from './ScrollList';
-import RenderFeedItem from './../containers/RenderFeedItem';
+
 function DataList({ loading, error, data, component, scroll, array }) {
     if (loading) {
         return <View><ActivityIndicator/></View>;

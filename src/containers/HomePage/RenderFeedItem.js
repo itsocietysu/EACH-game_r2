@@ -1,17 +1,6 @@
-import {ImageBackground, View, Text, TouchableOpacity, Dimensions} from 'react-native'
+import {ImageBackground, View, Dimensions} from 'react-native'
 import styled from 'styled-components/native';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-// import { withRouter } from 'react-router-dom';
-// import { FormattedMessage } from 'react-intl';
-
-// import { getLocale } from 'cookieManager';
-
-import ListItem from './../components/ListItem';
-
-// import './hoverContainer.css';
-
-// import { DEFAULT_LOCALE } from '../../i18n';
 
 
 const TextContainer = styled.View`
@@ -41,7 +30,7 @@ class RenderFeedItem extends Component{
         return (
             <View style={{flex: 1}}>
                 <ImageBackground source={{uri: item.image}}
-                             style={{width: width, height: width}}>
+                                 style={{width: width, height: width}}>
                     <TextContainer>
                         <TittleText>{item.title["EN"]}</TittleText>
                     </TextContainer>
