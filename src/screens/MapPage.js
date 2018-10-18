@@ -62,7 +62,7 @@ class MapsScreen extends Component {
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                   }}
-                  onPress={(e) => this.onMapPress(e)}
+                  // onPress={(e) => this.onMapPress(e)}
                 >
                   {markers}
                 </MapView>
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
 const withSaga = injectSaga({ key: 'maps', saga });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withSaga, withConnect)(FavoritesScreen);
+export default compose(withSaga, withConnect)(MapsScreen);
