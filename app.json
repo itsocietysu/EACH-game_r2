@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "react-native-boilerplate",
-    "description": "A React Native boilerplate with Expo, Redux, React Navigation and some 💕 included.",
-    "slug": "react-native-boilerplate",
+    "name": "each",
+    "description": "Each mobile app",
+    "slug": "react-native",
     "privacy": "public",
     "sdkVersion": "25.0.0",
     "version": "1.0.0",

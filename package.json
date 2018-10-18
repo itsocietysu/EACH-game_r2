@@ -1,10 +1,13 @@
 {
-  "name": "react-native-boilerplate",
+  "name": "museach",
   "version": "0.0.0",
-  "description": "Hello Expo!",
-  "author": "bkdev",
+  "description": "each mobile app",
+  "author": "ITS",
   "private": true,
   "main": "main.js",
+  "scripts": {
+    "start": "expo start"
+  },
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "core-js": "2.5.7",
