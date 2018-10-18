@@ -21,6 +21,7 @@ import CustomDrawerContent from './components/CustomDrawerContent';
 import { colors } from './utils/constants';
 import LoginScreen from "./screens/Login";
 import RegistrationScreen from "./screens/Registration"
+import FeedItemScreen from "./containers/HomePage/FeedItem";
 
 
 const AppMainTab = TabNavigator({
@@ -114,6 +115,7 @@ const AppMainTab = TabNavigator({
 const AppMainStack = StackNavigator({
     Home: { screen: AppMainTab },
     Settings: { screen: SettingsScreen },
+    FeedItem: { screen: FeedItemScreen },
 }, {
     cardStyle: {
         backgroundColor: colors.PINK_50,
