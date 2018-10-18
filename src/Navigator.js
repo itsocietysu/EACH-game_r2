@@ -11,7 +11,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import WelcomeScreen from './screens/Welcome';
 import HomeScreen from './containers/HomePage/FeedPage';
 
-import FavoritesScreen from './screens/Favorites';
+import FavoritesScreen from './screens/Map';
 import MuseumsScreen from './containers/MuseumPage/MuseumPage';
 import SettingsScreen from './screens/Settings';
 
