@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import MapView, { Marker } from 'react-native-maps';
@@ -20,7 +21,7 @@ function randomColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
-class FavoritesScreen extends Component {
+class MapsScreen extends Component {
 
   componentDidMount() {
     if (!this.props.data) this.props.init();
@@ -70,7 +71,7 @@ class FavoritesScreen extends Component {
     }
 }
 
-FavoritesScreen.propTypes = {
+MapsScreen.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
