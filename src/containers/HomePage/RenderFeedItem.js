@@ -13,7 +13,7 @@ class RenderFeedItem extends Component{
         const width = Dimensions.get('window').width;
         return (
             <View style={{flex: 1}}>
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('FeedItem', {data: item});}}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('FeedPage', {data: item});}}>
                     <ImageBackground source={{uri: item.image}}
                                      style={{width: width, height: width}}>
                         <TextContainer>

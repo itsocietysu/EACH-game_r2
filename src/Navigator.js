@@ -1,29 +1,137 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import {
     TabNavigator,
     StackNavigator,
     DrawerNavigator,
     HeaderBackButton,
+    createBottomTabNavigator,
+    createStackNavigator,
+    createSwitchNavigator,
+    createDrawerNavigator,
 } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import WelcomeScreen from './screens/Welcome';
-import HomeScreen from './containers/HomePage/FeedPage';
+import FeedScreen from './containers/HomePage/FeedPage';
 
-import FavoritesScreen from './screens/MapPage';
+import MapScreen from './screens/MapPage';
 import MuseumsScreen from './containers/MuseumPage/MuseumPage';
+
 import SettingsScreen from './screens/Settings';
 
 import { HamburgerIcon, SettingsIcon, BackIcon } from './components/icons';
 
-import CustomDrawerContent from './components/CustomDrawerContent';
+import DrawerContent from './components/DrawerContent';
 import { colors } from './utils/constants';
 import LoginScreen from "./screens/Login";
 import RegistrationScreen from "./screens/Registration"
 import FeedItemScreen from "./containers/HomePage/FeedItem";
+import LogoTitle from "./components/LogoTitle";
+import Button from "./components/Button";
+import TabIconContent from "./components/TabIconContent";
 
 
+
+
+const HeaderHeight = 40;
+const HeaderColor = '#ffffff';
+
+const TabColor = '#ff0000';
+const TabLabelFontSize = 12;
+const TabBGColor = '#ffffff';
+
+const FeedTabStack = createStackNavigator(
+    {
+        Feeds: {screen: FeedScreen},
+        FeedPage: {screen: FeedItemScreen},
+    },
+    {
+        navigationOptions: {
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+                backgroundColor: HeaderColor,
+            },
+        },
+    }
+);
+
+const MapTabStack = createStackNavigator(
+    {
+        Maps: {screen: MapScreen},
+    },
+    {
+        navigationOptions:
+        {
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+                backgroundColor: HeaderColor,
+            },
+        }
+    }
+);
+
+const MuseumTabStack = createStackNavigator(
+    {
+        Museums: {screen: MuseumsScreen},
+    },
+    {
+        navigationOptions:
+        {
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+                backgroundColor: HeaderColor,
+            },
+        }
+    }
+);
+
+
+const  MainAppTab = createBottomTabNavigator(
+    {
+        Feeds: {screen: FeedTabStack},
+        Maps: {screen: MapTabStack},
+        Museums: {screen: MuseumTabStack},
+    },
+    {
+        navigationOptions: ({navigation})=>({
+            tabBarIcon: ({tintColor,focused})=>(
+                <TabIconContent props={{navigation:navigation, tintColor:tintColor, focused:focused}}/>),
+
+        }),
+        tabBarOptions:{
+            activeTintColor: TabColor,
+            labelStyle:{ fontSize: TabLabelFontSize},
+            style: {backgroundColor: TabBGColor},
+        }
+    }
+);
+
+// Drawer navigation styled by CustomDrawerComponent
+const Drawer = createDrawerNavigator(
+    {
+        Home: {screen: MainAppTab}
+    },
+    {
+        contentComponent: props =>
+            (<DrawerContent
+                {...props}
+            />),
+    }
+);
+
+// Main navigator loading screen and main app window
+const Navigator = createSwitchNavigator({
+        Welcome: {screen: WelcomeScreen},
+        Home: {screen: Drawer},
+    }
+);
+
+
+/*
 const AppMainTab = TabNavigator({
         Home: {
             screen: HomeScreen,
@@ -168,5 +276,5 @@ const Navigator = TabNavigator(
         swipeEnabled: false,
     }
 );
-
+*/
 export default Navigator;

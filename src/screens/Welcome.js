@@ -16,7 +16,7 @@ class WelcomeScreen extends Component {
 
     componentWillMount(){
         this.setState({loading:true});
-        setTimeout(()=> {this.props.navigation.navigate('Login');}, 3000)
+        setTimeout(()=> {this.props.navigation.navigate('Home');}, 3000)
     }
 
     render() {
