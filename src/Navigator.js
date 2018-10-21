@@ -17,7 +17,7 @@ import FeedScreen from './containers/HomePage/FeedPage';
 
 import MapScreen from './screens/MapPage';
 import MuseumsScreen from './containers/MuseumPage/MuseumPage';
-
+import MuseumItemScreen from './containers/MuseumPage/MuseumItem';
 import SettingsScreen from './screens/Settings';
 
 import { HamburgerIcon, SettingsIcon, BackIcon } from './components/icons';
@@ -76,6 +76,7 @@ const MapTabStack = createStackNavigator(
 const MuseumTabStack = createStackNavigator(
     {
         Museums: {screen: MuseumsScreen},
+        MuseumPage: {screen: MuseumItemScreen},
     },
     {
         navigationOptions:

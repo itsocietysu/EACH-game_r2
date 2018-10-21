@@ -12,7 +12,8 @@ import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
 import DataList from './../../components/DataList';
 import {loadMuseums} from "./actions";
-import {RenderMuseumItem} from "./RenderMuseumItem";
+import RenderMuseumItem from "./RenderMuseumItem";
+
 
 const ContainerView = styled.View`
   flex: 1;

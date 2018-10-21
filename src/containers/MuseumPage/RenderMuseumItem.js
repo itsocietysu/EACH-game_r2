@@ -1,17 +1,7 @@
 import {ImageBackground, View, Text, TouchableOpacity, Dimensions} from 'react-native'
 import styled from 'styled-components/native';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-// import { withRouter } from 'react-router-dom';
-// import { FormattedMessage } from 'react-intl';
-
-// import { getLocale } from 'cookieManager';
-
-import ListItem from '../../components/ListItem';
-
-// import './hoverContainer.css';
-
-// import { DEFAULT_LOCALE } from '../../i18n';
+import {withNavigation} from 'react-navigation';
 
 
 const TextContainer = styled.View`
@@ -40,24 +30,26 @@ class RenderMuseumItem extends Component{
         const width = Dimensions.get('window').width;
         return (
             <View style={{flex: 1}}>
-                <ImageBackground source={{uri: item.image}}
-                             style={{width: width, height: width}}>
-                    <TextContainer>
-                        <TittleText>{item.name["RU"]}</TittleText>
-                    </TextContainer>
-                    <TextContainer>
-                        <DescriptionText>{item.desc["RU"]}</DescriptionText>
-                    </TextContainer>
-                    {/* <TextContainer>
-                        <DescriptionText>{item.location}</DescriptionText>
-                    </TextContainer>
-                    <TextContainer>
-                        <DescriptionText>{item.game}</DescriptionText>
-                    </TextContainer> */}
-                </ImageBackground>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumPage', {data: item});}}>
+                    <ImageBackground source={{uri: item.image}}
+                                 style={{width: width, height: width}}>
+                        <TextContainer>
+                            <TittleText>{item.name["RU"]}</TittleText>
+                        </TextContainer>
+                        <TextContainer>
+                            <DescriptionText>{item.desc["RU"]}</DescriptionText>
+                        </TextContainer>
+                        {/* <TextContainer>
+                            <DescriptionText>{item.location}</DescriptionText>
+                        </TextContainer>
+                        <TextContainer>
+                            <DescriptionText>{item.game}</DescriptionText>
+                        </TextContainer> */}
+                    </ImageBackground>
+                </TouchableOpacity>
             </View>
         );
     }
 }
 
-export {RenderMuseumItem};
+export default withNavigation(RenderMuseumItem);
