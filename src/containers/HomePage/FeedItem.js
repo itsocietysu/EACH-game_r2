@@ -15,9 +15,9 @@ class FeedItemScreen extends Component{
                             <TittleText>{item.title["EN"]}</TittleText>
                         </TextContainer>
                     </ImageBackground>
-                    <TextContainer>
+                    {/* <TextContainer>
                         <BasicText>{item.text["EN"]}</BasicText>
-                    </TextContainer>
+                    </TextContainer> */}
                 </View>
         );
     }
