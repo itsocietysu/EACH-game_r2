@@ -36,15 +36,13 @@ const ButtonContainer = styled.View`
   alignItems: center;
 `;
 
-const CustomDrawerContent = (props) => (
+const DrawerContent = (props) => (
   <ContainerView>
     <DrawerContainer>
       <AvatarContainer>
         <Avatar />
       </AvatarContainer>
-      <ItemContainer>
-        <DrawerItems {...props} />
-      </ItemContainer>
+
     </DrawerContainer>
     <ButtonContainer>
       <Button text="Logout" onPress={() => props.navigation.navigate('Login')} />
@@ -52,4 +50,4 @@ const CustomDrawerContent = (props) => (
   </ContainerView>
 );
 
-export default CustomDrawerContent;
+export default DrawerContent;
