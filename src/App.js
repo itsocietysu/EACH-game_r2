@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { StatusBar, Platform, YellowBox } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components/native';
@@ -24,6 +24,9 @@ const initialState = {};
 const history = {};
 const store = configureStore(initialState, history);
 
+// Ignore boilerplate warning
+YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` supplied to `FormattedWrapper`, expected a ReactNode']);
+
 class RootContainer extends Component {
   render() {
     return (
@@ -45,6 +48,10 @@ const mapStateToProps = (state) => ({
 });
 
 const ConnectedRootContainer = connect(mapStateToProps,null)(RootContainer);
+
+// Ignore boilerplate warning
+YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` of type `object` supplied to `Provider`, expected a single ReactElement.']);
+
 class App extends Component {
   render() {
     return (
