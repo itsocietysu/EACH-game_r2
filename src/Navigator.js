@@ -47,13 +47,20 @@ const FeedTabStack = createStackNavigator(
         FeedPage: {screen: FeedItemScreen},
     },
     {
-        navigationOptions: {
-            headerBackground: <LogoTitle/>,
-            headerStyle: {
-                height: HeaderHeight,
-                backgroundColor: HeaderColor,
-            },
-        },
+        navigationOptions: ({navigation})=> {
+            let content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+            if (navigation.state.routeName === 'Feeds') {
+                content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
+            }
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                    backgroundColor: HeaderColor,
+                },
+                headerLeft: content
+            });
+        }
     }
 );
 
@@ -62,14 +69,14 @@ const MapTabStack = createStackNavigator(
         Maps: {screen: MapScreen},
     },
     {
-        navigationOptions:
-        {
+        navigationOptions: ({navigation})=>({
             headerBackground: <LogoTitle/>,
             headerStyle: {
                 height: HeaderHeight,
                 backgroundColor: HeaderColor,
             },
-        }
+            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
+        }),
     }
 );
 
@@ -79,13 +86,19 @@ const MuseumTabStack = createStackNavigator(
         MuseumPage: {screen: MuseumItemScreen},
     },
     {
-        navigationOptions:
-        {
-            headerBackground: <LogoTitle/>,
-            headerStyle: {
-                height: HeaderHeight,
-                backgroundColor: HeaderColor,
-            },
+        navigationOptions: ({navigation})=> {
+            let content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+            if (navigation.state.routeName === 'Museums') {
+                content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
+            }
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                    backgroundColor: HeaderColor,
+                },
+                headerLeft: content
+            });
         }
     }
 );
@@ -95,13 +108,14 @@ const SettingsTabStack = createStackNavigator(
         Settings: {screen: SettingsScreen},
     },
     {
-        navigationOptions: {
+        navigationOptions: ({navigation})=>({
             headerBackground: <LogoTitle/>,
             headerStyle: {
                 height: HeaderHeight,
                 backgroundColor: HeaderColor,
             },
-        },
+            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
+        }),
     }
 );
 const  MainAppTab = createBottomTabNavigator(
