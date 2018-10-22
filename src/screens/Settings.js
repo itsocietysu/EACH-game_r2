@@ -21,22 +21,22 @@ const TitleText = styled.Text`
 class SettingsScreen extends Component {
   render() {
     return (
-			<FormattedWrapper locale={this.props.curState.Language.language} messages={messages}>
+			<FormattedWrapper /* locale={this.props.curState.Language.language} messages={messages} */ >
         <ContainerView>
-          <TitleText><FormattedMessage
-            message="Settings"
-          /></TitleText>
-				  /* <Button text="Change language to es" onPress={() => {this.props.changeLanguage('es')}} />*/
+          <TitleText>Settings</TitleText>
+            {/* <Button text="Change language to es" onPress={() => {this.props.changeLanguage('es')}} />*/}
         </ContainerView>
 			</FormattedWrapper>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+/* const mapStateToProps = (state) => ({
 	curState:state
 });
 
 export default connect(mapStateToProps, {
 	changeLanguage,
-})(SettingsScreen);
+})(SettingsScreen); */
+
+export default SettingsScreen;

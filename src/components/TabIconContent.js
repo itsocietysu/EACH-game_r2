@@ -12,6 +12,8 @@ const TabIconContent = ({ props }) => {
             return <Foundation name={'map'} size={25} color={tintColor}/>;
         case 'Museums':
             return <FontAwesome name={'empire'} size={25} color={tintColor}/>;
+        case 'Settings':
+            return <MaterialCommunityIcons name={'settings'} size={25} color={tintColor}/>;
         default:
             break;
     }

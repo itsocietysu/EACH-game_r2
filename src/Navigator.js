@@ -90,12 +90,26 @@ const MuseumTabStack = createStackNavigator(
     }
 );
 
-
+const SettingsTabStack = createStackNavigator(
+    {
+        Settings: {screen: SettingsScreen},
+    },
+    {
+        navigationOptions: {
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+                backgroundColor: HeaderColor,
+            },
+        },
+    }
+);
 const  MainAppTab = createBottomTabNavigator(
     {
         Feeds: {screen: FeedTabStack},
         Maps: {screen: MapTabStack},
         Museums: {screen: MuseumTabStack},
+        Settings: {screen: SettingsTabStack},
     },
     {
         navigationOptions: ({navigation})=>({
