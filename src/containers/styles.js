@@ -1,9 +1,11 @@
 import styled from "styled-components/native";
-import {View, Text} from 'react-native';
+import {View, Text, Dimensions} from 'react-native';
 
+const width = Dimensions.get('window').width;
 export const TextContainer = styled.View`
     flex: 1
-    alignItems: ${({ align }) => align || 'center'};
+    paddingLeft: ${width*0.03} 
+    paddingRight: ${width*0.03}
 `;
 
 export const TittleText = styled.Text`
@@ -11,12 +13,14 @@ export const TittleText = styled.Text`
     flex: 1
     fontSize: 20px
     fontWeight: bold
+    textAlign: center
 `;
 
 export const DescriptionText = styled.Text`
     color: 'rgb(255,255,255)'
     fontSize: 14px
     flex: 1
+    textAlign: justify
 `;
 
 export const BasicText = styled.Text`
