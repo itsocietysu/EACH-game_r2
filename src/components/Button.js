@@ -5,7 +5,6 @@ import styled from 'styled-components/native';
 const ButtonContainer = styled.TouchableHighlight`
   width: 130;
   height: 40;
-  backgroundColor: ${props=> props.theme.PINK_100};
   borderRadius: 5;
   justifyContent: center;
   alignItems: center;
@@ -21,8 +20,8 @@ class Button extends Component {
     const { text, onPress, theme } = this.props;
 
     return (
-      <ButtonContainer
-        underlayColor={theme.PINK_200}
+      <ButtonContainer style={{backgroundColor: '#ffa366'}}
+        underlayColor={'#ffa366'}
         onPress={onPress}
       >
         <Text>{text}</Text>

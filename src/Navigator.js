@@ -37,7 +37,7 @@ import TabIconContent from "./components/TabIconContent";
 const HeaderHeight = 40;
 const HeaderColor = '#ffffff';
 
-const TabColor = '#ff0000';
+const TabColor = '#ffa366';
 const TabLabelFontSize = 12;
 const TabBGColor = '#ffffff';
 

@@ -12,7 +12,7 @@ export default class LogoTitle extends React.Component {
                         style={{ width: 140, height: 40 }}
                     />
                 </View>
-                <View style={{height: 1, width: width, backgroundColor: '#ff0000'}}/>
+                <View style={{height: 1, width: width, backgroundColor: '#ffa366'}}/>
             </View>
         );
     }

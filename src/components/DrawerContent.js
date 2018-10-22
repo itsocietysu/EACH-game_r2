@@ -23,7 +23,6 @@ const Avatar = styled.View`
   width: 120;
   height: 120;
   borderRadius: 60;
-  backgroundColor: ${props => props.theme.PINK_100};
 `;
 
 const ItemContainer = styled.View`
@@ -40,7 +39,7 @@ const DrawerContent = (props) => (
   <ContainerView>
     <DrawerContainer>
       <AvatarContainer>
-        <Avatar />
+        <Avatar style={{backgroundColor: '#ffa366'}}/>
       </AvatarContainer>
 
     </DrawerContainer>
