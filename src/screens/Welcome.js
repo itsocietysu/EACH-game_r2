@@ -23,12 +23,12 @@ class WelcomeScreen extends Component {
         return (
             <FormattedWrapper /*locale={this.props.curState.Language.language}*/ messages={messages}>
                 <ImageBackground
-                    source = {require('./../../media/main.jpg')}
+                    source = {require('./../../assets/images/logo.png')}
                     style={styles.logoContainer}>
                     <View style={{flex: 1}}>
                         <View style={styles.loaderContainer}>
                             {/*<ActivityIndicator size={'large'} color={'#ffffff'}/>*/}
-                            <Progress.Bar progress={0.3} width={200} />
+                            <Progress.Bar progress={0.3} width={200} color={'#ffa366'} />
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={{color: 'white'}}><FormattedMessage message="Powered"/></Text>
