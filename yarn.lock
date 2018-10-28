@@ -5246,7 +5246,7 @@ react-native-masked-text@^1.9.1:
     moment "2.19.3"
     tinymask "^1.0.2"
 
-react-native-popup-dialog@0.15.1:
+react-native-popup-dialog@^0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/react-native-popup-dialog/-/react-native-popup-dialog-0.15.1.tgz#f0a46bbef997d617c92c1bd102b02ba5e97400eb"
   integrity sha512-7J/JGDiXN0p0jd5oGQ/GWfE91KtUoQIXxpjoyOIph2rTtlRybwmWe2YneElJZP12eGMzqWg6+pFeqpZWuyE3yA==
