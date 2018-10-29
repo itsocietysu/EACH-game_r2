@@ -11,9 +11,13 @@ import {
     ActivityIndicator,
     Text,
     TextInput,
-    AsyncStorage,
+    AsyncStorage
 } from 'react-native'
-
+import {withNavigation} from 'react-navigation';
+import VkontakteIcon from "../components/icons/VkontakteIcon";
+import GoogleIcon from "../components/icons/GoogleIcon";
+import EachIcon from "../components/icons/EachIcon";
+import {VK_URL, EACH_URL, GOOGLE_URL} from "../containers/AuthPage/constants";
 
 /* import messages from "../Messages"; */
 
@@ -39,7 +43,7 @@ class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.wrapper}>
-                <ImageBackground
+                {/* <ImageBackground
                     source = {require('./../../media/main.jpg')}
                     style={styles.logoContainer}>
                     <View style={styles.container}>
@@ -71,6 +75,18 @@ class LoginScreen extends Component {
                         </View>
 
                     </View>
+                </ImageBackground>*/}
+                <ImageBackground
+                    source = {require('./../../assets/images/logo.png')}
+                    style={styles.logoContainer}>
+                    <Text>Sign in</Text>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+                        <VkontakteIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:VK_URL})}/>
+                        <GoogleIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:GOOGLE_URL})}/>
+                        <EachIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:EACH_URL})}/>
+                    </View>
+                    <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
+                    <Text style={{color: '#0000ff'}}>{`Sign up`}</Text>
                 </ImageBackground>
             </View>
         );
@@ -85,8 +101,8 @@ const mapStateToProps = (state) => ({
     curState:state
 });
 
-export default connect(mapStateToProps, {
-})(LoginScreen);
+/* export default connect(mapStateToProps, {
+})(LoginScreen);*/
 
 const styles = StyleSheet.create({
     wrapper:{
@@ -119,3 +135,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     }
 });
+
+export default LoginScreen;
