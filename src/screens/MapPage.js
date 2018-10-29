@@ -48,10 +48,14 @@ class MapsScreen extends Component {
             image = {require('./../../assets/icons/map_icon_128.png')}
             title={museum.name.RU}
             description={"(touch me!)"}
+            /*
             onCalloutPress={() => {
               this.popupDialog.show();
             }}
+            */
             onPress={() => {
+              this.popupDialog.props.DialogTitle = <DialogTitle title={"hello"} />;
+              this.popupDialog.show();
               // Marker.showCallout();
               /*
               this.setState({
@@ -59,6 +63,7 @@ class MapsScreen extends Component {
                 myDialogMessage: location.name,
                 myDialogMuseum: museum,
               });*/
+              // console.log(evt);
             }}
           />
         ));
@@ -68,19 +73,19 @@ class MapsScreen extends Component {
         return (
             <View style={{flex:1, justifyContent: 'flex-end'}}>
               <PopupDialog
-                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-                dialogTitle = {<DialogTitle title={this.state.myDialogTitle} />}
+                ref={(popupDialog) => { this.popupDialog = popupDialog;}}
                 dialogAnimation={new SlideAnimation({
                   slideFrom: 'bottom',
                 })}
-                actions={
+                actions={[
                   <DialogButton
+                    key={id++}
                     text="More..."
                     onPress={() => {
                        this.props.navigation.navigate('MuseumPage', this.state.myDialogMuseum);
                     }}
                   />
-                }
+                ]}
               >
                 <View>
                   <Image
