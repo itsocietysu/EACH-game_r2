@@ -28,16 +28,17 @@ class RenderMuseumItem extends Component{
     render() {
         const item = this.props.item;
         const width = Dimensions.get('window').width;
+        const locale = this.props.locale.toUpperCase();
         return (
-            <View style={{flex: 1}}>
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumPage', {data: item});}}>
+            <View style={{flex: 1}} >
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item});}}>
                     <ImageBackground source={{uri: item.image}}
                                  style={{width: width, height: width}}>
                         <TextContainer>
-                            <TittleText>{item.name["RU"]}</TittleText>
+                            <TittleText>{item.name[locale]}</TittleText>
                         </TextContainer>
                         <TextContainer>
-                            <DescriptionText>{item.desc["RU"]}</DescriptionText>
+                            <DescriptionText>{item.desc[locale]}</DescriptionText>
                         </TextContainer>
                         {/* <TextContainer>
                             <DescriptionText>{item.location}</DescriptionText>

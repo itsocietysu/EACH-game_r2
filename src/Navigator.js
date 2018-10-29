@@ -45,7 +45,7 @@ const TabBGColor = '#ffffff';
 const FeedStack = createStackNavigator(
     {
         Feeds: {screen: FeedScreen},
-        FeedPage: {screen: FeedItemScreen},
+        FeedItem: {screen: FeedItemScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -84,7 +84,7 @@ const MapStack = createStackNavigator(
 const MuseumStack = createStackNavigator(
     {
         Museums: {screen: MuseumsScreen},
-        MuseumPage: {screen: MuseumItemScreen},
+        MuseumItem: {screen: MuseumItemScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -155,16 +155,17 @@ const Drawer = createDrawerNavigator(
     }
 );
 
-
-const AuthStack = createStackNavigator({
+const AuthStack = createStackNavigator(
+    {
     Login: {screen: LoginScreen},
     Auth: {screen: AuthPage},
 },
-{
-    navigationOptions:{
-        header: null,
+    {
+        navigationOptions:{
+            header: null,
+        }
     }
-});
+);
 
 // separated Auth stack + application tabs
 const MainAppStack = createStackNavigator({

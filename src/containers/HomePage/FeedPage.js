@@ -18,6 +18,7 @@ import {
 } from './selectors';
 import reducer from "./reducer";
 import saga from "./saga";
+import {makeSelectLanguage} from "../Locales/selectors";
 
 const ContainerView = styled.View`
   flex: 1;
@@ -43,13 +44,18 @@ class HomeScreen extends Component {
     componentDidMount() {
         this.props.init();
     }
+
     render() {
-        const { loading, error, data } = this.props;
+        const locale = this.props.language;
+        const loading = this.props.loading;
+        const error = this.props.error;
+        const data = this.props.data;
         // const setData = data ? separateData(data) : false;
         const dataListProps = {
             loading,
             error,
             data,
+            locale,
             component: RenderFeedItem,
             scroll: false,
             array: true,
@@ -65,6 +71,7 @@ HomeScreen.propTypes = {
     loading: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+    language: PropTypes.string,
     init: PropTypes.func,
 };
 
@@ -81,6 +88,7 @@ const mapStateToProps = createStructuredSelector({
     data: makeSelectData(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
+    language: makeSelectLanguage(),
 });
 
 const withConnect = connect(

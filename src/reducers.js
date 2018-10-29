@@ -7,7 +7,7 @@ import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 // import globalReducer from 'containers/App/reducer';
-// import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import languageReducer from './containers/Locales/reducer';
 import feedsReducer from './containers/HomePage/reducer';
 import museumsReducer from './containers/MuseumPage/reducer';
 /*
@@ -45,7 +45,7 @@ export default function createReducer(injectedReducers) {
     return combineReducers({
         route: routeReducer,
         // global: globalReducer,
-        // language: languageProviderReducer,
+        locales: languageReducer,
         feeds: feedsReducer,
         museums: museumsReducer,
         ...injectedReducers,
