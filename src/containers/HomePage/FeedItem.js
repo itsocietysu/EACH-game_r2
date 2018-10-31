@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 import React, {Component} from 'react';
 import { ImageBackground, View, WebView, Dimensions} from 'react-native';
 import {createStructuredSelector} from "reselect";
@@ -8,22 +9,31 @@ import { TextContainer, TittleText, DescriptionText, BasicText } from "../styles
 
 class FeedItemScreen extends Component{
     render(){
+        const htmlHead = `<head>
+                                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                          </head>`;
+
         const navigation = this.props.navigation;
         const item = navigation.getParam('data',''); // second parameter is some default value
         const locale = this.props.language.toUpperCase();
         const width = Dimensions.get('window').width;
+
+        const htmlPoster = `<img src="${item.image}" width="${width-17}" height="${width-10}">`;
         return(
-                <View style={{flex: 1}}>
-                    <ImageBackground source={{uri: item.image}}
+             <View style={{flex: 1}}>
+                 {/* <ImageBackground source={{uri: item.image}}
                                      style={{width: width, height: width}}>
                         <TextContainer>
                             <TittleText>{item.title[locale]}</TittleText>
                         </TextContainer>
-                    </ImageBackground>
-                    {/* <TextContainer>
-                        <BasicText>{item.text["EN"]}</BasicText>
-                    </TextContainer> */}
-                </View>
+                    </ImageBackground> */}
+                <WebView
+                    // source={{html: testHtml1}}
+                    source={{html: htmlHead + htmlPoster + item.text[locale]}}
+                    scalesPageToFit={false}
+                    mediaPlaybackRequiresUserAction={true}
+                />
+             </View>
         );
     }
 }
