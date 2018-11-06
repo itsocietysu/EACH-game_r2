@@ -28,6 +28,7 @@ import LoginScreen from "./screens/Login";
 import RegistrationScreen from "./screens/Registration"
 import FeedItemScreen from "./containers/HomePage/FeedItem";
 import LogoTitle from "./components/LogoTitle";
+import AuthPage from "./containers/AuthPage/AuthPage";
 import Button from "./components/Button";
 import TabIconContent from "./components/TabIconContent";
 
@@ -41,10 +42,10 @@ const TabColor = '#ffa366';
 const TabLabelFontSize = 12;
 const TabBGColor = '#ffffff';
 
-const FeedTabStack = createStackNavigator(
+const FeedStack = createStackNavigator(
     {
         Feeds: {screen: FeedScreen},
-        FeedPage: {screen: FeedItemScreen},
+        FeedItem: {screen: FeedItemScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -64,7 +65,7 @@ const FeedTabStack = createStackNavigator(
     }
 );
 
-const MapTabStack = createStackNavigator(
+const MapStack = createStackNavigator(
     {
         Maps: {screen: MapScreen},
     },
@@ -80,10 +81,10 @@ const MapTabStack = createStackNavigator(
     }
 );
 
-const MuseumTabStack = createStackNavigator(
+const MuseumStack = createStackNavigator(
     {
         Museums: {screen: MuseumsScreen},
-        MuseumPage: {screen: MuseumItemScreen},
+        MuseumItem: {screen: MuseumItemScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -103,7 +104,7 @@ const MuseumTabStack = createStackNavigator(
     }
 );
 
-const SettingsTabStack = createStackNavigator(
+const SettingsStack = createStackNavigator(
     {
         Settings: {screen: SettingsScreen},
     },
@@ -118,17 +119,19 @@ const SettingsTabStack = createStackNavigator(
         }),
     }
 );
-const  MainAppTab = createBottomTabNavigator(
+
+// Bottom tab containing 4 main stacks
+const  AppBottomTab = createBottomTabNavigator(
     {
-        Feeds: {screen: FeedTabStack},
-        Maps: {screen: MapTabStack},
-        Museums: {screen: MuseumTabStack},
-        Settings: {screen: SettingsTabStack},
+        Feeds: {screen: FeedStack},
+        Maps: {screen: MapStack},
+        Museums: {screen: MuseumStack},
+        Settings: {screen: SettingsStack},
     },
     {
         navigationOptions: ({navigation})=>({
             tabBarIcon: ({tintColor,focused})=>(
-                <TabIconContent props={{navigation:navigation, tintColor:tintColor, focused:focused}}/>),
+                <TabIconContent navigation={navigation} tintColor={tintColor} focused={focused}/>),
 
         }),
         tabBarOptions:{
@@ -142,7 +145,7 @@ const  MainAppTab = createBottomTabNavigator(
 // Drawer navigation styled by CustomDrawerComponent
 const Drawer = createDrawerNavigator(
     {
-        Home: {screen: MainAppTab}
+        Home: {screen: AppBottomTab}
     },
     {
         contentComponent: props =>
@@ -152,158 +155,36 @@ const Drawer = createDrawerNavigator(
     }
 );
 
-// Main navigator loading screen and main app window
+const AuthStack = createStackNavigator(
+    {
+    Login: {screen: LoginScreen},
+    Auth: {screen: AuthPage},
+},
+    {
+        navigationOptions:{
+            header: null,
+        }
+    }
+);
+
+// separated Auth stack + application tabs
+const MainAppStack = createStackNavigator({
+    Home: {screen: Drawer},
+    Auth: {screen: AuthStack},
+},
+{
+    navigationOptions:{
+        header: null,
+    }
+}
+);
+
+// Main navigator:
+// loading screen + main app
 const Navigator = createSwitchNavigator({
         Welcome: {screen: WelcomeScreen},
-        Home: {screen: Drawer},
+        Home: {screen: MainAppStack},
     }
 );
 
-
-/*
-const AppMainTab = TabNavigator({
-        Home: {
-            screen: HomeScreen,
-            navigationOptions: ({ navigation }) => ({
-                drawerLabel: 'Sweet home',
-                drawerIcon: ({ tintColor }) => (
-                    <FontAwesome name="home" size={23} color={tintColor} />
-                ),
-                tabBarLabel: 'Home',
-                tabBarIcon: ({ tintColor }) => (
-                    <FontAwesome name="home" size={23} color={tintColor} />
-                ),
-                headerStyle: {
-                    backgroundColor: colors.SOFT,
-                },
-                headerTitle: 'Feed',
-                headerTitleStyle: {
-                    color: colors.WHITE,
-                },
-                headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-            })
-        },
-        Favorites: {
-            screen: FavoritesScreen,
-            navigationOptions: ({ navigation }) => ({
-                drawerLabel: 'Maps',
-                drawerIcon: ({ tintColor }) => (
-                    <FontAwesome name="heartbeat" size={23} color={tintColor} />
-                ),
-                tabBarLabel: 'Maps',
-                tabBarIcon: ({ tintColor }) => (
-                    <FontAwesome name="heartbeat" size={23} color={tintColor} />
-                ),
-                headerStyle: {
-                    backgroundColor: colors.PINK_100,
-                },
-                headerTitle: 'Maps',
-                headerTitleStyle: {
-                    color: colors.WHITE,
-                },
-                headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-            })
-        },
-        Profile: {
-            screen: MuseumsScreen,
-            navigationOptions: ({ navigation }) => ({
-                drawerLabel: 'Profile',
-                drawerIcon: ({ tintColor }) => (
-                    <FontAwesome name="user-circle" size={23} color={tintColor} />
-                ),
-                tabBarLabel: 'Profile',
-                tabBarIcon: ({ tintColor }) => (
-                    <FontAwesome name="user-circle" size={23} color={tintColor} />
-                ),
-                headerStyle: {
-                    backgroundColor: colors.PINK_100,
-                },
-                headerTitle: 'Profile',
-                headerTitleStyle: {
-                    color: colors.WHITE,
-                },
-                headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-                headerRight: <SettingsIcon onPress={() => navigation.navigate('Settings')} />,
-            })
-        },
-    },
-    {
-        tabBarOptions: {
-            activeTintColor: colors.WHITE,
-            inactiveTintColor: colors.PINK_50,
-            inactiveBackgroundColor: colors.PINK_100,
-            activeBackgroundColor: colors.PINK_100,
-            showIcon: true,
-            showLabel: Platform.OS === 'ios',
-            indicatorStyle: {
-                backgroundColor: colors.PINK_300,
-            },
-            style: {
-                backgroundColor: colors.PINK_100,
-            },
-            upperCaseLabel: false,
-        },
-        tabBarPosition: 'bottom',
-        swipeEnabled: false,
-        animationEnabled: false,
-    }
-);
-
-const AppMainStack = StackNavigator({
-    Home: { screen: AppMainTab },
-    Settings: { screen: SettingsScreen },
-    FeedItem: { screen: FeedItemScreen },
-}, {
-    cardStyle: {
-        backgroundColor: colors.PINK_50,
-    },
-    mode: 'modal',
-});
-
-const AppDrawer = DrawerNavigator({
-    Home: { screen: AppMainStack, },
-    Settings: {
-        screen: SettingsScreen,
-        navigationOptions: ({ navigation }) => ({
-            drawerLabel: 'Settings',
-            drawerIcon: ({ tintColor }) => (
-                <Ionicons name="md-settings" size={23} color={tintColor} />
-            ),
-            headerStyle: {
-                backgroundColor: colors.PINK_100,
-            },
-            headerTitle: 'Settings',
-            headerTitleStyle: {
-                color: colors.WHITE,
-            },
-            headerLeft: <BackIcon onPress={() => navigation.goBack()} />,
-        }),
-    },
-}, {
-    contentComponent: props =>
-        (<CustomDrawerContent
-            {...props}
-        />),
-    contentOptions: {
-        activeBackgroundColor: colors.PINK_100,
-        activeTintColor: colors.WHITE,
-        inactiveTintColor: colors.PINK_200,
-    },
-});
-
-const Navigator = TabNavigator(
-    {
-        Welcome: { screen: WelcomeScreen },
-        Login: { screen: LoginScreen },
-        Registration: {screen: RegistrationScreen},
-        Main: { screen: AppDrawer },
-    },
-    {
-        navigationOptions: {
-            tabBarVisible: false,
-        },
-        swipeEnabled: false,
-    }
-);
-*/
 export default Navigator;

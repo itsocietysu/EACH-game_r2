@@ -1,10 +1,8 @@
 import React from 'react';
 import {Ionicons, MaterialCommunityIcons, Foundation, FontAwesome } from '@expo/vector-icons';
 
-const TabIconContent = ({ props }) => {
-    const {routeName} = props.navigation.state;
-    const focused = props.focused;
-    const tintColor = props.tintColor;
+const TabIconContent = ({ navigation, tintColor, focused }) => {
+    const {routeName} = navigation.state;
     switch (routeName) {
         case 'Feeds':
             return <MaterialCommunityIcons name={'newspaper'} size={25} color={tintColor}/>;
