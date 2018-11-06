@@ -11,8 +11,7 @@ import { loadMuseums } from "../containers/MuseumPage/actions";
 import { makeSelectData, makeSelectError, makeSelectLoading } from "../containers/MuseumPage/selectors";
 import injectSaga from "../utils/injectSaga";
 import saga from "../containers/MuseumPage/saga";
-// import { DescriptionText, TextContainer, TittleText } from "../containers/styles";
-// import { MuseumItemScreen } from "../containers/MuseumPage/MuseumItem"
+import { makeSelectLanguage } from "../containers/Locales/selectors";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -22,19 +21,34 @@ let id = 0;
 
 class MapsScreen extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.BuildMarkers = this.BuildMarkers.bind(this);
+    this.ShowDialog = this.ShowDialog.bind(this);
+  }
+
   state = {
-    myDialogTitle: "Hello",
-    myDialogMessage: "world",
-    myDialogMuseum: this.props.data
+    markers: [],
+    dialog: false,
   };
 
   componentDidMount() {
     if (!this.props.data) this.props.init();
+    else this.BuildMarkers();
   }
 
-  render() {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.dialog !== prevState.dialog) {
+      this.refDialog.show();
+    }
+    if (this.props.data && prevProps.loading)
+      this.BuildMarkers();
+  }
+
+  BuildMarkers() {
     const { data } = this.props;
-    let markers = [];
+    let marker = [];
 
     if (data) {
       data.map(museum => {
@@ -45,77 +59,63 @@ class MapsScreen extends Component {
               latitude: parseFloat(location.latitude),
               longitude: parseFloat(location.longitude),
             }}
-            image = {require('./../../assets/icons/map_icon_128.png')}
-            title={museum.name.RU}
-            description={"(touch me!)"}
-            /*
-            onCalloutPress={() => {
-              this.popupDialog.show();
-            }}
-            */
+            image={require('./../../assets/icons/map_icon_128.png')}
             onPress={() => {
-              this.popupDialog.props.DialogTitle = <DialogTitle title={"hello"} />;
-              this.popupDialog.show();
-              // Marker.showCallout();
-              /*
-              this.setState({
-                myDialogTitle: museum.name.RU,
-                myDialogMessage: location.name,
-                myDialogMuseum: museum,
-              });*/
-              // console.log(evt);
+                this.ShowDialog(museum);
             }}
           />
         ));
-        markers = markers.concat(arr);
-      })
+        marker = marker.concat(arr);
+      });
     }
-        return (
-            <View style={{flex:1, justifyContent: 'flex-end'}}>
-              <PopupDialog
-                ref={(popupDialog) => { this.popupDialog = popupDialog;}}
-                dialogAnimation={new SlideAnimation({
-                  slideFrom: 'bottom',
-                })}
-                actions={[
-                  <DialogButton
-                    key={id++}
-                    text="More..."
-                    onPress={() => {
-                       this.props.navigation.navigate('MuseumPage', this.state.myDialogMuseum);
-                    }}
-                  />
-                ]}
-              >
-                <View>
-                  <Image
-                    // align={"left"}
-                    source = {require('./../../assets/icons/map_icon_128.png')}
-                  />
-                  <Text> hello </Text>
-                </View>
-              </PopupDialog>
-                <MapView
-                  style={styles.map}
-                  initialRegion={{
-                    latitude: LATITUDE,
-                    longitude: LONGITUDE,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  }}
-                >
-                  {markers}
-                </MapView>
-            </View>
-        );
-    }
-}
+    this.setState({ markers: marker });
+  }
 
+  ShowDialog(museum) {
+    const locale = this.props.locale.toLocaleUpperCase();
+    this.setState({ dialog: (
+      <PopupDialog
+        dialogTitle={<DialogTitle title = {museum.name[locale]}/>}
+        ref={(popupDialog) => { this.refDialog = popupDialog;}}
+        dialogAnimation={new SlideAnimation({
+          slideFrom: 'bottom',
+        })}
+      >
+        <View>
+          <Text> {museum.desc[locale]} </Text>
+        </View>
+      </PopupDialog>
+    )});
+  }
+
+
+  render() {
+    return (
+      <View style={{flex:1, justifyContent: 'flex-end'}}>
+        {this.state.dialog}
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+        >
+          {
+            this.state.markers
+          }
+        </MapView>
+      </View>
+    );
+  }
+}
 
 MapsScreen.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  locale: PropTypes.string,
   init: PropTypes.func,
 };
 
@@ -132,17 +132,18 @@ const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  locale: makeSelectLanguage(),
 });
 
 const styles = StyleSheet.create({
-   container: {
-     flex: 1,
-     alignItems: 'center',
-     justifyContent: 'center',
-   },
-    map:{
-        flex: 1,
-    }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  map:{
+    flex: 1,
+  }
 });
 
 const withSaga = injectSaga({ key: 'maps', saga });
