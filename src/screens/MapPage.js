@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet,  View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -80,9 +80,23 @@ class MapsScreen extends Component {
         dialogAnimation={new SlideAnimation({
           slideFrom: 'bottom',
         })}
+        actions={[
+          <DialogButton
+            key = {id++}
+            text="More..."
+            onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: museum});}}
+          />
+        ]}
       >
         <View>
-          <Text> {museum.desc[locale]} </Text>
+          <Text>
+            <Image
+              align={"top"}
+              style={{width: 200, height: 200}}
+              source={{uri: museum.image}}
+            />
+            { museum.desc[locale] }
+            </Text>
         </View>
       </PopupDialog>
     )});
