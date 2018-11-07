@@ -30,7 +30,7 @@ class MapsScreen extends Component {
 
   state = {
     markers: [],
-    dialog: false,
+    dialog: false
   };
 
   componentDidMount() {
@@ -73,7 +73,9 @@ class MapsScreen extends Component {
 
   ShowDialog(museum) {
     const locale = this.props.locale.toLocaleUpperCase();
-    this.setState({ dialog: (
+    this.setState({
+      showDialog : true,
+      dialog: (
       <PopupDialog
         dialogTitle={<DialogTitle title = {museum.name[locale]}/>}
         ref={(popupDialog) => { this.refDialog = popupDialog;}}
@@ -84,7 +86,10 @@ class MapsScreen extends Component {
           <DialogButton
             key = {id++}
             text="More..."
-            onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: museum});}}
+            onPress={()=>{
+              this.props.navigation.navigate('MuseumItem', {data: museum});
+              this.refDialog.dismiss();
+            }}
           />
         ]}
       >
@@ -106,7 +111,7 @@ class MapsScreen extends Component {
   render() {
     return (
       <View style={{flex:1, justifyContent: 'flex-end'}}>
-        {this.state.dialog}
+        { this.state.dialog }
         <MapView
           style={styles.map}
           initialRegion={{
@@ -116,9 +121,7 @@ class MapsScreen extends Component {
             longitudeDelta: LONGITUDE_DELTA,
           }}
         >
-          {
-            this.state.markers
-          }
+          { this.state.markers }
         </MapView>
       </View>
     );
