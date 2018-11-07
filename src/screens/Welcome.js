@@ -9,25 +9,39 @@ import {
     ActivityIndicator,
     Text
 } from 'react-native'
+import PropTypes from "prop-types";
+
 
 import messages from "../Messages";
+import getSystemLocale from './../utils/getSystemLocale'
+import { changeLanguage } from './../containers/Locales/actions'
+
 
 class WelcomeScreen extends Component {
+    // cheat access to redux store
+    static contextTypes = {
+        store: PropTypes.object.isRequired,
+    };
 
-    componentWillMount(){
+    async componentWillMount(){
         this.setState({loading:true});
-        setTimeout(()=> {this.props.navigation.navigate('Home');}, 3000)
+        // waiting until get device locale
+        const locale = await getSystemLocale();
+        this.context.store.dispatch(changeLanguage(locale));
+
+        // TODO: change magic constant 3000
+        setTimeout(()=> this.props.navigation.navigate('Home'), 3000)
     }
 
     render() {
         return (
-            <FormattedWrapper /*locale={this.props.curState.Language.language}*/ messages={messages}>
+            <FormattedWrapper /* locale={this.props.curState.Language.language}*/ messages={messages}>
                 <ImageBackground
                     source = {require('./../../assets/images/logo.png')}
                     style={styles.logoContainer}>
                     <View style={{flex: 1}}>
                         <View style={styles.loaderContainer}>
-                            {/*<ActivityIndicator size={'large'} color={'#ffffff'}/>*/}
+                            {/* <ActivityIndicator size={'large'} color={'#ffffff'}/>*/}
                             <Progress.Bar progress={0.3} width={200} color={'#ffa366'} />
                         </View>
                         <View style={styles.textContainer}>

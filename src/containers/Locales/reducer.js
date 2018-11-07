@@ -4,7 +4,7 @@ import {
 } from './constants';
 
 // TODO: move to constant file
-const CONST_LANGUAGE_DEFAULT = 'ru';
+const CONST_LANGUAGE_DEFAULT = 'en';
 
 export const initialState = fromJS({
 	language: CONST_LANGUAGE_DEFAULT,
