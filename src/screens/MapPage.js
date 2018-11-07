@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import MapView, { Marker } from 'react-native-maps';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Text, Image } from "react-native";
+import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -10,6 +11,7 @@ import { loadMuseums } from "../containers/MuseumPage/actions";
 import { makeSelectData, makeSelectError, makeSelectLoading } from "../containers/MuseumPage/selectors";
 import injectSaga from "../utils/injectSaga";
 import saga from "../containers/MuseumPage/saga";
+import { makeSelectLanguage } from "../containers/Locales/selectors";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -17,24 +19,37 @@ const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = LATITUDE_DELTA;
 let id = 0;
 
-function randomColor() {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
-
 class MapsScreen extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.BuildMarkers = this.BuildMarkers.bind(this);
+    this.ShowDialog = this.ShowDialog.bind(this);
+  }
+
+  state = {
+    markers: [],
+    dialog: false,
+  };
 
   componentDidMount() {
     if (!this.props.data) this.props.init();
+    else this.BuildMarkers();
   }
 
-  /*
-  onMapPress(e) {
-    console.log(e);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.dialog !== prevState.dialog) {
+      this.refDialog.show();
+    }
+    if (this.props.data && prevProps.loading)
+      this.BuildMarkers();
   }
-  */
-  render() {
+
+  BuildMarkers() {
     const { data } = this.props;
-    let markers = [];
+    let marker = [];
+
     if (data) {
       data.map(museum => {
         const arr = museum.location.map(location => (
@@ -44,37 +59,77 @@ class MapsScreen extends Component {
               latitude: parseFloat(location.latitude),
               longitude: parseFloat(location.longitude),
             }}
-            image = {require('./../../assets/icons/map_icon_128.png')}
-            title={location.name}
-            description={museum.name.RU}
-            pinColor={randomColor()}
-          />));
-        markers = markers.concat(arr);
-      })
+            image={require('./../../assets/icons/map_icon_128.png')}
+            onPress={() => {
+                this.ShowDialog(museum);
+            }}
+          />
+        ));
+        marker = marker.concat(arr);
+      });
     }
-        return (
-            <View style={{flex:1, justifyContent: 'flex-end'}}>
-                <MapView
-                  style={styles.map}
-                  initialRegion={{
-                    latitude: LATITUDE,
-                    longitude: LONGITUDE,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  }}
-                  // onPress={(e) => this.onMapPress(e)}
-                >
-                  {markers}
-                </MapView>
-            </View>
-        );
-    }
+    this.setState({ markers: marker });
+  }
+
+  ShowDialog(museum) {
+    const locale = this.props.locale.toLocaleUpperCase();
+    this.setState({ dialog: (
+      <PopupDialog
+        dialogTitle={<DialogTitle title = {museum.name[locale]}/>}
+        ref={(popupDialog) => { this.refDialog = popupDialog;}}
+        dialogAnimation={new SlideAnimation({
+          slideFrom: 'bottom',
+        })}
+        actions={[
+          <DialogButton
+            key = {id++}
+            text="More..."
+            onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: museum});}}
+          />
+        ]}
+      >
+        <View>
+          <Text>
+            <Image
+              align={"top"}
+              style={{width: 200, height: 200}}
+              source={{uri: museum.image}}
+            />
+            { museum.desc[locale] }
+            </Text>
+        </View>
+      </PopupDialog>
+    )});
+  }
+
+
+  render() {
+    return (
+      <View style={{flex:1, justifyContent: 'flex-end'}}>
+        {this.state.dialog}
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+        >
+          {
+            this.state.markers
+          }
+        </MapView>
+      </View>
+    );
+  }
 }
 
 MapsScreen.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  locale: PropTypes.string,
   init: PropTypes.func,
 };
 
@@ -91,12 +146,18 @@ const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  locale: makeSelectLanguage(),
 });
 
 const styles = StyleSheet.create({
-    map:{
-        flex: 1,
-    }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  map:{
+    flex: 1,
+  }
 });
 
 const withSaga = injectSaga({ key: 'maps', saga });
