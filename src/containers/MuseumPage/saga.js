@@ -21,6 +21,9 @@ export function* loadMuseums() {
                 image: `${
                     item.image[0] ? `http://${item.image[0].url}` : 'assets/images/DefaultPhoto.png'
                     }`,
+                logo: `${
+                    item.logo[0] ? `http://${item.logo[0].url}` : 'assets/images/DefaultPhoto.png'
+                    }`
 
                 // priority: `${item.priority[0] ? item.priority[0] : 0}`,
             }));

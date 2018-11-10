@@ -98,7 +98,7 @@ class MapsScreen extends Component {
             <Image
               align={"top"}
               style={{width: 200, height: 200}}
-              source={{uri: museum.image}}
+              source={{uri: museum.logo}}
             />
             { museum.desc[locale] }
             </Text>
