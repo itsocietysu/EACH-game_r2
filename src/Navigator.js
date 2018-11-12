@@ -31,6 +31,8 @@ import LogoTitle from "./components/LogoTitle";
 import AuthPage from "./containers/AuthPage/AuthPage";
 import Button from "./components/Button";
 import TabIconContent from "./components/TabIconContent";
+import QuestInfoScreen from "./screens/QuestInfoScreen";
+import PlayQuestScreen from "./screens/PlayQuestScreen";
 
 
 
@@ -85,6 +87,8 @@ const MuseumStack = createStackNavigator(
     {
         Museums: {screen: MuseumsScreen},
         MuseumItem: {screen: MuseumItemScreen},
+        QuestInfo: {screen: QuestInfoScreen},
+        QuestPlay: {screen: PlayQuestScreen},
     },
     {
         navigationOptions: ({navigation})=> {
