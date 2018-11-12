@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, {Component} from 'react';
-import { ImageBackground, View, WebView, Dimensions} from 'react-native';
+import { Image, ScrollView, View, Text, WebView, Dimensions} from 'react-native';
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
@@ -21,12 +21,6 @@ class FeedItemScreen extends Component{
         const htmlPoster = `<img src="${item.image}" width="${width-17}" height="${width-10}">`;
         return(
              <View style={{flex: 1}}>
-                 {/* <ImageBackground source={{uri: item.image}}
-                                     style={{width: width, height: width}}>
-                        <TextContainer>
-                            <TittleText>{item.title[locale]}</TittleText>
-                        </TextContainer>
-                    </ImageBackground> */}
                 <WebView
                     // source={{html: testHtml1}}
                     source={{html: htmlHead + htmlPoster + item.text[locale]}}

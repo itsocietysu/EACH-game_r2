@@ -5,6 +5,7 @@ const messages = {
         Maps: 		'Maps',
         Museums: 	'Museums',
         Settings: 	'Settings',
+        Games:      'Games',
     },
 	ru: {
         Powered: 	'Создано в ITS©',
@@ -12,6 +13,7 @@ const messages = {
         Maps: 		'Карты',
         Museums:  	'Музеи',
 		Settings: 	'Настройки',
+        Games:      'Игры',
 	},
 	es: {
 		Welcome: 	'Bienvenido',
