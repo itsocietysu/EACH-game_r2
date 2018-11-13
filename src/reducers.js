@@ -10,6 +10,8 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageReducer from './containers/Locales/reducer';
 import feedsReducer from './containers/HomePage/reducer';
 import museumsReducer from './containers/MuseumPage/reducer';
+import gamesReducer from "./containers/GamePage/reducer";
+import scenarioReducer from "./containers/ScenarioPage/reducer";
 /*
  * routeReducer
  *
@@ -48,6 +50,8 @@ export default function createReducer(injectedReducers) {
         locales: languageReducer,
         feeds: feedsReducer,
         museums: museumsReducer,
+        games: gamesReducer,
+        scenario: scenarioReducer,
         ...injectedReducers,
     });
 }

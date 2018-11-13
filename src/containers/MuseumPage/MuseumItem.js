@@ -21,8 +21,7 @@ import { TextContainer, TittleText, DescriptionText, BasicText } from "../styles
 import {makeSelectLanguage} from "../Locales/selectors";
 import CustomList from "../../components/CustomList";
 import LocationItem from "../../components/LocationItem";
-
-import QuestItem from "../../components/QuestItem";
+import GameItem from "../GamePage/GameItem";
 import messages from "../../Messages";
 
 const {height} = Dimensions.get('window');
@@ -63,7 +62,7 @@ class MuseumItemScreen extends Component{
     _handleOnDragEnd(position, panel, startDragPos) {
         const top = this.props.draggableRange.top;
         const bottom = this.props.draggableRange.bottom;
-        if (position - startDragPos > 0) {
+        if (position - startDragPos >= 0) {
             panel.transitionTo(top)
         } else {
             panel.transitionTo(bottom)
@@ -97,7 +96,7 @@ class MuseumItemScreen extends Component{
                         <TextContainer>
                             <DescriptionText>{item.desc[locale]}</DescriptionText>
                         </TextContainer>
-                        <Text>Hello world</Text>
+                        {/* <Text>Hello world</Text>
                         <Text>Hello world</Text>
                         <Text>Hello world</Text>
                         <Text>Hello world</Text>
@@ -112,18 +111,18 @@ class MuseumItemScreen extends Component{
                         <Text>Hello world</Text>
                         <Text>Hello world</Text>
                         <Text>Hello world</Text>
-                        <Text>HELL</Text>
+                        <Text>HELL</Text>*/}
                         {/* blank view for drawer*/}
-                        <View style={{width: width, height: 50, backgroundColor: '#ff0000'}}/>
+                        <View style={{width: width, height: 50, /* backgroundColor: '#ff0000'*/}}/>
                     </ScrollView>
                     <SlidingUpPanel
+                        ref={c => this._panel = c}
                         visible
                         startCollapsed
                         allowMomentum={false}
                         showBackdrop={false}
                         onDragStart = {(position)=>{this._handleOnDragStart(position,this)}}
                         onDragEnd={(position)=>{this._handleOnDragEnd(position, this._panel, this.state.startDragPos)}}
-                        ref={c => this._panel = c}
                         draggableRange={this.props.draggableRange}
                     >
                         <View style={styles.panel}>
@@ -131,14 +130,10 @@ class MuseumItemScreen extends Component{
                                 <Text style={{color: '#FFF'}}><FormattedMessage message={'Games'}/></Text>
                             </View>
                             <View style={{flex:1}}>
-                                <CustomList component={QuestItem} array={item.game} locale={locale}/>
+                                <GameItem museumID={item.eid}/>
                             </View>
                         </View>
                     </SlidingUpPanel>
-
-                    {/* <View style={{flex:1}}>
-                        <CustomList component={QuestItem} array={item.game} locale={locale}/>
-                    </View>*/}
                 </View>
             </FormattedWrapper>
         );
@@ -152,7 +147,6 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
 });
-
 const withConnect = connect(
     mapStateToProps,
     mapDispatchToProps,
