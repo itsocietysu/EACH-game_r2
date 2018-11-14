@@ -5,8 +5,8 @@ import {withNavigation} from 'react-navigation';
 
 class QuestItem extends Component{
     render(){
-        const item = this.props.item.item;
-        const locale = this.props.locale;
+        const item = this.props.item;
+        const locale = this.props.locale.toUpperCase();
         return(
             <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestInfo', {quest: item})}>
                 <View style={{flex:1, flexDirection: 'row'}}>
