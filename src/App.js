@@ -18,8 +18,14 @@ background-color: ${props => props.theme.SOFT};
 
 const StatusBarAndroid = styled.View`
 height: 24;
-background-color: ${props => props.theme.ORANGE};
+background-color: rgb(255,255,255);
 `;
+
+const StatusBarIOS = styled.View`
+height: 24;
+background-color: rgb(255,255,255);
+`;
+
 const initialState = {};
 const history = {};
 const store = configureStore(initialState, history);
@@ -29,12 +35,17 @@ YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` su
 
 class RootContainer extends Component {
   render() {
+    let StatusBarOS = null;
+    if(Platform.OS === 'android' && Platform.Version >= 20)
+        StatusBarOS = <StatusBarAndroid />;
+    else if(Platform.OS === 'ios')
+        StatusBarOS = <StatusBarIOS />;
     return (
       <ThemeProvider theme={colors}>
         <FormattedWrapper /*locale={this.props.state.Language.language}*/ messages={messages}>
           <Root>
-            <StatusBar barStyle='light-content' backgroundColor='transparent' translucent />
-            { Platform.OS === 'android' && Platform.Version >= 20 ? <StatusBarAndroid /> : null }
+            <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
+              {StatusBarOS}
             <Navigator />
           </Root>
         </FormattedWrapper>
