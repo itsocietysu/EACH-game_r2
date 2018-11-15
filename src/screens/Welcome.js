@@ -45,7 +45,7 @@ class WelcomeScreen extends Component {
                             <Progress.Bar progress={0.3} width={200} color={'#ffa366'} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={{color: 'white'}}><FormattedMessage message="Powered"/></Text>
+                            <Text style={{color: '#ffa366'}}><FormattedMessage message="Powered"/></Text>
                         </View>
                     </View>
                 </ImageBackground>

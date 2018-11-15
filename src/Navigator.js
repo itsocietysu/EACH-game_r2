@@ -33,6 +33,7 @@ import Button from "./components/Button";
 import TabIconContent from "./components/TabIconContent";
 import QuestInfoScreen from "./screens/QuestInfoScreen";
 import PlayQuestScreen from "./screens/PlayQuestScreen";
+import ResultScreen from "./screens/ResultScreen";
 
 
 
@@ -89,6 +90,7 @@ const MuseumStack = createStackNavigator(
         MuseumItem: {screen: MuseumItemScreen},
         QuestInfo: {screen: QuestInfoScreen},
         QuestPlay: {screen: PlayQuestScreen},
+        Result: {screen: ResultScreen},
     },
     {
         navigationOptions: ({navigation})=> {
