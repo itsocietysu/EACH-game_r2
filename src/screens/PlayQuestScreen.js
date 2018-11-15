@@ -11,47 +11,56 @@ import {compose} from 'redux';
 import PropTypes from "prop-types";
 
 
-import injectReducer from "../utils/injectReducer";
-import reducer from "../containers/ScenarioPage/reducer";
-import injectSaga from "../utils/injectSaga";
-import saga from "../containers/ScenarioPage/saga";
+
 import {makeSelectLanguage} from "../containers/Locales/selectors";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../containers/ScenarioPage/selectors";
-import {loadScenario} from '../containers/ScenarioPage/actions';
-
-
-import ScenarioItem from "../containers/ScenarioPage/ScenarioItem";
-
+import {AR_PAINT_QUESTION, LOCATION_QUESTION, TEXT_QUESTION} from "../containers/Question/constants";
+import TextQuestion from "../containers/Question/TextQuestion";
+import LocationQuestion from "../containers/Question/LocationQuestion";
+import ARQuestion from "../containers/Question/ARQuestion";
 
 class PlayQuestScreen extends Component{
+    state = {
+        currentStep: 1,
+    };
 
-    componentDidMount(){
-        this.props.init();
+    // TODO: remove method
+    shouldComponentUpdate(){
+        const navigation = this.props.navigation;
+        const k = navigation.getParam('next', '');
+        const l = 'next';
+        if(l === 'next')
+            return true;
+        return false;
     }
 
-    render(){
-        const locale = this.props.language;
-        const loading = this.props.loading;
-        const error = this.props.error;
-        const data = this.props.data;
+   render() {
+       const navigation = this.props.navigation;
+       const scenario = navigation.getParam('scenario', '');
 
-        if (loading) {
-            return <View><ActivityIndicator/></View>;
-        }
 
-        if (error !== false) {
-            console.error(error);
-            return <Text>Something went wrong</Text>;
-        }
+       // TODO: remove next string
+       let currStep = 0;
+       const next = navigation.getParam('next', '');
+       if (next === 'next')
+           currStep = 1;
+       else
+           currStep = 0;
+       // TODO: current step should be loaded the from global state
 
-        if (data !== false) {
-            return (
-                <ScenarioItem scenario={data}/>
-            );
-        }
-        return <View/>
-    }
+       const step = scenario[0].scenario.steps[currStep];
+       switch (step.type) {
+           case TEXT_QUESTION:
+               return <TextQuestion data={step.desc}/>;
+           case LOCATION_QUESTION:
+               return <LocationQuestion data={step.desc}/>;
+           case AR_PAINT_QUESTION:
+               return <ARQuestion data={step.desc}/>;
+           default:
+               return <View/>;
+       }
+   }
 }
+
 PlayQuestScreen.propTypes = {
     loading: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -63,18 +72,10 @@ PlayQuestScreen.propTypes = {
 
 export function mapDispatchToProps(dispatch, ownProps) {
     return {
-        init: evt => {
-            const scenarioID = ownProps.navigation.getParam('scenarioID', '');
-            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-            dispatch(loadScenario(scenarioID));
-        },
     }
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: makeSelectData(),
-    loading: makeSelectLoading(),
-    error: makeSelectError(),
     language: makeSelectLanguage(),
 });
 const withConnect = connect(
@@ -82,13 +83,8 @@ const withConnect = connect(
     mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'scenario', reducer });
-const withSaga = injectSaga({ key: 'scenario', saga });
-
 export default compose(
     // withRequest,
-    withReducer,
-    withSaga,
     withConnect,
     withNavigation,
 )(PlayQuestScreen);

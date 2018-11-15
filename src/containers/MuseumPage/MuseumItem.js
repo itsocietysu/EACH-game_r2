@@ -94,7 +94,7 @@ class MuseumItemScreen extends Component{
                             <CustomList component={LocationItem} array={item.location} locale={locale}/>
                         </View>
                         <TextContainer>
-                            <DescriptionText>{item.desc[locale]}</DescriptionText>
+                            <Text>{item.desc[locale]}</Text>
                         </TextContainer>
                         {/* <Text>Hello world</Text>
                         <Text>Hello world</Text>
@@ -113,7 +113,7 @@ class MuseumItemScreen extends Component{
                         <Text>Hello world</Text>
                         <Text>HELL</Text>*/}
                         {/* blank view for drawer*/}
-                        <View style={{width: width, height: 50, /* backgroundColor: '#ff0000'*/}}/>
+                        <View style={{width: width, height: 70, /* backgroundColor: '#ff0000'*/}}/>
                     </ScrollView>
                     <SlidingUpPanel
                         ref={c => this._panel = c}
