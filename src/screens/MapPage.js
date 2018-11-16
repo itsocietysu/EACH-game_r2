@@ -61,7 +61,7 @@ class MapsScreen extends Component {
             }}
             image={require('./../../assets/icons/map_icon_128.png')}
             onPress={() => {
-                this.ShowDialog(museum);
+                this.ShowDialog(museum, location.name);
             }}
           />
         ));
@@ -71,7 +71,7 @@ class MapsScreen extends Component {
     this.setState({ markers: marker });
   }
 
-  ShowDialog(museum) {
+  ShowDialog(museum, locName) {
     const locale = this.props.locale.toLocaleUpperCase();
     this.setState({
       showDialog : true,
@@ -100,7 +100,7 @@ class MapsScreen extends Component {
               style={{width: 200, height: 200}}
               source={{uri: museum.logo}}
             />
-            { museum.desc[locale] }
+            { locName }
             </Text>
         </View>
       </PopupDialog>
