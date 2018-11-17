@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, FlatList, TouchableOpacity, ImageBackground, Dimensions} from 'react-native';
+import {View, Alert, Text, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import {TEXT_QUESTION, AR_PAINT_QUESTION, LOCATION_QUESTION} from "./constants";
 import CustomList from "../../components/CustomList";
 import PickerItem from "../../components/Picker";
 import styled from "styled-components/native";
+import {SpamHello, CentroidFigure, ButtonText, StyledButton} from "../styles";
+import messages from "../../Messages";
+import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 
 
 
@@ -35,6 +38,10 @@ class TextQuestion extends Component{
     }
 
     _validateResult(component){
+        if (component.state.pickerSelection === -1) {
+            Alert.alert('Not selected!');
+            return;
+        }
         let result = 'fail';
         const step = component.props.data;
         let bonus = null;
@@ -49,21 +56,32 @@ class TextQuestion extends Component{
         const step = this.props.data;
         const width = Dimensions.get('window').width;
         return(
-            <View style={{flex: 1}}>
-                <QuestionText>{step.question}</QuestionText>
-                <ImageBackground source={{uri: step.avatar.uri}}
-                             style={{width: width, height: width/2}}/>
-                <FlatList
-                    data={step.choices}
-                    renderItem={(item)=><PickerItem text={item} state={this.state} handler={this._changeSelection}/>}
-                    keyExtractor={(item) => step.choices.indexOf(item)}
-                    extraData={this.state}
-                    scrollEnabled={true}
-                />
-                <TouchableOpacity onPress={() => this._validateResult(this)}>
-                    <Text style={{color: "#0000ff", textAlign : 'center', paddingBottom: 20}}>Ответить</Text>
-                </TouchableOpacity>
-            </View>
+            <FormattedWrapper locale={this.props.language} messages={messages}>
+                <View style={{flex: 1}}>
+                    <ScrollView style={{flex: 1}}>
+                        <QuestionText>{step.question}</QuestionText>
+                        <View style={{paddingBottom: 10}}>
+                            <ImageBackground source={{uri: step.avatar.uri}}
+                                     style={{width: width, height: width/2}}/>
+                        </View>
+                        <FlatList
+                            data={step.choices}
+                            renderItem={(item)=><PickerItem text={item} state={this.state} handler={this._changeSelection}/>}
+                            keyExtractor={(item) => step.choices.indexOf(item)}
+                            extraData={this.state}
+                            scrollEnabled={false}
+                        />
+                        <TouchableOpacity onPress={() => this._validateResult(this)}>
+                            <CentroidFigure>
+                                <StyledButton color={'#ff0000'}>
+                                    <ButtonText color={"#ffffff"}><FormattedMessage message={'Validate'}/></ButtonText>
+                                </StyledButton>
+                            </CentroidFigure>
+                        </TouchableOpacity>
+                        <View style={{height: 20}}/>
+                    </ScrollView>
+                </View>
+            </FormattedWrapper>
         );
     }
 }

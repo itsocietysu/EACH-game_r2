@@ -7,6 +7,8 @@ const messages = {
         Settings: 	'Settings',
         Games:      'Games',
         Play:       'Play',
+        Validate:   'Validate',
+        Continue:   'Continue',
     },
 	ru: {
         Powered: 	'Создано в ITS©',
@@ -16,6 +18,8 @@ const messages = {
 		Settings: 	'Настройки',
         Games:      'Игры',
         Play:       'Играть',
+        Validate:   'Проверить',
+        Continue:   'Продолжить',
 	},
 	es: {
 		Welcome: 	'Bienvenido',

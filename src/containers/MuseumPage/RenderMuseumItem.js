@@ -1,26 +1,9 @@
-import {ImageBackground, View, Text, TouchableOpacity, Dimensions} from 'react-native'
+import {ImageBackground, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native'
 import styled from 'styled-components/native';
 import React, {Component} from 'react';
 import {withNavigation} from 'react-navigation';
+import {TextContainer, TittleText, DescriptionText} from "../styles";
 
-
-const TextContainer = styled.View`
-    flex: 1
-    alignItems: ${({ align }) => align || 'center'};
-`;
-
-const TittleText = styled.Text`
-    color: 'rgb(255,255,255)'
-    flex: 1
-    fontSize: 20px
-    fontWeight: bold
-`;
-
-const DescriptionText = styled.Text`
-    color: 'rgb(255,255,255)'
-    fontSize: 14px
-    flex: 1
-`;
 
 class RenderMuseumItem extends Component{
 
@@ -32,21 +15,24 @@ class RenderMuseumItem extends Component{
         return (
             <View style={{flex: 1}} >
                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item});}}>
-                    <ImageBackground source={{uri: item.image}}
-                                 style={{width: width, height: width}}>
-                        <TextContainer>
-                            <TittleText>{item.name[locale]}</TittleText>
-                        </TextContainer>
-                        <TextContainer>
-                            <DescriptionText>{item.desc[locale]}</DescriptionText>
-                        </TextContainer>
-                        {/* <TextContainer>
-                            <DescriptionText>{item.location}</DescriptionText>
-                        </TextContainer>
-                        <TextContainer>
-                            <DescriptionText>{item.game}</DescriptionText>
-                        </TextContainer> */}
-                    </ImageBackground>
+                    <View style={{flexDirection: 'row', backgroundColor: '#ffffff', paddingLeft: 4, paddingBottom: 4, paddingTop: 2, paddingRight: 2}}>
+                        <View style={{flex: 0.15, flexDirection: 'row'}}>
+                            <Image source={{uri : item.image}}
+                                   style={{width: 40, height: 40, borderRadius: 40/2, borderWidth: 1, borderColor: '#ffa366'}} />
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>{item.name[locale]}</Text>
+                        </View>
+                    </View>
+                    <View>
+
+                            <ImageBackground source={{uri: item.image}}
+                                         style={{width: width, height: width}}/>
+                    </View>
+                    <View style={{flex: 1, backgroundColor: '#ffffff', width: width, height: 65, paddingLeft: 4, paddingBottom: 10}}>
+                        <Text numberOfLines={3}>{item.desc[locale]}</Text>
+                        <Text style={{alignSelf: 'center', color:'#0000ff'}}>more...</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
         );
