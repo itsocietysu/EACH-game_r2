@@ -17,7 +17,7 @@ import {compose} from 'redux';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 
-import { TextContainer, TittleText, DescriptionText, BasicText } from "../styles";
+import {TextContainer, TittleText, DescriptionText, BasicText, SpamHello} from "../styles";
 import {makeSelectLanguage} from "../Locales/selectors";
 import CustomList from "../../components/CustomList";
 import LocationItem from "../../components/LocationItem";
@@ -57,28 +57,48 @@ class MuseumItemScreen extends Component{
     state={
         startDragPos: 185,
         allowDragging: true,
+        isAtBottom: true,
     };
 
     _handleOnDragEnd(position, panel, startDragPos) {
         const top = this.props.draggableRange.top;
         const bottom = this.props.draggableRange.bottom;
         if (position - startDragPos >= 0) {
-            panel.transitionTo(top)
+            panel.transitionTo(top);
+            this.setState({isAtBottom: false});
         } else {
-            panel.transitionTo(bottom)
+            panel.transitionTo(bottom);
+            this.setState({isAtBottom: true});
         }
     }
 
     _handleOnDragStart(position, it){
-        it.setState({startDragPos: position})
+        it.setState({startDragPos: position});
     }
 
+    // TODO: optimize function (or remove)
+    _onTapSlidingPanel(panel){
+        const top = this.props.draggableRange.top;
+        const bottom = this.props.draggableRange.bottom;
+        if (this.state.isAtBottom)
+        {
+            panel.transitionTo(top);
+            this.setState({isAtBottom: false})
+        }
+        else
+        {
+            panel.transitionTo(bottom);
+            this.setState({isAtBottom: true})
+        }
+
+    }
 
     render(){
         const navigation = this.props.navigation;
         const item = navigation.getParam('data', ''); // second parameter is some default value
         const locale = this.props.language.toUpperCase();
         const width = Dimensions.get('window').width;
+        const arrow = (this.state.isAtBottom)? require("../../../assets/images/arrowUp.png") : require("../../../assets/images/arrowDown.png");
         return(
             <FormattedWrapper locale={this.props.language} messages={messages} >
                 <View>
@@ -86,7 +106,7 @@ class MuseumItemScreen extends Component{
                         <ImageBackground source={{uri: item.image}}
                                          style={{width: width, height: width}}>
                             <TextContainer>
-                                <TittleText>{item.name[locale]}</TittleText>
+                                <TittleText color={'#ffffff'}>{item.name[locale]}</TittleText>
                             </TextContainer>
 
                         </ImageBackground>
@@ -96,22 +116,6 @@ class MuseumItemScreen extends Component{
                         <TextContainer>
                             <Text>{item.desc[locale]}</Text>
                         </TextContainer>
-                        {/* <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text><Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>Hello world</Text>
-                        <Text>HELL</Text>*/}
                         {/* blank view for drawer*/}
                         <View style={{width: width, height: 70, /* backgroundColor: '#ff0000'*/}}/>
                     </ScrollView>
@@ -126,9 +130,12 @@ class MuseumItemScreen extends Component{
                         draggableRange={this.props.draggableRange}
                     >
                         <View style={styles.panel}>
-                            <View style={styles.panelHeader}>
-                                <Text style={{color: '#FFF'}}><FormattedMessage message={'Games'}/></Text>
-                            </View>
+                            <TouchableOpacity onPress={()=>this._onTapSlidingPanel(this._panel)}>
+                                <View style={styles.panelHeader}>
+                                    <Image source={arrow} style={{width: 80, height: 20}}/>
+                                    <Text style={{color: '#FFF'}}><FormattedMessage message={'Games'}/></Text>
+                                </View>
+                            </TouchableOpacity>
                             <View style={{flex:1}}>
                                 <GameItem museumID={item.eid}/>
                             </View>

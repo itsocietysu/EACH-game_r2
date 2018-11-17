@@ -16,12 +16,12 @@ class RenderFeedItem extends Component{
             <View style={{flex: 1}}>
                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate('FeedItem', {data: item, locale});}}>
                     <ImageBackground source={{uri: item.image}}
-                                     style={{width: width, height: width}}>
+                                     style={{width: width, height: width, paddingBottom: 10}}>
                         <TextContainer>
-                            <TittleText>{item.title[locale]}</TittleText>
+                            <TittleText color={'#ffffff'}>{item.title[locale]}</TittleText>
                         </TextContainer>
                         <TextContainer>
-                            <DescriptionText>{item.desc[locale]}</DescriptionText>
+                            <DescriptionText color={'#ffffff'}>{item.desc[locale]}</DescriptionText>
                         </TextContainer>
                     </ImageBackground>
                 </TouchableOpacity>

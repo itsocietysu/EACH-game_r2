@@ -4,7 +4,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Dimensions, ActivityIndicator
+    Dimensions, ActivityIndicator,
+    ScrollView
 } from 'react-native';
 import {withNavigation} from 'react-navigation'
 import {createStructuredSelector} from "reselect";
@@ -26,6 +27,7 @@ import injectReducer from "../utils/injectReducer";
 import reducer from "../containers/ScenarioPage/reducer";
 import injectSaga from "../utils/injectSaga";
 import saga from "../containers/ScenarioPage/saga";
+import {TextContainer, TittleText, DescriptionText, StyledButton, ButtonText, SpamHello} from "../containers/styles";
 
 
 class QuestInfoScreen extends  Component {
@@ -58,14 +60,22 @@ class QuestInfoScreen extends  Component {
         if (scenario !== false) {
             return (
                 <FormattedWrapper locale={this.props.language} messages={messages}>
-                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <Text>{quest.name[locale]}</Text>
-                        <Image source={{uri: quest.image}} style={{width: width, height: width}}/>
-                        <Text>{quest.desc[locale]}</Text>
-                        <Text>{quest.scenario[0].eid}</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestPlay', {scenario})}>
-                            <Text style={{color: '#0000ff'}}><FormattedMessage message={'Play'}/></Text>
-                        </TouchableOpacity>
+                    <View style={{flex: 1}}>
+                        <ScrollView style={{flex: 1}}>
+                            <TittleText color={'#000000'}>{quest.name[locale]}</TittleText>
+                            <Image source={{uri: quest.image}} style={{width: width, height: width}}/>
+                            <TextContainer>
+                                <DescriptionText color={'#000000'}>{quest.desc[locale]}</DescriptionText>
+                            </TextContainer>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestPlay', {scenario})}>
+                                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                        <StyledButton color={'#ffa366'}>
+                                            <ButtonText color={'#ffffff'}><FormattedMessage message={'Play'}/></ButtonText>
+                                        </StyledButton>
+                                    </View>
+
+                            </TouchableOpacity>
+                        </ScrollView>
                     </View>
                 </FormattedWrapper>
             );
