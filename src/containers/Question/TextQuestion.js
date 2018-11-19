@@ -57,7 +57,7 @@ class TextQuestion extends Component{
         const width = Dimensions.get('window').width;
         return(
             <FormattedWrapper locale={this.props.language} messages={messages}>
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, backgroundColor: '#ffffff'}}>
                     <ScrollView style={{flex: 1}}>
                         <QuestionText>{step.question}</QuestionText>
                         <View style={{paddingBottom: 10}}>

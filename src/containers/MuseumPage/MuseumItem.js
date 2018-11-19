@@ -101,15 +101,13 @@ class MuseumItemScreen extends Component{
         const arrow = (this.state.isAtBottom)? require("../../../assets/images/arrowUp.png") : require("../../../assets/images/arrowDown.png");
         return(
             <FormattedWrapper locale={this.props.language} messages={messages} >
-                <View>
+                <View style={{backgroundColor: '#ffffff'}}>
                     <ScrollView>
+                        <View style={{paddingBottom: 5}}>
+                            <TittleText color={'#000000'}>{item.name[locale]}</TittleText>
+                        </View>
                         <ImageBackground source={{uri: item.image}}
-                                         style={{width: width, height: width}}>
-                            <TextContainer>
-                                <TittleText color={'#ffffff'}>{item.name[locale]}</TittleText>
-                            </TextContainer>
-
-                        </ImageBackground>
+                                         style={{width: width, height: width}}/>
                         <View>
                             <CustomList component={LocationItem} array={item.location} locale={locale}/>
                         </View>
