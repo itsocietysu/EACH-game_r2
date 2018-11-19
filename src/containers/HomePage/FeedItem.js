@@ -18,12 +18,13 @@ class FeedItemScreen extends Component{
         const locale = this.props.language.toUpperCase();
         const width = Dimensions.get('window').width;
 
+        const htmlTitle = `<h3>${item.title[locale]}</h3>`;
         const htmlPoster = `<img src="${item.image}" width="${width-17}" height="${width-10}">`;
         return(
              <View style={{flex: 1}}>
                 <WebView
                     // source={{html: testHtml1}}
-                    source={{html: htmlHead + htmlPoster + item.text[locale]}}
+                    source={{html: htmlHead + htmlTitle + htmlPoster + item.text[locale]}}
                     scalesPageToFit={false}
                     mediaPlaybackRequiresUserAction={true}
                 />

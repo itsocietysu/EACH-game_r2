@@ -55,6 +55,8 @@ export const AnswerContainer = styled.View`
     flex: 1
     flexDirection: row
     backgroundColor: ${props => props.color}
+    borderWidth: 1
+    borderColor: ${'#ffa366'}
     height: 50px
     width: ${width*7/8}
     justifyContent: center

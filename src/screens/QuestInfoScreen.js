@@ -60,7 +60,7 @@ class QuestInfoScreen extends  Component {
         if (scenario !== false) {
             return (
                 <FormattedWrapper locale={this.props.language} messages={messages}>
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 1,  backgroundColor: '#ffffff'}}>
                         <ScrollView style={{flex: 1}}>
                             <TittleText color={'#000000'}>{quest.name[locale]}</TittleText>
                             <Image source={{uri: quest.image}} style={{width: width, height: width}}/>
