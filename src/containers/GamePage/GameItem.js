@@ -5,7 +5,7 @@ import {compose} from 'redux';
 import PropTypes from "prop-types";
 import styled from "styled-components/native";
 
-import {makeSelectLanguage} from "../Locales/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
 import QuestItem from "../../components/QuestItem";
 import injectReducer from "../../utils/injectReducer";
 import reducer from "../GamePage/reducer";
@@ -14,6 +14,7 @@ import saga from "../GamePage/saga";
 import {makeSelectData, makeSelectError, makeSelectLoading} from "../GamePage/selectors";
 import {loadGames} from "../GamePage/actions";
 import DataList from "../../components/DataList";
+import {makeSelectTheme} from "../../components/Theme/selectors";
 
 const ContainerView = styled.View`
   flex: 1;
@@ -30,12 +31,14 @@ class GameItem extends Component{
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
+        const theme = this.props.theme;
         // const setData = data ? separateData(data) : false;
         const dataListProps = {
             loading,
             error,
             data,
             locale,
+            theme,
             component: QuestItem,
             scroll: false,
             array: true,
@@ -52,6 +55,7 @@ GameItem.propTypes = {
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
     language: PropTypes.string,
+    theme: PropTypes.string,
     museumID: PropTypes.number,
     init: PropTypes.func,
 };
@@ -69,6 +73,7 @@ const mapStateToProps = createStructuredSelector({
     loading: makeSelectLoading(),
     error: makeSelectError(),
     language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
 });
 const withConnect = connect(
     mapStateToProps,

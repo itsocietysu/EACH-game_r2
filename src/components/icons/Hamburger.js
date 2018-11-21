@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
+import {colors} from "../../utils/constants";
 
 const IconLeftContainer = styled.TouchableOpacity`
   height: 100%;
@@ -10,7 +11,7 @@ const IconLeftContainer = styled.TouchableOpacity`
 
 const Hamburger = ({ onPress }) => (
   <IconLeftContainer onPress={onPress}>
-    <Ionicons name="ios-menu" size={25} color={'#ffa366'} />
+    <Ionicons name="ios-menu" size={25} color={colors.SECOND.light} />
   </IconLeftContainer>
 );
 

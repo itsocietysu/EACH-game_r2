@@ -1,7 +1,7 @@
 import React from 'react';
-import {Ionicons, MaterialCommunityIcons, Foundation, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Foundation, FontAwesome } from '@expo/vector-icons';
 
-const TabIconContent = ({ navigation, tintColor, focused }) => {
+const TabIconContent = ({ navigation, tintColor }) => {
     const {routeName} = navigation.state;
     switch (routeName) {
         case 'Feeds':

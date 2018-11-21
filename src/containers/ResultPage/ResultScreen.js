@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Text, View, Image, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
-import PlayQuestScreen from "./PlayQuestScreen";
-import Bonus from "./BonusScreen";
+import PlayQuestScreen from "../PlayQuestPage/PlayQuestScreen";
+import Bonus from "../BonusPage/BonusScreen";
 
 
 class ResultScreen extends Component{

@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from "styled-components/native";
 import {View, Text, Dimensions} from 'react-native';
+import {colors} from "../utils/constants";
 
 const width = Dimensions.get('window').width;
 export const TextContainer = styled.View`
@@ -56,7 +57,7 @@ export const AnswerContainer = styled.View`
     flexDirection: row
     backgroundColor: ${props => props.color}
     borderWidth: 1
-    borderColor: ${'#ffa366'}
+    borderColor: ${colors.SECOND.light}
     height: 50px
     width: ${width*7/8}
     justifyContent: center

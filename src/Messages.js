@@ -1,6 +1,6 @@
 const messages = {
     en: {
-        Powered: 	'Powered by ITS©',
+        Powered: 	'Powered by',
         Feeds: 		'Feeds',
         Maps: 		'Maps',
         Museums: 	'Museums',
@@ -11,7 +11,7 @@ const messages = {
         Continue:   'Continue',
     },
 	ru: {
-        Powered: 	'Создано в ITS©',
+        Powered: 	'Создано в',
         Feeds: 		'Новости',
         Maps: 		'Карты',
         Museums:  	'Музеи',
@@ -24,7 +24,7 @@ const messages = {
 	es: {
 		Welcome: 	'Bienvenido',
 		Settings: 	'Configuraciones',
-        Powered: 	'Generado por ITS©',
+        Powered: 	'Generado por',
 	},
   };
 export default messages;

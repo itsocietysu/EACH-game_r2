@@ -13,13 +13,15 @@ import injectSaga from '../../utils/injectSaga';
 import DataList from './../../components/DataList';
 import {loadMuseums} from "./actions";
 import RenderMuseumItem from "./RenderMuseumItem";
-import {makeSelectLanguage} from "../Locales/selectors";
-
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {colors} from "../../utils/constants";
 
 const ContainerView = styled.View`
   flex: 1;
   justifyContent: center;
   alignItems: center;
+  backgroundColor: ${props => props.color}
 `;
 
 class MuseumScreen extends Component {
@@ -33,6 +35,7 @@ class MuseumScreen extends Component {
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
+        const theme = this.props.theme;
 
       // const setData = data ? separateData(data) : false;
         const dataListProps = {
@@ -40,10 +43,11 @@ class MuseumScreen extends Component {
             error,
             data,
             locale,
+            theme,
             component: RenderMuseumItem,
         };
       return (
-        <ContainerView>
+        <ContainerView color={colors.BASE[theme]}>
             <DataList {...dataListProps} />
         </ContainerView>
       );
@@ -54,6 +58,7 @@ MuseumScreen.propTypes = {
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
     language: PropTypes.string,
+    theme: PropTypes.string,
     init: PropTypes.func,
 };
 
@@ -72,6 +77,7 @@ const mapStateToProps = createStructuredSelector({
     loading: makeSelectLoading(),
     error: makeSelectError(),
     language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
 });
 
 const withConnect = connect(

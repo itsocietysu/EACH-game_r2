@@ -7,11 +7,12 @@ import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 // import globalReducer from 'containers/App/reducer';
-import languageReducer from './containers/Locales/reducer';
+import languageReducer from './components/Locales/reducer';
 import feedsReducer from './containers/HomePage/reducer';
 import museumsReducer from './containers/MuseumPage/reducer';
 import gamesReducer from "./containers/GamePage/reducer";
-import scenarioReducer from "./containers/ScenarioPage/reducer";
+import scenarioReducer from "./components/ScenarioPage/reducer";
+import themeReducer from "./components/Theme/reducer";
 /*
  * routeReducer
  *
@@ -48,6 +49,7 @@ export default function createReducer(injectedReducers) {
         route: routeReducer,
         // global: globalReducer,
         locales: languageReducer,
+        theme: themeReducer,
         feeds: feedsReducer,
         museums: museumsReducer,
         games: gamesReducer,

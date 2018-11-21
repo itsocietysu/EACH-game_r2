@@ -2,7 +2,7 @@ import React from "react";
 import {Text, TouchableOpacity, View, Image, Dimensions, ScrollView} from "react-native";
 import {withNavigation} from 'react-navigation';
 
-import {StyledButton, ButtonText, TittleText} from "../containers/styles";
+import {StyledButton, ButtonText, TittleText} from "../styles";
 import {FormattedMessage} from "react-native-globalize";
 
 const PHOTO_BONUS = "photo";

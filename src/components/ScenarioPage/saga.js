@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_SCENARIO } from './constants';
 import { scenarioLoaded, scenarioLoadingError } from './actions';
-import request from './../../utils/request';
+import request from '../../utils/request';
 
 /**
  * Feeds data load handler
