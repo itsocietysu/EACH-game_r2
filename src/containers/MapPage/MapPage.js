@@ -7,10 +7,10 @@ import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-na
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { loadMuseums } from "../containers/MuseumPage/actions";
-import { makeSelectData, makeSelectError, makeSelectLoading } from "../containers/MuseumPage/selectors";
-import injectSaga from "../utils/injectSaga";
-import saga from "../containers/MuseumPage/saga";
+import { loadMuseums } from "../MuseumPage/actions";
+import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPage/selectors";
+import injectSaga from "../../utils/injectSaga";
+import saga from "../MuseumPage/saga";
 import { makeSelectLanguage } from "../containers/Locales/selectors";
 
 const LATITUDE = 60.0074;
@@ -59,7 +59,7 @@ class MapsScreen extends Component {
               latitude: parseFloat(location.latitude),
               longitude: parseFloat(location.longitude),
             }}
-            image={require('./../../assets/icons/map_icon_128.png')}
+            image={require('../../../assets/icons/map_icon_128.png')}
             onPress={() => {
                 this.ShowDialog(museum, location.name);
             }}
