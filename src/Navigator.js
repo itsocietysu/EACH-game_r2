@@ -1,49 +1,31 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import {
-    TabNavigator,
-    StackNavigator,
-    DrawerNavigator,
-    HeaderBackButton,
     createBottomTabNavigator,
     createStackNavigator,
     createSwitchNavigator,
     createDrawerNavigator,
 } from 'react-navigation';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
-import WelcomeScreen from './screens/Welcome';
+import WelcomeScreen from './containers/WelcomePage/Welcome';
 import FeedScreen from './containers/HomePage/FeedPage';
-
-import MapScreen from './screens/MapPage';
+import FeedItemScreen from "./containers/HomePage/FeedItem";
+import MapScreen from './containers/MapPage/MapPage';
 import MuseumsScreen from './containers/MuseumPage/MuseumPage';
 import MuseumItemScreen from './containers/MuseumPage/MuseumItem';
-import SettingsScreen from './screens/Settings';
+import SettingsScreen from './containers/SettingsPage/Settings';
+import QuestInfoScreen from "./containers/QuestInfoPage/QuestInfoScreen";
+import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
+import ResultScreen from "./containers/ResultPage/ResultScreen";
+import LoginScreen from "./screens/Login";
+import AuthPage from "./containers/AuthPage/AuthPage";
 
-import { HamburgerIcon, SettingsIcon, BackIcon } from './components/icons';
+import { HamburgerIcon, BackIcon } from './components/icons';
 
 import DrawerContent from './components/DrawerContent';
-import { colors } from './utils/constants';
-import LoginScreen from "./screens/Login";
-import RegistrationScreen from "./screens/Registration"
-import FeedItemScreen from "./containers/HomePage/FeedItem";
-import LogoTitle from "./components/LogoTitle";
-import AuthPage from "./containers/AuthPage/AuthPage";
-import Button from "./components/Button";
 import TabIconContent from "./components/TabIconContent";
-import QuestInfoScreen from "./screens/QuestInfoScreen";
-import PlayQuestScreen from "./screens/PlayQuestScreen";
-import ResultScreen from "./screens/ResultScreen";
-
-
-
-
-const HeaderHeight = 40;
-const HeaderColor = '#ffffff';
-
-const TabColor = '#ffa366';
-const TabLabelFontSize = 12;
-const TabBGColor = '#ffffff';
+import CustomTabBar from "./components/CustomTabBar";
+import LogoTitle from "./components/CustomHeader";
+import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
 
 const FeedStack = createStackNavigator(
     {
@@ -60,7 +42,6 @@ const FeedStack = createStackNavigator(
                 headerBackground: <LogoTitle/>,
                 headerStyle: {
                     height: HeaderHeight,
-                    backgroundColor: HeaderColor,
                 },
                 headerLeft: content
             });
@@ -77,9 +58,8 @@ const MapStack = createStackNavigator(
             headerBackground: <LogoTitle/>,
             headerStyle: {
                 height: HeaderHeight,
-                backgroundColor: HeaderColor,
             },
-            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
+            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()} color={colors.MAIN}/>
         }),
     }
 );
@@ -102,7 +82,6 @@ const MuseumStack = createStackNavigator(
                 headerBackground: <LogoTitle/>,
                 headerStyle: {
                     height: HeaderHeight,
-                    backgroundColor: HeaderColor,
                 },
                 headerLeft: content
             });
@@ -119,7 +98,6 @@ const SettingsStack = createStackNavigator(
             headerBackground: <LogoTitle/>,
             headerStyle: {
                 height: HeaderHeight,
-                backgroundColor: HeaderColor,
             },
             headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
         }),
@@ -140,10 +118,9 @@ const  AppBottomTab = createBottomTabNavigator(
                 <TabIconContent navigation={navigation} tintColor={tintColor} focused={focused}/>),
 
         }),
+        tabBarComponent: CustomTabBar,
         tabBarOptions:{
-            activeTintColor: TabColor,
             labelStyle:{ fontSize: TabLabelFontSize},
-            style: {backgroundColor: TabBGColor},
         }
     }
 );
@@ -163,9 +140,9 @@ const Drawer = createDrawerNavigator(
 
 const AuthStack = createStackNavigator(
     {
-    Login: {screen: LoginScreen},
-    Auth: {screen: AuthPage},
-},
+        Login: {screen: LoginScreen},
+        Auth: {screen: AuthPage},
+    },
     {
         navigationOptions:{
             header: null,
@@ -174,20 +151,22 @@ const AuthStack = createStackNavigator(
 );
 
 // separated Auth stack + application tabs
-const MainAppStack = createStackNavigator({
-    Home: {screen: Drawer},
-    Auth: {screen: AuthStack},
-},
-{
-    navigationOptions:{
-        header: null,
+const MainAppStack = createStackNavigator(
+    {
+        Home: {screen: Drawer},
+        Auth: {screen: AuthStack},
+    },
+    {
+        navigationOptions:{
+            header: null,
+        }
     }
-}
 );
 
 // Main navigator:
 // loading screen + main app
-const Navigator = createSwitchNavigator({
+const Navigator = createSwitchNavigator(
+    {
         Welcome: {screen: WelcomeScreen},
         Home: {screen: MainAppStack},
     }

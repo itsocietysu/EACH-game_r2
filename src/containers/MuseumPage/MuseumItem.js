@@ -18,11 +18,14 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 
 import {TextContainer, TittleText, DescriptionText, BasicText, SpamHello} from "../styles";
-import {makeSelectLanguage} from "../Locales/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
 import CustomList from "../../components/CustomList";
 import LocationItem from "../../components/LocationItem";
 import GameItem from "../GamePage/GameItem";
 import messages from "../../Messages";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {colors} from "../../utils/constants";
+import styled from 'styled-components/native';
 
 const {height} = Dimensions.get('window');
 
@@ -39,12 +42,15 @@ const styles = {
         // position: 'relative'
     },
     panelHeader: {
-        height: 50,
-        backgroundColor: '#ffa366',
-        alignItems: 'center',
-        justifyContent: 'center'
+
     },
 };
+const PanelHeader = styled.View`
+    height: 50
+    backgroundColor: ${props => props.color}
+    alignItems: center
+    justifyContent: center
+`;
 
 class MuseumItemScreen extends Component{
     static defaultProps = {
@@ -98,21 +104,22 @@ class MuseumItemScreen extends Component{
         const item = navigation.getParam('data', ''); // second parameter is some default value
         const locale = this.props.language.toUpperCase();
         const width = Dimensions.get('window').width;
+        const theme = this.props.theme;
         const arrow = (this.state.isAtBottom)? require("../../../assets/images/arrowUp.png") : require("../../../assets/images/arrowDown.png");
         return(
             <FormattedWrapper locale={this.props.language} messages={messages} >
-                <View style={{backgroundColor: '#ffffff'}}>
+                <View style={{backgroundColor: colors.BASE[theme]}}>
                     <ScrollView>
                         <View style={{paddingBottom: 5}}>
-                            <TittleText color={'#000000'}>{item.name[locale]}</TittleText>
+                            <TittleText color={colors.TEXT[theme]}>{item.name[locale]}</TittleText>
                         </View>
                         <ImageBackground source={{uri: item.image}}
                                          style={{width: width, height: width}}/>
                         <View>
-                            <CustomList component={LocationItem} array={item.location} locale={locale}/>
+                            <CustomList component={LocationItem} array={item.location} locale={locale} theme={theme}/>
                         </View>
                         <TextContainer>
-                            <Text>{item.desc[locale]}</Text>
+                            <Text style={{color: colors.TEXT[theme]}}>{item.desc[locale]}</Text>
                         </TextContainer>
                         {/* blank view for drawer*/}
                         <View style={{width: width, height: 70, /* backgroundColor: '#ff0000'*/}}/>
@@ -129,13 +136,13 @@ class MuseumItemScreen extends Component{
                     >
                         <View style={styles.panel}>
                             <TouchableOpacity onPress={()=>this._onTapSlidingPanel(this._panel)}>
-                                <View style={styles.panelHeader}>
+                                <PanelHeader color={'#5b7bbc'}>
                                     <Image source={arrow} style={{width: 80, height: 20}}/>
                                     <Text style={{color: '#FFF'}}><FormattedMessage message={'Games'}/></Text>
-                                </View>
+                                </PanelHeader>
                             </TouchableOpacity>
-                            <View style={{flex:1}}>
-                                <GameItem museumID={item.eid}/>
+                            <View style={{flex:1, backgroundColor: colors.BASE[theme]}}>
+                                <GameItem museumID={item.eid} theme={theme}/>
                             </View>
                         </View>
                     </SlidingUpPanel>
@@ -151,6 +158,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
 });
 const withConnect = connect(
     mapStateToProps,

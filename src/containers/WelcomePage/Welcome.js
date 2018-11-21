@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
+import { FormattedWrapper, FormattedMessage } from "react-native-globalize";
 import * as Progress from 'react-native-progress';
 import {
     StyleSheet,
     ImageBackground,
     View,
-    ActivityIndicator,
-    Text
-} from 'react-native'
+    Text,
+    Dimensions,
+} from 'react-native';
 import PropTypes from "prop-types";
 
-
-import messages from "../Messages";
-import getSystemLocale from './../utils/getSystemLocale'
-import { changeLanguage } from './../containers/Locales/actions'
+import { colors, images } from "../../utils/constants";
+import messages from "../../Messages";
+import getSystemLocale from '../../utils/getSystemLocale'
+import { changeLanguage } from '../../components/Locales/actions'
 
 
 class WelcomeScreen extends Component {
@@ -34,18 +34,20 @@ class WelcomeScreen extends Component {
     }
 
     render() {
+        const dim = Dimensions.get('window');
         return (
-            <FormattedWrapper /* locale={this.props.curState.Language.language}*/ messages={messages}>
+            <FormattedWrapper messages={messages}>
                 <ImageBackground
-                    source = {require('./../../assets/images/logo.png')}
-                    style={styles.logoContainer}>
+                    source = {images.LOADING_SCREEN_IMAGE}
+                    style={{height: dim.height-22, width: dim.width}}
+                    resizeMode = "stretch"
+                >
                     <View style={{flex: 1}}>
                         <View style={styles.loaderContainer}>
-                            {/* <ActivityIndicator size={'large'} color={'#ffffff'}/>*/}
-                            <Progress.Bar progress={0.3} width={200} color={'#ffa366'} />
+                            <Progress.Bar progress={0.3} width={200} color={colors.MAIN} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={{color: '#ffa366'}}><FormattedMessage message="Powered"/></Text>
+                            <Text style={{color: colors.MAIN, paddingRight: 80, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -55,20 +57,12 @@ class WelcomeScreen extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    curState:state
+    curState: state
 });
 
-export default connect(mapStateToProps, {
-})(WelcomeScreen);
+export default connect(mapStateToProps, {})(WelcomeScreen);
 
 const styles = StyleSheet.create({
-    logoContainer:{
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        alignContent:  'center',
-    },
     loaderContainer:{
         flex: 6,
         justifyContent:  'flex-end',

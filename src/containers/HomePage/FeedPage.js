@@ -18,12 +18,15 @@ import {
 } from './selectors';
 import reducer from "./reducer";
 import saga from "./saga";
-import {makeSelectLanguage} from "../Locales/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {colors} from "../../utils/constants";
+import {makeSelectTheme} from "../../components/Theme/selectors";
 
 const ContainerView = styled.View`
   flex: 1;
   justifyContent: center;
   alignItems: center;
+  backgroundColor: ${props => props.color}
 `;
 
 /* function separateData(data) {
@@ -50,18 +53,20 @@ class HomeScreen extends Component {
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
+        const theme = this.props.theme;
         // const setData = data ? separateData(data) : false;
         const dataListProps = {
             loading,
             error,
             data,
             locale,
+            theme,
             component: RenderFeedItem,
             scroll: false,
             array: true,
         };
         return (
-            <ContainerView>
+            <ContainerView color={colors.BASE[theme]}>
                 <DataList {...dataListProps} />
             </ContainerView>
         );
@@ -72,6 +77,7 @@ HomeScreen.propTypes = {
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
     language: PropTypes.string,
+    theme: PropTypes.string,
     init: PropTypes.func,
 };
 
@@ -89,6 +95,7 @@ const mapStateToProps = createStructuredSelector({
     loading: makeSelectLoading(),
     error: makeSelectError(),
     language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
 });
 
 const withConnect = connect(

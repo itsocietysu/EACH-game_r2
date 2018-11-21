@@ -12,11 +12,12 @@ import PropTypes from "prop-types";
 
 
 
-import {makeSelectLanguage} from "../containers/Locales/selectors";
-import {AR_PAINT_QUESTION, LOCATION_QUESTION, TEXT_QUESTION} from "../containers/Question/constants";
-import TextQuestion from "../containers/Question/TextQuestion";
-import LocationQuestion from "../containers/Question/LocationQuestion";
-import ARQuestion from "../containers/Question/ARQuestion";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {AR_PAINT_QUESTION, LOCATION_QUESTION, TEXT_QUESTION} from "../Question/constants";
+import TextQuestion from "../Question/TextQuestion";
+import LocationQuestion from "../Question/LocationQuestion";
+import ARQuestion from "../Question/ARQuestion";
+import {makeSelectTheme} from "../../components/Theme/selectors";
 
 class PlayQuestScreen extends Component{
     state = {
@@ -36,7 +37,7 @@ class PlayQuestScreen extends Component{
    render() {
        const navigation = this.props.navigation;
        const scenario = navigation.getParam('scenario', '');
-
+       const theme = this.props.theme;
 
        // TODO: remove next string
        let currStep = 0;
@@ -50,11 +51,11 @@ class PlayQuestScreen extends Component{
        const step = scenario[0].scenario.steps[currStep];
        switch (step.type) {
            case TEXT_QUESTION:
-               return <TextQuestion data={step.desc}/>;
+               return <TextQuestion data={step.desc} theme={theme}/>;
            case LOCATION_QUESTION:
-               return <LocationQuestion data={step.desc}/>;
+               return <LocationQuestion data={step.desc} theme={theme}/>;
            case AR_PAINT_QUESTION:
-               return <ARQuestion data={step.desc}/>;
+               return <ARQuestion data={step.desc} theme={theme}/>;
            default:
                return <View/>;
        }
@@ -66,6 +67,7 @@ PlayQuestScreen.propTypes = {
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
     language: PropTypes.string,
+    theme: PropTypes.string,
     museumID: PropTypes.number,
     init: PropTypes.func,
 };
@@ -77,6 +79,7 @@ export function mapDispatchToProps(dispatch, ownProps) {
 
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
 });
 const withConnect = connect(
     mapStateToProps,
