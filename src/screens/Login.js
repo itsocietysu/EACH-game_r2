@@ -1,109 +1,66 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
-import * as Progress from 'react-native-progress';
 import {
-    KeyboardAvoidingView,
-    TouchableOpacity,
     StyleSheet,
     ImageBackground,
     View,
-    ActivityIndicator,
-    Text,
-    TextInput,
-    AsyncStorage
+    Text
 } from 'react-native'
-import {withNavigation} from 'react-navigation';
-import VkontakteIcon from "../components/icons/VkontakteIcon";
+import Expo from 'expo';
 import GoogleIcon from "../components/icons/GoogleIcon";
-import EachIcon from "../components/icons/EachIcon";
-import {VK_URL, EACH_URL, GOOGLE_URL} from "../containers/AuthPage/constants";
-
-/* import messages from "../Messages"; */
+// import {GOOGLE_REDIRECT_URL} from "../containers/AuthPage/constants";
 
 class LoginScreen extends Component {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-        }
-    }
-    /* componentDidMount(){
-        this._loadInitialState().done();
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+    };
 
-    _loadInitialState = async ()=>{
-        const value = await AsyncStorage.getItem('user');
-        if (value != null){
-            this.props.navigation.navigate('Home')
-        }
-    };*/
-    render() {
-        return (
-            <View style={styles.wrapper}>
-                {/* <ImageBackground
-                    source = {require('./../../media/main.jpg')}
-                    style={styles.logoContainer}>
-                    <View style={styles.container}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={'username'}
-                            onChangeText={(username) => this.setState({username})}
-                        />
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={'password'}
-                            onChangeText={(password) => this.setState({password})}
-                        />
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {this.props.navigation.navigate('Home');}}>
-                            <Text style={{color: 'white'}}>Log in</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {this.props.navigation.navigate('Home');}}>
-                            <Text style={{color: 'white'}}>Continue without registration</Text>
-                        </TouchableOpacity>
-                        <View style={{alignItems: 'center', marginBottom: 20}}>
-                            <Text style={{color: '#ffffff'}}>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
-                            <TouchableOpacity onPress={() => {this.props.navigation.navigate('Registration');}}>
-                                <Text style={{color: '#0000ff'}}>{`Sign up`}</Text>
-                            </TouchableOpacity>
-                        </View>
+    this.signInWithGoogleAsync = this.signInWithGoogleAsync.bind(this);
+  }
 
-                    </View>
-                </ImageBackground>*/}
-                <ImageBackground
-                    source = {require('./../../assets/images/logo.png')}
-                    style={styles.logoContainer}>
-                    <Text>Sign in</Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                        <VkontakteIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:VK_URL})}/>
-                        <GoogleIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:GOOGLE_URL})}/>
-                        <EachIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:EACH_URL})}/>
-                    </View>
-                    <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
-                    <Text style={{color: '#0000ff'}}>{`Sign up`}</Text>
-                </ImageBackground>
-            </View>
-        );
+  async signInWithGoogleAsync(googleWebAppId) {
+    try {
+      const redirectUrl = Expo.AuthSession.getRedirectUrl();
+      const result = await Expo.AuthSession.startAsync({
+        authUrl:
+          `https://accounts.google.com/o/oauth2/v2/auth?` +
+          `&client_id=${googleWebAppId}` +
+          `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
+          `&response_type=code` +
+          `&access_type=offline` +
+          `&scope=${encodeURIComponent(['profile','email'].join(' '))}`,
+      });
+      console.log(redirectUrl);
+      console.log(result);
+      if (result.type === 'success')
+        return result.params.code;
+      return { cancelled: true };
+    } catch (e) {
+      return { error: true };
     }
+  }
+
+  render() {
+    return (
+      <View style={styles.wrapper}>
+        <ImageBackground
+          source={require('./../../assets/images/logo.png')}
+          style={styles.logoContainer}>
+          <Text>Sign in</Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+            <GoogleIcon size={65}
+                        onPress={() => {this.signInWithGoogleAsync("190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com").then(code => console.log(code));}}/>
+          </View>
+          <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
+          <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
+        </ImageBackground>
+      </View>
+    );
+  }
 }
-
-login = () => {
-    alert('test')
-};
-
-const mapStateToProps = (state) => ({
-    curState:state
-});
-
-/* export default connect(mapStateToProps, {
-})(LoginScreen);*/
-
 const styles = StyleSheet.create({
     wrapper:{
         flex: 1,
@@ -136,4 +93,6 @@ const styles = StyleSheet.create({
     }
 });
 
+
 export default LoginScreen;
+
