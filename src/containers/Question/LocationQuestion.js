@@ -32,13 +32,6 @@ class LocationQuestion extends Component{
     };
 
     render() {
-        let text = 'Waiting..';
-        if (this.state.errorMessage) {
-            text = this.state.errorMessage;
-        } else if (this.state.location) {
-            text = JSON.stringify(this.state.location);
-        }
-
         return (
             <View style={styles.container}>
                 <Text style={styles.paragraph}>{text}</Text>
