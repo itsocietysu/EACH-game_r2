@@ -2,7 +2,7 @@
   "expo": {
     "name": "each",
     "description": "Each mobile app",
-    "slug": "react-native",
+    "slug": "each-react-native-app",
     "privacy": "public",
     "sdkVersion": "25.0.0",
     "version": "1.0.0",
@@ -17,7 +17,11 @@
       "assetExts": ["ttf", "mp4"]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ITS.each"
+    },
+    "android": {
+      "package": "com.ITS.each"
     }
   }
 }
