@@ -23,7 +23,7 @@ class LoginScreen extends Component {
 
   async signInWithGoogleAsync(googleWebAppId) {
     try {
-      const redirectUrl = Expo.AuthSession.getRedirectUrl();
+      const redirectUrl = Expo.AuthSession.getRedirectUrl();// 'https://exp.host/@leins275/each-react-native-app';
       const result = await Expo.AuthSession.startAsync({
         authUrl:
           `https://accounts.google.com/o/oauth2/v2/auth?` +
@@ -32,6 +32,7 @@ class LoginScreen extends Component {
           `&response_type=code` +
           `&access_type=offline` +
           `&scope=${encodeURIComponent(['profile','email'].join(' '))}`,
+        // returnUrl: 'exp://exp.host/@leins275/each-react-native-app', // Expo.AuthSession.getDefaultReturnUrl(),
       });
       console.log(redirectUrl);
       console.log(result);
