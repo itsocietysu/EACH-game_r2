@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import Expo from 'expo';
 import GoogleIcon from "../components/icons/GoogleIcon";
-// import {GOOGLE_REDIRECT_URL} from "../containers/AuthPage/constants";
 
 class LoginScreen extends Component {
 
@@ -21,6 +20,25 @@ class LoginScreen extends Component {
     this.signInWithGoogleAsync = this.signInWithGoogleAsync.bind(this);
   }
 
+  async signInWithGoogleAsync() {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: '190923403189-okt67qc41faj5erpk6d55u9ucrrb87hg.apps.googleusercontent.com',
+        // iosClientId: YOUR_CLIENT_ID_HERE,
+        scopes: ['profile', 'email'],
+      });
+
+      if (result.type === 'success') {
+        console.log(result);
+        return result.accessToken;
+      } else {
+        return {cancelled: true};
+      }
+    } catch(e) {
+      return {error: true};
+    }
+  }
+  /* not for google it should works
   async signInWithGoogleAsync(googleWebAppId) {
     try {
       const redirectUrl = Expo.AuthSession.getRedirectUrl();// 'https://exp.host/@leins275/each-react-native-app';
@@ -43,6 +61,7 @@ class LoginScreen extends Component {
       return { error: true };
     }
   }
+  */
 
   render() {
     return (
@@ -53,7 +72,7 @@ class LoginScreen extends Component {
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <GoogleIcon size={65}
-                        onPress={() => {this.signInWithGoogleAsync("190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com").then(code => console.log(code));}}/>
+                        onPress={() => {this.signInWithGoogleAsync().then(token => console.log(token));}}/>
           </View>
           <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
