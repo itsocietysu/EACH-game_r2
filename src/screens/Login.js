@@ -1,108 +1,72 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
-import * as Progress from 'react-native-progress';
 import {
-    KeyboardAvoidingView,
-    TouchableOpacity,
     StyleSheet,
     ImageBackground,
     View,
-    ActivityIndicator,
-    Text,
-    TextInput,
-    AsyncStorage
+    Text
 } from 'react-native'
-import {withNavigation} from 'react-navigation';
-import VkontakteIcon from "../components/icons/VkontakteIcon";
-import GoogleIcon from "../components/icons/GoogleIcon";
+import { AuthSession } from 'expo';
 import EachIcon from "../components/icons/EachIcon";
-import {VK_URL, EACH_URL, GOOGLE_URL} from "../containers/AuthPage/constants";
 
-/* import messages from "../Messages"; */
+const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
+const eachAuthDomain = 'http://each.itsociety.su:5000/oauth2/authorize';
 
-class LoginScreen extends Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-        }
-    }
-    /* componentDidMount(){
-        this._loadInitialState().done();
-    }
-
-    _loadInitialState = async ()=>{
-        const value = await AsyncStorage.getItem('user');
-        if (value != null){
-            this.props.navigation.navigate('Home')
-        }
-    };*/
-    render() {
-        return (
-            <View style={styles.wrapper}>
-                {/* <ImageBackground
-                    source = {require('./../../media/main.jpg')}
-                    style={styles.logoContainer}>
-                    <View style={styles.container}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={'username'}
-                            onChangeText={(username) => this.setState({username})}
-                        />
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={'password'}
-                            onChangeText={(password) => this.setState({password})}
-                        />
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {this.props.navigation.navigate('Home');}}>
-                            <Text style={{color: 'white'}}>Log in</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {this.props.navigation.navigate('Home');}}>
-                            <Text style={{color: 'white'}}>Continue without registration</Text>
-                        </TouchableOpacity>
-                        <View style={{alignItems: 'center', marginBottom: 20}}>
-                            <Text style={{color: '#ffffff'}}>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
-                            <TouchableOpacity onPress={() => {this.props.navigation.navigate('Registration');}}>
-                                <Text style={{color: '#0000ff'}}>{`Sign up`}</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </ImageBackground>*/}
-                <ImageBackground
-                    source = {require('./../../assets/images/logo.png')}
-                    style={styles.logoContainer}>
-                    <Text>Sign in</Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                        <VkontakteIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:VK_URL})}/>
-                        <GoogleIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:GOOGLE_URL})}/>
-                        <EachIcon size={65} onPress={()=>this.props.navigation.navigate('Auth', {url:EACH_URL})}/>
-                    </View>
-                    <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
-                    <Text style={{color: '#0000ff'}}>{`Sign up`}</Text>
-                </ImageBackground>
-            </View>
-        );
-    }
+function toQueryString(params) {
+  return Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
 }
 
-login = () => {
-    alert('test')
-};
+class LoginScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+      redirectCode: '',
+    };
+    this.signInWithEachAsync = this.signInWithEachAsync.bind(this);
+  }
 
-const mapStateToProps = (state) => ({
-    curState:state
-});
+  async signInWithEachAsync() {
+    try {
+      const redirectUrl = AuthSession.getRedirectUrl();
+      console.log(`Redirect URL (add this to Auth0): ${redirectUrl}`);
+      const result = await AuthSession.startAsync({
+        authUrl: eachAuthDomain + toQueryString({
+            client_id: eachClientId,
+            response_type: 'code',
+            scope: 'email',
+            redirect_uri: redirectUrl,
+          }),
+      });
+      console.log(result);
+      if (result.type === 'success')
+        return result.params.code;
+      return { cancelled: true };
+    } catch (e) {
+      return { error: true };
+    }
+  }
 
-/* export default connect(mapStateToProps, {
-})(LoginScreen);*/
+  render() {
+    return (
+      <View style={styles.wrapper}>
+        <ImageBackground
+          source={require('./../../assets/images/logo.png')}
+          style={styles.logoContainer}>
+          <Text>Sign in</Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+            <EachIcon size={65}
+                        onPress={() => {this.signInWithEachAsync().then(console => console.log(console));}}/>
+          </View>
+          <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
+          <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
+        </ImageBackground>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
     wrapper:{
@@ -137,3 +101,4 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+
