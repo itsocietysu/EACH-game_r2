@@ -11,7 +11,7 @@ import { loadMuseums } from "../MuseumPage/actions";
 import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPage/selectors";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../MuseumPage/saga";
-import { makeSelectLanguage } from "../containers/Locales/selectors";
+import { makeSelectLanguage } from "../../components/Locales/selectors";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;

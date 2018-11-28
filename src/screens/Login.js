@@ -8,8 +8,8 @@ import {
 import { AuthSession } from 'expo';
 import EachIcon from "../components/icons/EachIcon";
 
-const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
-const eachAuthDomain = 'http://each.itsociety.su:5000/oauth2/authorize';
+const eachClientId = '190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com';
+const eachAuthDomain = 'http://each.itsociety.su:5000/oauth2/authorize?';
 
 function toQueryString(params) {
   return Object.entries(params)
@@ -28,17 +28,18 @@ class LoginScreen extends Component {
     this.signInWithEachAsync = this.signInWithEachAsync.bind(this);
   }
 
+
   async signInWithEachAsync() {
     try {
       const redirectUrl = AuthSession.getRedirectUrl();
       console.log(`Redirect URL (add this to Auth0): ${redirectUrl}`);
       const result = await AuthSession.startAsync({
-        authUrl: eachAuthDomain + toQueryString({
-            client_id: eachClientId,
-            response_type: 'code',
-            scope: 'email',
-            redirect_uri: redirectUrl,
-          }),
+        authUrl:
+          `https://accounts.google.com/o/oauth2/auth?` +
+          `&client_id=${encodeURIComponent(eachClientId)}` +
+          `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
+          `&response_type=code` +
+          `&scope=${encodeURIComponent(['profile','email'].join(' '))}`,
       });
       console.log(result);
       if (result.type === 'success')
@@ -58,9 +59,9 @@ class LoginScreen extends Component {
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <EachIcon size={65}
-                        onPress={() => {this.signInWithEachAsync().then(console => console.log(console));}}/>
+                        onPress={() => {this.signInWithEachAsync().then(code => this.setState({redirectCode: code}));}}/>
           </View>
-          <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
+          <Text>{`DON'T HAVE AN ACCOUNT YET? ${this.state.redirectCode}`}</Text>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
         </ImageBackground>
       </View>
