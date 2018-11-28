@@ -5,34 +5,32 @@ import {
     View,
     Text
 } from 'react-native'
-import Expo from 'expo';
-import GoogleIcon from "../components/icons/GoogleIcon";
-// import {GOOGLE_REDIRECT_URL} from "../containers/AuthPage/constants";
+
+import {Expo, Linking, WebBrowser} from 'expo';
+
+import EachIcon from "../components/icons/EachIcon";
 
 class LoginScreen extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
+      redirectCode: '',
     };
-
-    this.signInWithGoogleAsync = this.signInWithGoogleAsync.bind(this);
+    this.signInWithEachAsync = this.signInWithEachAsync.bind(this);
   }
 
-  async signInWithGoogleAsync(googleWebAppId) {
+  async signInWithEachAsync(clientId) {
     try {
-      const redirectUrl = Expo.AuthSession.getRedirectUrl();// 'https://exp.host/@leins275/each-react-native-app';
+      const redirectUrl = Expo.AuthSession.getRedirectUrl();
       const result = await Expo.AuthSession.startAsync({
         authUrl:
-          `https://accounts.google.com/o/oauth2/v2/auth?` +
-          `&client_id=${googleWebAppId}` +
+          `http://each.itsociety.su:5000/oauth2/authorize?` +
+          `&client_id=${clientId}` +
           `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
           `&response_type=code` +
-          `&access_type=offline` +
-          `&scope=${encodeURIComponent(['profile','email'].join(' '))}`,
-        // returnUrl: 'exp://exp.host/@leins275/each-react-native-app', // Expo.AuthSession.getDefaultReturnUrl(),
+          `&scope=${encodeURIComponent(['email'].join(' '))}`,
       });
       console.log(redirectUrl);
       console.log(result);
@@ -52,8 +50,8 @@ class LoginScreen extends Component {
           style={styles.logoContainer}>
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <GoogleIcon size={65}
-                        onPress={() => {this.signInWithGoogleAsync("190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com").then(code => console.log(code));}}/>
+            <EachIcon size={65}
+                        onPress={() => {this.signInWithEachAsync("Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0").then(console => console.log(console));}}/>
           </View>
           <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
@@ -61,7 +59,48 @@ class LoginScreen extends Component {
       </View>
     );
   }
+
+  _handleRedirect = event => {
+    WebBrowser.dismissBrowser();
+
+    let data = Linking.parse(event.url);
+
+    this.setState({ redirectData: data });
+  };
+
+  _openWebBrowserAsync = async () => {
+    try {
+      this._addLinkingListener();
+      let result = await WebBrowser.openBrowserAsync(
+        // We add `?` at the end of the URL since the test backend that is used
+        // just appends `authToken=<token>` to the URL provided.
+        `https://backend-xxswjknyfi.now.sh/?linkingUri=${Linking.makeUrl('/?')}`
+      );
+      this._removeLinkingListener();
+      this.setState({ result });
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
+
+  _addLinkingListener = () => {
+    Linking.addEventListener('url', this._handleRedirect);
+  };
+
+  _removeLinkingListener = () => {
+    Linking.removeEventListener('url', this._handleRedirect);
+  };
+
+  _maybeRenderRedirectData = () => {
+    if (!this.state.redirectData) {
+      return;
+    }
+
+    return <Text>{JSON.stringify(this.state.redirectData)}</Text>;
+  };
 }
+
 const styles = StyleSheet.create({
     wrapper:{
         flex: 1,
@@ -91,9 +130,12 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 10,
+    },
+    header: {
+      fontSize: 25,
+      marginBottom: 25,
     }
 });
-
 
 export default LoginScreen;
 
