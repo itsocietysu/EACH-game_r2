@@ -5,10 +5,17 @@ import {
     View,
     Text
 } from 'react-native'
-
-import {Expo, Linking, WebBrowser} from 'expo';
-
+import { AuthSession } from 'expo';
 import EachIcon from "../components/icons/EachIcon";
+
+const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
+const eachAuthDomain = 'http://each.itsociety.su:5000/oauth2/authorize';
+
+function toQueryString(params) {
+  return Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+}
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -21,18 +28,18 @@ class LoginScreen extends Component {
     this.signInWithEachAsync = this.signInWithEachAsync.bind(this);
   }
 
-  async signInWithEachAsync(clientId) {
+  async signInWithEachAsync() {
     try {
-      const redirectUrl = Expo.AuthSession.getRedirectUrl();
-      const result = await Expo.AuthSession.startAsync({
-        authUrl:
-          `http://each.itsociety.su:5000/oauth2/authorize?` +
-          `&client_id=${clientId}` +
-          `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
-          `&response_type=code` +
-          `&scope=${encodeURIComponent(['email'].join(' '))}`,
+      const redirectUrl = AuthSession.getRedirectUrl();
+      console.log(`Redirect URL (add this to Auth0): ${redirectUrl}`);
+      const result = await AuthSession.startAsync({
+        authUrl: eachAuthDomain + toQueryString({
+            client_id: eachClientId,
+            response_type: 'code',
+            scope: 'email',
+            redirect_uri: redirectUrl,
+          }),
       });
-      console.log(redirectUrl);
       console.log(result);
       if (result.type === 'success')
         return result.params.code;
@@ -51,7 +58,7 @@ class LoginScreen extends Component {
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <EachIcon size={65}
-                        onPress={() => {this.signInWithEachAsync("Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0").then(console => console.log(console));}}/>
+                        onPress={() => {this.signInWithEachAsync().then(console => console.log(console));}}/>
           </View>
           <Text>{`DON'T HAVE AN ACCOUNT YET?`}</Text>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
@@ -59,46 +66,6 @@ class LoginScreen extends Component {
       </View>
     );
   }
-
-  _handleRedirect = event => {
-    WebBrowser.dismissBrowser();
-
-    let data = Linking.parse(event.url);
-
-    this.setState({ redirectData: data });
-  };
-
-  _openWebBrowserAsync = async () => {
-    try {
-      this._addLinkingListener();
-      let result = await WebBrowser.openBrowserAsync(
-        // We add `?` at the end of the URL since the test backend that is used
-        // just appends `authToken=<token>` to the URL provided.
-        `https://backend-xxswjknyfi.now.sh/?linkingUri=${Linking.makeUrl('/?')}`
-      );
-      this._removeLinkingListener();
-      this.setState({ result });
-    } catch (error) {
-      alert(error);
-      console.log(error);
-    }
-  };
-
-  _addLinkingListener = () => {
-    Linking.addEventListener('url', this._handleRedirect);
-  };
-
-  _removeLinkingListener = () => {
-    Linking.removeEventListener('url', this._handleRedirect);
-  };
-
-  _maybeRenderRedirectData = () => {
-    if (!this.state.redirectData) {
-      return;
-    }
-
-    return <Text>{JSON.stringify(this.state.redirectData)}</Text>;
-  };
 }
 
 const styles = StyleSheet.create({
@@ -130,10 +97,6 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 10,
-    },
-    header: {
-      fontSize: 25,
-      marginBottom: 25,
     }
 });
 
