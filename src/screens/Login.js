@@ -22,7 +22,7 @@ const buildFormData = data => {
     const val = data[name];
     if (val !== undefined && val !== '') {
       formArr.push(
-        [name, '=', encodeURIComponent(val).replace(/%20/g, '+')].join(''),
+        [name, '=', val].join(''),
       );
     }
   }
@@ -43,17 +43,27 @@ class LoginScreen extends Component {
 
   async getUserInfo(Code, App, RedirectUrl) {
     const form = {
+      redirect_uri: RedirectUrl,
       code: Code,
-      app: App,
-      redirectUrl: RedirectUrl,
+      type: App,
     };
-    const requestURL = [`http://each.itsociety.su:4201/each/OAuth/token/get`, buildFormData(form)].join('?');
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    };
+    const requestURL = [`http://each.itsociety.su:4201/each/token/get`, buildFormData(form)].join('?');
     try {
-      const result = await request(requestURL);
+      console.log(requestURL);
+      const result = await request(requestURL, options);
+      console.log(result);
       if (result) {
         return result;
       }
     } catch(e) {
+      console.log(e);
       return { error: true };
     }
   }
@@ -85,14 +95,14 @@ class LoginScreen extends Component {
                         onPress={() => {this.getCodeByAuthUrl(eachAuthUrl).then(code => this.setState({redirectCode: code, App: "each"}));}}/>
             <VkontakteIcon size={65}
                         onPress={() => {this.getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
-            <Button title="USER"
-                    onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then(
-              (user) => this.setState({username: user.name, email: user.email, image: user.image})) }}>Show user info </Button>
           </View>
+          <Button title="USER"
+                  onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then(
+                    (user) => this.setState({username: user.name, email: user.email, image: user.image})) }}>Show user info </Button>
           <Text>{`DON'T HAVE AN ACCOUNT YET? ${this.state.redirectCode}`}</Text>
-          <Text> user: ${this.state.username}  </Text>
-          <Text> user: ${this.state.username}  </Text>
-          <Image source = {this.state.image}/>
+          <Text>{`user: ${this.state.username}`}</Text>
+          <Text>{`email: ${this.state.email}`}</Text>
+          <Image source={{uri: this.state.image}}/>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
         </ImageBackground>
       </View>

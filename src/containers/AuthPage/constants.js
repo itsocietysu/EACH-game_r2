@@ -3,11 +3,8 @@ import { AuthSession } from 'expo';
 const googleClientId = '190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com';
 const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
 const vkontakteClientId = '6682398';
-const redirectUrl = AuthSession.getRedirectUrl();
 
-export const LOAD_AUTH_INFO = 'each/OAuth/LOAD_AUTH_INFO';
-export const LOAD_AUTH_INFO_SUCCESS = 'each/OAuth/LOAD_AUTH_INFO_SUCCESS';
-export const LOAD_AUTH_INFO_ERROR = 'each/OAuth/LOAD_AUTH_INFO_ERROR';
+export const redirectUrl = AuthSession.getRedirectUrl();
 
 export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
   `&client_id=${encodeURIComponent(googleClientId)}` +
