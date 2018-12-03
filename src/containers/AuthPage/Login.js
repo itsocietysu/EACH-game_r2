@@ -6,10 +6,10 @@ import {
     Text
 } from 'react-native'
 import { AuthSession } from 'expo';
-import EachIcon from "../components/icons/EachIcon";
-import GoogleIcon from "../components/icons/GoogleIcon";
-import VkontakteIcon from "../components/icons/VkontakteIcon";
-import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl} from "../containers/AuthPage/constants";
+import EachIcon from "../../components/icons/EachIcon";
+import GoogleIcon from "../../components/icons/GoogleIcon";
+import VkontakteIcon from "../../components/icons/VkontakteIcon";
+import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl} from "../../containers/AuthPage/constants";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class LoginScreen extends Component {
     return (
       <View style={styles.wrapper}>
         <ImageBackground
-          source={require('./../../assets/images/logo.png')}
+          source={require('./../../../assets/images/logo.png')}
           style={styles.logoContainer}>
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
