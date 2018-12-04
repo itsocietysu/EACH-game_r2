@@ -4,7 +4,6 @@ import {
     StyleSheet,
     ImageBackground,
     View,
-    Image,
     Button,
     Text
 } from 'react-native'
@@ -12,7 +11,7 @@ import { AuthSession } from 'expo';
 import EachIcon from "../components/icons/EachIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
-import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl} from "../containers/AuthPage/constants";
+import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet, requestUrlRevoke} from "../containers/AuthPage/constants";
 import request from './../utils/request';
 
 const buildFormData = data => {
@@ -37,7 +36,8 @@ class LoginScreen extends Component {
       email: '',
       image: '',
       redirectCode: '',
-      App: ''
+      App: '',
+      token: '',
     };
   }
 
@@ -54,16 +54,13 @@ class LoginScreen extends Component {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
-    const requestURL = [`http://each.itsociety.su:4201/each/token/get`, buildFormData(form)].join('?');
+    const requestURL = [requestUrlGet, buildFormData(form)].join('?');
     try {
-      console.log(requestURL);
       const result = await request(requestURL, options);
-      console.log(result);
       if (result) {
         return result;
       }
     } catch(e) {
-      console.log(e);
       return { error: true };
     }
   }
@@ -77,6 +74,27 @@ class LoginScreen extends Component {
         return result.params.code;
       return { cancelled: true };
     } catch (e) {
+      return { error: true };
+    }
+  }
+
+  async revokeToken(appToken, appType) {
+    const options = {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${appToken} ${appType}`
+      },
+      body: JSON.stringify({
+        access_token: appToken,
+        type: appType
+      })
+    };
+    try {
+      const result = await request(requestUrlRevoke, options);
+      if (result) {
+        return result;
+      }
+    } catch(e) {
       return { error: true };
     }
   }
@@ -96,13 +114,16 @@ class LoginScreen extends Component {
             <VkontakteIcon size={65}
                         onPress={() => {this.getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
           </View>
-          <Button title="USER"
+          <Button title="show user info"
+                  style={styles.button}
                   onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then(
-                    (user) => this.setState({username: user.name, email: user.email, image: user.image})) }}>Show user info </Button>
+                    (user) => this.setState({username: user.name, email: user.email, image: user.image, token: user.access_token})) }}/>
+          <Button title="revoke token"
+                  style={styles.button}
+                  onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
           <Text>{`DON'T HAVE AN ACCOUNT YET? ${this.state.redirectCode}`}</Text>
           <Text>{`user: ${this.state.username}`}</Text>
           <Text>{`email: ${this.state.email}`}</Text>
-          <Image source={{uri: this.state.image}}/>
           <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
         </ImageBackground>
       </View>
