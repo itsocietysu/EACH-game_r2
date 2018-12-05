@@ -43,9 +43,9 @@ class PlayQuestScreen extends Component{
        let currStep = 0;
        const next = navigation.getParam('next', '');
        if (next === 'next')
-           currStep = 1;
+           currStep = 3;
        else
-           currStep = 0;
+           currStep = 3;
        // TODO: current step should be loaded the from global state
 
        const step = scenario[0].scenario.steps[currStep];
@@ -55,7 +55,7 @@ class PlayQuestScreen extends Component{
            case LOCATION_QUESTION:
                return <LocationQuestion data={step.desc} theme={theme}/>;
            case AR_PAINT_QUESTION:
-               return <ARQuestion data={step.desc} theme={theme}/>;
+               return <ARQuestion data={step.desc} theme={theme} scenarioID={scenario[0].scenario.scenario_id} stepID={currStep}/>;
            default:
                return <View/>;
        }

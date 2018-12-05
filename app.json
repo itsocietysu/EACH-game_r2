@@ -4,7 +4,7 @@
     "description": "Each mobile app",
     "slug": "react-native",
     "privacy": "public",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "29.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
