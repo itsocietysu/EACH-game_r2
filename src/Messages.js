@@ -9,6 +9,7 @@ const messages = {
         Play:       'Play',
         Validate:   'Validate',
         Continue:   'Continue',
+        TakePicture: 'Take a picture',
     },
 	ru: {
         Powered: 	'Создано в',
@@ -20,6 +21,7 @@ const messages = {
         Play:       'Играть',
         Validate:   'Проверить',
         Continue:   'Продолжить',
+        TakePicture: 'Сфотографировать',
 	},
 	es: {
 		Welcome: 	'Bienvenido',

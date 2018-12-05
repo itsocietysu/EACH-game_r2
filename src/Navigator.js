@@ -26,6 +26,7 @@ import TabIconContent from "./components/TabIconContent";
 import CustomTabBar from "./components/CustomTabBar";
 import LogoTitle from "./components/CustomHeader";
 import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
+import CustomCamera from "./containers/Question/CustomCamera";
 
 const FeedStack = createStackNavigator(
     {
@@ -155,6 +156,7 @@ const MainAppStack = createStackNavigator(
     {
         Home: {screen: Drawer},
         Auth: {screen: AuthStack},
+        Camera: {screen: CustomCamera},
     },
     {
         navigationOptions:{

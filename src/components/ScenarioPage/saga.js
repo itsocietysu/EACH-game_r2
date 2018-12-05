@@ -7,7 +7,7 @@ import request from '../../utils/request';
  * Feeds data load handler
  */
 export function* loadScenario(scenarioID) {
-    const requestURL = `http://each.itsociety.su:4201/each/scenario/${scenarioID.scenarioID}`;
+    const requestURL = `http://each.itsociety.su:4201/each/scenario/user/${scenarioID.scenarioID}`;
     try {
         const scenario = yield call(request, requestURL);
         let data = false;

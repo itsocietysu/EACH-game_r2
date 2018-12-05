@@ -13,6 +13,7 @@ import museumsReducer from './containers/MuseumPage/reducer';
 import gamesReducer from "./containers/GamePage/reducer";
 import scenarioReducer from "./components/ScenarioPage/reducer";
 import themeReducer from "./components/Theme/reducer";
+import imageComparisonReducer from "./components/ValidateImage/reducer";
 /*
  * routeReducer
  *
@@ -54,6 +55,7 @@ export default function createReducer(injectedReducers) {
         museums: museumsReducer,
         games: gamesReducer,
         scenario: scenarioReducer,
+        result: imageComparisonReducer,
         ...injectedReducers,
     });
 }
