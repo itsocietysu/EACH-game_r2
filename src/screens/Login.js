@@ -5,9 +5,9 @@ import {
     ImageBackground,
     View,
     Button,
-    Text
+    Text,
 } from 'react-native'
-import { AuthSession } from 'expo';
+import { AuthSession, SecureStore } from 'expo';
 import EachIcon from "../components/icons/EachIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
@@ -39,6 +39,12 @@ class LoginScreen extends Component {
       App: '',
       token: '',
     };
+
+    this.getUserInfo = this.getUserInfo.bind(this);
+  }
+
+  componentWillMount() {
+    this._fetchUserData().then((res)=> console.log(res));
   }
 
   async getUserInfo(Code, App, RedirectUrl) {
@@ -58,6 +64,7 @@ class LoginScreen extends Component {
     try {
       const result = await request(requestURL, options);
       if (result) {
+        this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token});
         return result;
       }
     } catch(e) {
@@ -77,6 +84,35 @@ class LoginScreen extends Component {
       return { error: true };
     }
   }
+
+  _storeUserData = async() => {
+    try {
+      await SecureStore.setItemAsync('username', this.state.username);
+      await SecureStore.setItemAsync('email', this.state.username);
+      await SecureStore.setItemAsync('image', this.state.username);
+      await SecureStore.setItemAsync('App', this.state.username);
+      await SecureStore.setItemAsync('token', this.state.username);
+    } catch (e) {
+      return { error: true };
+    }
+  };
+
+  _fetchUserData = async () => {
+    try {
+      const username1 = await SecureStore.getItemAsync('username');
+      const email1 = await SecureStore.getItemAsync('email');
+      const image1 = await SecureStore.getItemAsync('image');
+      const App1 = await SecureStore.getItemAsync('App');
+      const token1 = await SecureStore.getItemAsync('token');
+
+      if (email1 !== null && username1 !== null && image1 !== null && App1 !== null && token1 !== null) {
+        this.setState({username: username1, email: email1, image: image1, App: App1, token: token1})
+      }
+    } catch (error) {
+      return { error: true };
+    }
+  };
+
 
   async revokeToken(appToken, appType) {
     const options = {
@@ -114,10 +150,10 @@ class LoginScreen extends Component {
             <VkontakteIcon size={65}
                         onPress={() => {this.getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
           </View>
-          <Button title="show user info"
+          <Button title="get token and user info"
                   style={styles.button}
                   onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then(
-                    (user) => this.setState({username: user.name, email: user.email, image: user.image, token: user.access_token})) }}/>
+                    () => this._storeUserData) }}/>
           <Button title="revoke token"
                   style={styles.button}
                   onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
