@@ -12,6 +12,7 @@ class CustomCamera extends React.Component {
         targetHeight: null,
         targetWidth: null,
         loading: false,
+        _isMounted: false,
     };
 
     async componentWillMount(){
@@ -22,7 +23,8 @@ class CustomCamera extends React.Component {
             return;
         }
 
-        this.setState({permissionGranted: true});
+        if(this.state._isMounted)
+            this.setState({permissionGranted: true});
 
         let targetWidth;
         let targetHeight;
@@ -36,10 +38,20 @@ class CustomCamera extends React.Component {
             targetWidth = targetHeight * aspectRatio;
         }
 
-        this.setState({
-            targetWidth,
-            targetHeight,
-        });
+        if(this.state._isMounted) {
+            this.setState({
+                targetWidth,
+                targetHeight,
+            });
+        }
+    }
+
+    componentDidMount(){
+        this.setState({_isMounted: true});
+    }
+
+    componentWillUnmount(){
+        this.setState({_isMounted: false});
     }
 
     async _cropAndResize(image){
@@ -87,7 +99,6 @@ class CustomCamera extends React.Component {
     async _takePhoto(){
 
         const image = await this.cameraRef.takePictureAsync();
-        this.props.navigation.goBack();
         if (image === undefined){
             alert('Ooops! Something went wrong');
             return;
@@ -103,12 +114,13 @@ class CustomCamera extends React.Component {
             return;
         }
 
-        this.setState({loading: false});
+        // this.setState({loading: false});
         this.props.navigation.goBack();
     }
 
     _process(){
-        this.setState({loading: true}, this._takePhoto );
+        if(this.state._isMounted)
+            this.setState({loading: true}, this._takePhoto );
     }
     render() {
         const { width, height} = Dimensions.get('window');

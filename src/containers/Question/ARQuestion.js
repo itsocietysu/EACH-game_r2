@@ -13,7 +13,7 @@ import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
-import {makeSelectResult} from "../../components/ValidateImage/selectors";
+import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../components/ValidateImage/selectors";
 import {imageCompare} from "../../components/ValidateImage/actions";
 import injectReducer from "../../utils/injectReducer";
 import reducer from "../../components/ValidateImage/reducer";
@@ -26,6 +26,7 @@ import {colors} from "../../utils/constants";
 
 class ARQuestion extends Component{
 
+
     constructor(){
         super();
         this.state={
@@ -35,6 +36,13 @@ class ARQuestion extends Component{
         this.handler = this.handler.bind(this);
     }
 
+    componentWillReceiveProps(nextProps){
+        if (nextProps.result !== -1){
+            console.log(nextProps.result[0].result);
+            // this.setState({loading: false});
+            this._validateResult(nextProps.result[0].result);
+        }
+    }
     // TODO: debug version => release version
     _validateResult(res){
         const bonus = this.props.data.bonus;
@@ -65,7 +73,7 @@ class ARQuestion extends Component{
         let loadingInfo =<View/>;
         let imageTest = loadingInfo;
 
-        if (this.state.loading) {
+        if (this.props.loading) {
             loadingInfo =
                 <View style={{position: 'absolute', left: 65, top: 200}}>
                     <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.SECOND.light}}>Processing. Please wait...</Text>
@@ -114,6 +122,8 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
     result: makeSelectResult(),
+    loading: makeSelectLoading(),
+    error: makeSelectError(),
 });
 
 const withConnect = connect(

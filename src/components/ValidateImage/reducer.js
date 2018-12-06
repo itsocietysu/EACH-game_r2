@@ -15,7 +15,7 @@ function imageComparisonReducer(state = initialState, action){
             return state
                 .set('loading', true)
                 .set('error', false)
-                .set('result', false);
+                .set('result', -1);
         case IMAGE_COMPARE_SUCCESS:
             return state
                 .set('loading', false)
@@ -25,7 +25,7 @@ function imageComparisonReducer(state = initialState, action){
             return state
                 .set('loading', false)
                 .set('error', action.error)
-                .set('result', false);
+                .set('result', -1);
         default:
             return state;
 	}
