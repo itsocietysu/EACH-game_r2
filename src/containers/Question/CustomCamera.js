@@ -62,6 +62,9 @@ class CustomCamera extends React.Component {
 
         let manipResult;
         try {
+            const x = (W - wToCrop) / 2;
+            const y = (H - hToCrop) / 2;
+
             manipResult = await ImageManipulator.manipulate(
                 image.uri,
                 [
@@ -71,16 +74,6 @@ class CustomCamera extends React.Component {
                             height: H,
                         },
                     },
-                ],
-            );
-
-
-            const x = (W - wToCrop) / 2;
-            const y = (H - hToCrop) / 2;
-
-            manipResult = await ImageManipulator.manipulate(
-                manipResult.uri,
-                [
                     {
                         crop: {
                             originX: x,
@@ -89,6 +82,7 @@ class CustomCamera extends React.Component {
                             height: hToCrop,
                         }
                     },
+
                 ],
                 {base64: true}
             );
