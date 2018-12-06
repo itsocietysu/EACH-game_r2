@@ -119,7 +119,7 @@ class CustomCamera extends React.Component {
     }
 
     _process(){
-        if(this.state._isMounted)
+        if(this.state._isMounted && !this.state.loading)
             this.setState({loading: true}, this._takePhoto );
     }
     render() {
