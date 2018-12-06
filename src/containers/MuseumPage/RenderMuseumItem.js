@@ -34,6 +34,7 @@ class RenderMuseumItem extends Component{
                         <Text numberOfLines={2} style={{color: colors.TEXT[theme]}}>{item.desc[locale]}</Text>
                         <Text style={{alignSelf: 'center', color:'#0000ff'}}>more...</Text>
                     </View>
+                    <View style={{width: width, height: 2, backgroundColor: colors.SECOND[theme]}}/>
                 </TouchableOpacity>
             </View>
         );
