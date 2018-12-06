@@ -54,57 +54,64 @@ class CustomCamera extends React.Component {
         this.setState({_isMounted: false});
     }
 
-    async _cropAndResize(image){
-        const H = image.height/3;
-        const W = image.width/3;
+    async _cropAndResize(image) {
+        const H = image.height / 3;
+        const W = image.width / 3;
 
         const screen = Dimensions.get('window');
 
-        const hToCrop = (this.state.targetHeight/screen.height) * H;
-        const wToCrop = (this.state.targetWidth/screen.width) * W;
+        const hToCrop = (this.state.targetHeight / screen.height) * H;
+        const wToCrop = (this.state.targetWidth / screen.width) * W;
 
-        let manipResult = await ImageManipulator.manipulate(
-            image.uri,
-            [
-                {
-                    resize:{
-                        width: W,
-                        height: H,
+        let manipResult;
+        try {
+            manipResult = await ImageManipulator.manipulate(
+                image.uri,
+                [
+                    {
+                        resize: {
+                            width: W,
+                            height: H,
+                        },
                     },
-                },
-            ],
-        );
+                ],
+            );
 
-        const x = (W-wToCrop)/2;
-        const y = (H-hToCrop)/2;
 
-        manipResult = await ImageManipulator.manipulate(
-            manipResult.uri,
-            [
-                {
-                    crop:{
-                        originX: x,
-                        originY: y,
-                        width: wToCrop,
-                        height: hToCrop,
-                    }
-                },
-            ],
-            {base64: true}
-        );
+            const x = (W - wToCrop) / 2;
+            const y = (H - hToCrop) / 2;
 
+            manipResult = await ImageManipulator.manipulate(
+                manipResult.uri,
+                [
+                    {
+                        crop: {
+                            originX: x,
+                            originY: y,
+                            width: wToCrop,
+                            height: hToCrop,
+                        }
+                    },
+                ],
+                {base64: true}
+            );
+        }
+        catch(error){
+            console.log(error);
+            return image;
+        }
         return manipResult;
     };
 
     async _takePhoto(){
 
-        const image = await this.cameraRef.takePictureAsync();
-        if (image === undefined){
-            alert('Ooops! Something went wrong');
-            return;
-        }
-
         try {
+            const image = await this.cameraRef.takePictureAsync();
+            if (image === undefined){
+                alert('Ooops! Something went wrong');
+                return;
+            }
+
             const processedImage = await this._cropAndResize(image);
             const _validateImage = this.props.navigation.getParam('handler', '');
             _validateImage(processedImage);
