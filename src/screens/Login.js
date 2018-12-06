@@ -40,12 +40,21 @@ class LoginScreen extends Component {
       token: '',
     };
 
+    this._storeUserData =this._storeUserData.bind(this);
+    this._fetchUserData =this._fetchUserData.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
+    this.revokeToken = this.revokeToken.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this._fetchUserData().then((res)=> console.log(res));
   }
+
+  /*
+  componentWillUnmount() {
+    this._storeUserData().then();
+  }
+  */
 
   async getUserInfo(Code, App, RedirectUrl) {
     const form = {
@@ -60,11 +69,13 @@ class LoginScreen extends Component {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
+
     const requestURL = [requestUrlGet, buildFormData(form)].join('?');
     try {
       const result = await request(requestURL, options);
       if (result) {
         this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token});
+        this._storeUserData().then((e)=>{console.log(e);});
         return result;
       }
     } catch(e) {
@@ -87,12 +98,16 @@ class LoginScreen extends Component {
 
   _storeUserData = async() => {
     try {
-      await SecureStore.setItemAsync('username', this.state.username);
-      await SecureStore.setItemAsync('email', this.state.username);
-      await SecureStore.setItemAsync('image', this.state.username);
-      await SecureStore.setItemAsync('App', this.state.username);
-      await SecureStore.setItemAsync('token', this.state.username);
+      SecureStore.setItemAsync('username', this.state.username);
+      SecureStore.setItemAsync('email', this.state.email);
+      SecureStore.setItemAsync('image', this.state.image);
+      SecureStore.setItemAsync('App', this.state.App);
+      SecureStore.setItemAsync('token', this.state.token);
+
+      console.log("data stored");
+
     } catch (e) {
+      console.log(e);
       return { error: true };
     }
   };
@@ -100,19 +115,44 @@ class LoginScreen extends Component {
   _fetchUserData = async () => {
     try {
       const username1 = await SecureStore.getItemAsync('username');
+      console.log("username: ");
+      console.log(username1);
+
       const email1 = await SecureStore.getItemAsync('email');
+      console.log("email: ");
+      console.log(email1);
+
       const image1 = await SecureStore.getItemAsync('image');
+      console.log("image: ");
+      console.log(image1);
+
       const App1 = await SecureStore.getItemAsync('App');
+      console.log("app: ");
+      console.log(App1);
+
       const token1 = await SecureStore.getItemAsync('token');
+      console.log("token: ");
+      console.log(token1);
 
       if (email1 !== null && username1 !== null && image1 !== null && App1 !== null && token1 !== null) {
         this.setState({username: username1, email: email1, image: image1, App: App1, token: token1})
       }
     } catch (error) {
+
+      console.log(error);
+
       return { error: true };
     }
   };
 
+
+  _deleteUserData = async() => {
+    SecureStore.deleteItemAsync('username');
+    SecureStore.deleteItemAsync('email');
+    SecureStore.deleteItemAsync('image');
+    SecureStore.deleteItemAsync('App');
+    SecureStore.deleteItemAsync('token');
+  };
 
   async revokeToken(appToken, appType) {
     const options = {
@@ -128,6 +168,7 @@ class LoginScreen extends Component {
     try {
       const result = await request(requestUrlRevoke, options);
       if (result) {
+        this._deleteUserData().then();
         return result;
       }
     } catch(e) {
@@ -152,8 +193,7 @@ class LoginScreen extends Component {
           </View>
           <Button title="get token and user info"
                   style={styles.button}
-                  onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then(
-                    () => this._storeUserData) }}/>
+                  onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then((res)=>{console.log(res);}) }}/>
           <Button title="revoke token"
                   style={styles.button}
                   onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
