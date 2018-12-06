@@ -43,7 +43,7 @@ class PlayQuestScreen extends Component{
        let currStep = 0;
        const next = navigation.getParam('next', '');
        if (next === 'next')
-           currStep = 3;
+           currStep = 1;
        else
            currStep = 3;
        // TODO: current step should be loaded the from global state
