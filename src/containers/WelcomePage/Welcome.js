@@ -8,14 +8,16 @@ import {
     View,
     Text,
     Dimensions,
+    AsyncStorage,
 } from 'react-native';
 import PropTypes from "prop-types";
 
-import { colors, images } from "../../utils/constants";
+import { colors, images, storage } from "../../utils/constants";
 import messages from "../../Messages";
 import getSystemLocale from '../../utils/getSystemLocale'
 import { changeLanguage } from '../../components/Locales/actions'
-
+import {changeTheme} from "../../components/Theme/actions";
+import {LIGHT_THEME} from "../../components/Theme/constants";
 
 class WelcomeScreen extends Component {
     // cheat access to redux store
@@ -25,13 +27,28 @@ class WelcomeScreen extends Component {
 
     async componentWillMount(){
         this.setState({loading:true});
+        const store = this.context.store;
         // waiting until get device locale
-        const locale = await getSystemLocale();
-        this.context.store.dispatch(changeLanguage(locale));
+        try{
+            let locale = await  AsyncStorage.getItem(storage.LOCALE);
+            if(locale === null || locale === undefined)
+                locale = await getSystemLocale();
+            store.dispatch(changeLanguage(locale));
+
+            let theme = await  AsyncStorage.getItem(storage.THEME);
+            if(theme === null || theme === undefined)
+                theme = LIGHT_THEME;
+            store.dispatch(changeTheme(theme));
+        }
+        catch (e) {
+            console.log('Error:: ', e);
+        }
+
 
         // TODO: change magic constant 3000
         setTimeout(()=> this.props.navigation.navigate('Home'), 3000)
     }
+
 
     render() {
         const dim = Dimensions.get('window');

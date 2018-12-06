@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Expo from 'expo';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
-import { Button } from 'react-native';
+import { Button, AsyncStorage} from 'react-native';
 import { compose } from 'redux';
 import {createStructuredSelector} from "reselect";
 import { changeLanguage } from '../../components/Locales/actions'
@@ -32,17 +33,36 @@ const TitleText = styled.Text`
 `;
 
 class SettingsScreen extends Component {
-  render() {
-      const lang = this.props.language;
-      const locale =  this.props.language? this.props.language: 'en';
-    return (
+
+    _localeChange(locale){
+        try{
+            AsyncStorage.setItem('LOCALE', locale);
+            this.props.changeLocale(locale)
+        }
+        catch(e){
+            console.log('Error:: ', e);
+        }
+    }
+
+    _themeChange(theme){
+        try{
+            AsyncStorage.setItem('THEME', theme);
+            this.props.changeTheme(theme)
+        }
+        catch(e){
+            console.log('Error:: ', e);
+        }
+    }
+
+    render() {
+        return (
 			<FormattedWrapper locale={this.props.language? this.props.language: 'en'} messages={messages} >
                 <ContainerView color={colors.BASE[this.props.theme]}>
                   <TitleText><FormattedMessage message={'Settings'}/></TitleText>
-                    <Button title={"Change language to russian"} onPress={()=>this.props.changeLocale('ru')}/>
-                    <Button title={"Change language to english"} onPress={()=>this.props.changeLocale('en')}/>
-                    <Button title={"Change theme to Light"} onPress={()=>this.props.changeTheme(LIGHT_THEME)}/>
-                    <Button title={"Change theme to Dark"} onPress={()=>this.props.changeTheme(DARK_THEME)}/>
+                    <Button title={"Change language to russian"} onPress={()=>this._localeChange('ru')}/>
+                    <Button title={"Change language to english"} onPress={()=>this._localeChange('en')}/>
+                    <Button title={"Change theme to Light"} onPress={()=>this._themeChange(LIGHT_THEME)}/>
+                    <Button title={"Change theme to Dark"} onPress={()=>this._themeChange(DARK_THEME)}/>
                 </ContainerView>
 			</FormattedWrapper>
     );
