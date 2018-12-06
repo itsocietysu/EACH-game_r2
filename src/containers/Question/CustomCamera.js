@@ -15,7 +15,8 @@ class CustomCamera extends React.Component {
         _isMounted: false,
     };
 
-    async componentWillMount(){
+    async componentDidMount(){
+        this.setState({_isMounted: true});
         const status =  await Permissions.askAsync(Permissions.CAMERA);
 
         if (status.status !== 'granted') {
@@ -44,10 +45,6 @@ class CustomCamera extends React.Component {
                 targetHeight,
             });
         }
-    }
-
-    componentDidMount(){
-        this.setState({_isMounted: true});
     }
 
     componentWillUnmount(){
