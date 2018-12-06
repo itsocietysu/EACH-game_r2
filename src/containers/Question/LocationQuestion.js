@@ -35,7 +35,7 @@ class LocationQuestion extends Component{
     render() {
         return (
             <View style={{flex: 1}}>
-                <QuestMap data={this.state} stepData={this.props.data}/>
+                <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme}/>
             </View>
         );
     }
