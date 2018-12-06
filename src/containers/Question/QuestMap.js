@@ -6,13 +6,15 @@ import {
     Platform,
     Dimensions
 } from 'react-native';
-import MapView, { Marker, AnimatedRegion, Polyline } from "react-native-maps";
+import MapView, { Marker, AnimatedRegion, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import PropTypes from "prop-types";
 import {Location, Permissions} from 'expo';
 import {withNavigation} from 'react-navigation';
 import {Entypo, MaterialIcons} from '@expo/vector-icons';
 
 import {colors} from "../../utils/constants";
+import {LIGHT_THEME} from "../../components/Theme/constants";
+import {LightMapStyle, NightMapStyle} from "../../components/MapStyles";
 
 
 class QuestMap extends Component{
@@ -22,8 +24,8 @@ class QuestMap extends Component{
         this.state = {
             latitude: null,
             longitude: null,
-            routeCoordinates: [],
-            distanceTravelled: 0,
+            // routeCoordinates: [],
+            // distanceTravelled: 0,
             prevLatLng: {},
             coordinate: new AnimatedRegion({
                 latitude: 0,
@@ -109,8 +111,8 @@ class QuestMap extends Component{
         this.setState({
            latitude,
            longitude,
-           routeCoordinates: routeCoordinates.concat([newCoordinate]),
-           distanceTravelled: distanceTravelled + this._calcDistance(newCoordinate),
+           // routeCoordinates: routeCoordinates.concat([newCoordinate]),
+           // distanceTravelled: distanceTravelled + this._calcDistance(newCoordinate),
            prevLatLng: newCoordinate,
 
         });
@@ -202,7 +204,7 @@ class QuestMap extends Component{
     render(){
         const data = this.props.stepData;
         const {width, height} = Dimensions.get('window');
-
+        const mapStyle = (this.props.theme === LIGHT_THEME)? LightMapStyle : NightMapStyle;
         let content = null;
         if (this.state.latitude !== null){
             const coordsToGo = {
@@ -213,12 +215,15 @@ class QuestMap extends Component{
             content =
                 <View style={{flex: 1}}>
                     <MapView
+                        key={this.props.theme}
                         style={{flex: 1}}
                         ref={(ref) => { this.mapRef = ref; }}
                         loadingEnabled
                         zoomEnabled
                         onMapReady={this._fitToElements}
                         initialRegion={this._getMapRegion()}
+                        provider={PROVIDER_GOOGLE}
+                        customMapStyle={mapStyle}
                     >
                         <View style={{ alignItems: 'center'}}>
                             <Text style={{fontSize: 20, fontWeight: 'bold'}}>Reach the target!</Text>

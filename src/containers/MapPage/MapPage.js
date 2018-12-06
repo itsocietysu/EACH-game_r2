@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, Text, Image } from "react-native";
 import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 import { createStructuredSelector } from 'reselect';
@@ -12,7 +12,9 @@ import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPag
 import injectSaga from "../../utils/injectSaga";
 import saga from "../MuseumPage/saga";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
-
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {LIGHT_THEME} from "../../components/Theme/constants";
+import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -110,17 +112,21 @@ class MapsScreen extends Component {
 
 
   render() {
+    const mapStyle = (this.props.theme === LIGHT_THEME)? LightMapStyle : NightMapStyle;
     return (
       <View style={{flex:1, justifyContent: 'flex-end'}}>
         { this.state.dialog }
         <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
+            key={this.props.theme}
+            style={styles.map}
+            initialRegion={{
+              latitude: LATITUDE,
+              longitude: LONGITUDE,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+            provider={PROVIDER_GOOGLE}
+            customMapStyle={mapStyle}
         >
           { this.state.markers }
         </MapView>
@@ -151,6 +157,7 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   error: makeSelectError(),
   locale: makeSelectLanguage(),
+  theme: makeSelectTheme(),
 });
 
 const styles = StyleSheet.create({
