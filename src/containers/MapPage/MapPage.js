@@ -12,6 +12,9 @@ import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPag
 import injectSaga from "../../utils/injectSaga";
 import saga from "../MuseumPage/saga";
 import { makeSelectLanguage } from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {LIGHT_THEME} from "../../components/Theme/constants";
+import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
