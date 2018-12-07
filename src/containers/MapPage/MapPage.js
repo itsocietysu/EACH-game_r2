@@ -11,7 +11,7 @@ import { loadMuseums } from "../MuseumPage/actions";
 import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPage/selectors";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../MuseumPage/saga";
-import { makeSelectLanguage } from "../../components/Locales/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
