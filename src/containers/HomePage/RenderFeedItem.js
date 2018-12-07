@@ -33,8 +33,11 @@ class RenderFeedItem extends Component{
                         </View>
                     </View>
                     <View>
+
                         <ImageBackground source={{uri: item.image}}
-                                         style={{width: width, height: width}}/>
+                                         style={{width: width, height: width}}>
+                            <View style={{position: 'absolute', backgroundColor: 'rgba(160,160,160,0.5)', height: width, width: width}}/>
+                        </ImageBackground>
                     </View>
                     <View style={{flex: 1, backgroundColor: colors.BASE[theme], width: width, height: 65, paddingLeft: 4, paddingBottom: 10}}>
                         <Text numberOfLines={2} style={{color: colors.TEXT[theme]}}>{item.desc[locale]}</Text>
