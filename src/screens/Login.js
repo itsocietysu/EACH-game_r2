@@ -88,8 +88,10 @@ class LoginScreen extends Component {
       const result = await AuthSession.startAsync({
         authUrl: url,
       });
-      if (result.type === 'success')
+      if (result.type === 'success') {
+        AuthSession.dismiss();
         return result.params.code;
+      }
       return { cancelled: true };
     } catch (e) {
       return { error: true };
@@ -104,10 +106,7 @@ class LoginScreen extends Component {
       SecureStore.setItemAsync('App', this.state.App);
       SecureStore.setItemAsync('token', this.state.token);
 
-      console.log("data stored");
-
     } catch (e) {
-      console.log(e);
       return { error: true };
     }
   };
@@ -115,32 +114,15 @@ class LoginScreen extends Component {
   _fetchUserData = async () => {
     try {
       const username1 = await SecureStore.getItemAsync('username');
-      console.log("username: ");
-      console.log(username1);
-
       const email1 = await SecureStore.getItemAsync('email');
-      console.log("email: ");
-      console.log(email1);
-
       const image1 = await SecureStore.getItemAsync('image');
-      console.log("image: ");
-      console.log(image1);
-
       const App1 = await SecureStore.getItemAsync('App');
-      console.log("app: ");
-      console.log(App1);
-
       const token1 = await SecureStore.getItemAsync('token');
-      console.log("token: ");
-      console.log(token1);
 
       if (email1 !== null && username1 !== null && image1 !== null && App1 !== null && token1 !== null) {
         this.setState({username: username1, email: email1, image: image1, App: App1, token: token1})
       }
     } catch (error) {
-
-      console.log(error);
-
       return { error: true };
     }
   };
@@ -238,8 +220,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     }
 });
-
-
-
 export default LoginScreen;
 
