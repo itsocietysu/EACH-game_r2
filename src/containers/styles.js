@@ -12,13 +12,6 @@ export const TextContainer = styled.View`
     paddingBottom: 5px
 `;
 
-export const TittleText = styled.Text`
-    color: ${props=>props.color}
-    fontSize: 20px
-    fontWeight: bold
-    textAlign: center
-`;
-
 export const DescriptionText = styled.Text`
     color: ${props=>props.color}
     fontSize: 18px
@@ -67,6 +60,70 @@ export const AnswerContainer = styled.View`
 export const CentroidFigure = styled.View`
     justifyContent: center
     alignItems: center
+`;
+
+export const TittleText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: 15
+    fontWeight: bold 
+`;
+
+export const TittleContainer = styled.View`
+    flex: 1
+    paddingLeft: 5
+    justifyContent: center
+`;
+
+export const LogoAvatar = styled.Image`
+    width: 40
+    height: 40
+    borderRadius: 20
+    borderWidth: 1
+    borderColor: ${props => props.borderColor}   
+`;
+
+export const HeaderContainer = styled.View`
+    flex: 0.15
+    flexDirection: row
+    backgroundColor: ${props => props.bgColor}
+    paddingLeft: 4
+    paddingBottom: 4
+    paddingTop: 2
+    paddingRight: 2
+`;
+
+export const ImageMask = styled.View`
+    position: absolute
+    backgroundColor: rgba(160,160,160,0.5)
+    height: ${props => props.height}
+    width: ${props => props.width}
+`;
+
+export const MainTextContainer = styled.View`
+    flex: 1
+    backgroundColor: ${props => props.bgColor}
+    width: ${props => props.width || '100%'}
+    height: ${props => props.height || '100%'}
+    paddingLeft: 4
+    paddingBottom: 10
+`;
+
+export const MainText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+`;
+
+export const MoreText = styled.Text`
+    alignSelf: center
+    color: #0000ff
+    fontFamily: ${props=> props.font}
+`;
+
+export const Rectangle = styled.View`
+    width: ${props => props.width}
+    height: ${props => props.height}
+    backgroundColor:  ${props=> props.backgroundColor || 'transparent'}
 `;
 
 export class SpamHello extends React.Component {

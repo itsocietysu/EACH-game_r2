@@ -14,6 +14,7 @@ import gamesReducer from "./containers/GamePage/reducer";
 import scenarioReducer from "./components/ScenarioPage/reducer";
 import themeReducer from "./components/Theme/reducer";
 import imageComparisonReducer from "./components/ValidateImage/reducer";
+import fontReducer from "./components/Fonts/reducer";
 /*
  * routeReducer
  *
@@ -56,6 +57,7 @@ export default function createReducer(injectedReducers) {
         games: gamesReducer,
         scenario: scenarioReducer,
         result: imageComparisonReducer,
+        font: fontReducer,
         ...injectedReducers,
     });
 }
