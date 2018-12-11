@@ -147,7 +147,7 @@ class MuseumItemScreen extends Component{
                         draggableRange={this.props.draggableRange}
                     >
                         <View style={styles.panel}>
-                            <TouchableOpacity onPress={()=>this._onTapSlidingPanel(this._panel)}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={()=>this._onTapSlidingPanel(this._panel)}>
                                 <PanelHeader color={colors.MAIN}>
                                     <Image source={arrow} style={{width: 80, height: 20}}/>
                                     <MainText color={'#FFF'} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Games'}/></MainText>
