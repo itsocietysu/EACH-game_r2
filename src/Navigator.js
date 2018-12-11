@@ -83,15 +83,8 @@ const MuseumStack = createStackNavigator(
             else {
               const key = navigation.state.params.page;
 
-              console.log(navigation.state.params);
-              if (key === "MapScreen") {
-                content = <BackIcon onPress={() => navigation.navigate('Museums')}/>;
-              }
-              else {
-                content = <BackIcon onPress={() => navigation.goBack(null)}/>;
-              }
+              content = <BackIcon onPress={() => navigation.navigate(key)}/>;
             }
-
             return ({
                 headerBackground: <LogoTitle/>,
                 headerStyle: {
