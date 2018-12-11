@@ -43,6 +43,10 @@ export const images = {
     HEADER_LIGHT: require('./../../assets/images/muz_header_white.png'),
 };
 
+export const fonts = {
+    EACH: 'eachFont',
+    MURRAY: 'murray',
+};
 export const HeaderHeight = 40;
 export const TabLabelFontSize = 12;
 
