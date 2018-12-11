@@ -15,7 +15,7 @@ class RenderMuseumItem extends Component{
         const theme = this.props.theme;
         return (
             <View style={{flex: 1, backgroundColor: colors.BASE[theme]}} >
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item});}}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item, page: 'Museums'});}}>
                     <View style={{flexDirection: 'row', backgroundColor: colors.BASE[theme], paddingLeft: 4, paddingBottom: 4, paddingTop: 2, paddingRight: 2}}>
                         <View style={{flex: 0.15, flexDirection: 'row'}}>
                             <Image source={{uri : item.image}}

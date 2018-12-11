@@ -75,9 +75,21 @@ const MuseumStack = createStackNavigator(
     },
     {
         navigationOptions: ({navigation})=> {
-            let content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+
+            let content;
+
             if (navigation.state.routeName === 'Museums') {
                 content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
+            }
+            else {
+              const key = navigation.state.params.page;
+
+              if (key === 'Maps' || key === 'Museums') {
+                content = <BackIcon onPress={() => navigation.navigate(key)}/>;
+              }
+                else {
+                content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+              }
             }
             return ({
                 headerBackground: <LogoTitle/>,

@@ -90,7 +90,7 @@ class MapsScreen extends Component {
             key = {id++}
             text="More..."
             onPress={()=>{
-              this.props.navigation.navigate('MuseumItem', {data: museum});
+              this.props.navigation.navigate('MuseumItem', {data: museum, page: 'Maps'});
               this.refDialog.dismiss();
             }}
           />
