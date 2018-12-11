@@ -27,7 +27,7 @@ class RenderMuseumItem extends Component{
         const fontLoaded = this.props.font;
         return (
             <View style={{flex: 1}}>
-                <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item});}}>
+                <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item, page: 'Museums'});}}>
                     <HeaderContainer bgColor={colors.BASE[theme]}>
                         <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
                         <TittleContainer>

@@ -29,6 +29,7 @@ import styled from 'styled-components/native';
 import getFont from "../../utils/getFont";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 
+
 const {height} = Dimensions.get('window');
 
 const styles = {
@@ -122,7 +123,7 @@ class MuseumItemScreen extends Component{
                                 </TittleText>
                             </TittleContainer>
                         </HeaderContainer>
-                        <ImageBackground source={{uri: item.image}}
+                      <ImageBackground source={{uri: item.image}}
                                          style={{width: width, height: width}}/>
                         <CustomList component={LocationItem} array={item.location} theme={theme}/>
 
