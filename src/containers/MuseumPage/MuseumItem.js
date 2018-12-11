@@ -16,6 +16,7 @@ import {createStructuredSelector} from "reselect";
 import {compose} from 'redux';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
+import {NavigationEvents} from 'react-navigation';
 
 import {TextContainer, TittleText, DescriptionText, BasicText, SpamHello} from "../styles";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
@@ -26,6 +27,7 @@ import messages from "../../Messages";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors} from "../../utils/constants";
 import styled from 'styled-components/native';
+
 
 const {height} = Dimensions.get('window');
 
@@ -109,8 +111,12 @@ class MuseumItemScreen extends Component{
         return(
             <FormattedWrapper locale={this.props.language} messages={messages} >
                 <View style={{backgroundColor: colors.BASE[theme]}}>
+                    <NavigationEvents
+                      onWillBlur={() => navigation.navigate('Museums')}
+                    />
                     <ScrollView>
                         <View style={{paddingBottom: 5}}>
+
                             <TittleText color={colors.TEXT[theme]}>{item.name[locale]}</TittleText>
                         </View>
                         <ImageBackground source={{uri: item.image}}
