@@ -1,16 +1,20 @@
-import {ImageBackground, View, Dimensions, TouchableOpacity, Image, Text} from 'react-native'
 import React, {Component} from 'react';
+import { ImageBackground, View, Dimensions, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation';
+import PropTypes from "prop-types";
 
-import { TextContainer, TittleText, DescriptionText } from "../styles";
-import {changeLanguage} from "../../components/Locales/actions";
-import {changeTheme} from "../../components/Theme/actions";
 import {createStructuredSelector} from "reselect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
 import connect from "react-redux/es/connect/connect";
-import {colors} from "../../utils/constants";
-import { compose } from 'redux';
+import {compose} from "redux";
+
+import getFont from '../../utils/getFont';
+import {colors, fonts} from "../../utils/constants";
+import {TittleContainer, TittleText, HeaderContainer, LogoAvatar, MainTextContainer, MainText, MoreText, ImageMask, Rectangle} from "../styles";
+
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+
 
 class RenderFeedItem extends Component{
 
@@ -20,34 +24,66 @@ class RenderFeedItem extends Component{
         const width = Dimensions.get('window').width;
         const locale = this.props.locale.toUpperCase();
         const theme = this.props.theme;
+        const fontLoaded = this.props.font;
         return (
             <View style={{flex: 1}}>
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('FeedItem', {data: item, locale});}}>
-                    <View style={{flexDirection: 'row', backgroundColor: colors.BASE[theme], paddingLeft: 4, paddingBottom: 4, paddingTop: 2, paddingRight: 2}}>
-                        <View style={{flex: 0.15, flexDirection: 'row'}}>
-                            <Image source={{uri : item.image}}
-                                   style={{width: 40, height: 40, borderRadius: 40/2, borderWidth: 1, borderColor: colors.SECOND[theme]}} />
-                        </View>
-                        <View style={{flex: 1, justifyContent: 'center'}}>
-                            <Text style={{fontSize: 15, fontWeight: 'bold', color: colors.TEXT[theme]}}>{item.title[locale]}</Text>
-                        </View>
-                    </View>
-                    <View>
+                <TouchableOpacity activeOpacity={0.9} onPress={() => { this.props.navigation.navigate('FeedItem', {data: item}); }}>
+                    <HeaderContainer bgColor={colors.BASE[theme]}>
+                        <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
+                        <TittleContainer>
+                            <TittleText
+                                color={colors.TEXT[theme]}
+                                font={getFont(fontLoaded, fonts.EACH)}
+                            >
+                                {item.title[locale]}
+                            </TittleText>)
+                        </TittleContainer>
+                    </HeaderContainer>
+                    <ImageBackground source={{uri: item.image}}
+                                     style={{width: width, height: width}}>
+                        <ImageMask height={width} width={width}/>
+                    </ImageBackground>
 
-                        <ImageBackground source={{uri: item.image}}
-                                         style={{width: width, height: width}}>
-                            <View style={{position: 'absolute', backgroundColor: 'rgba(160,160,160,0.5)', height: width, width: width}}/>
-                        </ImageBackground>
-                    </View>
-                    <View style={{flex: 1, backgroundColor: colors.BASE[theme], width: width, height: 65, paddingLeft: 4, paddingBottom: 10}}>
-                        <Text numberOfLines={2} style={{color: colors.TEXT[theme]}}>{item.desc[locale]}</Text>
-                        <Text style={{alignSelf: 'center', color: '#0000ff'}}>more...</Text>
-                    </View>
-                    <View style={{width: width, height: 1, backgroundColor: colors.SECOND[theme]}}/>
+                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={65}>
+                        <MainText
+                            numberOfLines={3}
+                            color={colors.TEXT[theme]}
+                            font={getFont(fontLoaded, fonts.MURRAY)}
+                        >
+                            {item.desc[locale]}
+                        </MainText>
+                        <MoreText
+                            font={getFont(fontLoaded, fonts.MURRAY)}
+                        >
+                            more...
+                        </MoreText>
+                    </MainTextContainer>
+                    <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
                 </TouchableOpacity>
             </View>
         );
     }
 }
 
-export default withNavigation(RenderFeedItem);
+RenderFeedItem.propTypes = {
+    locale: PropTypes.string,
+    theme: PropTypes.string,
+    font: PropTypes.bool,
+    item: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+};
+
+const mapStateToProps = createStructuredSelector({
+    locale: makeSelectLanguage(),
+    theme: makeSelectTheme(),
+    font: makeSelectFonts(),
+});
+
+const withConnect = connect(
+    mapStateToProps,
+    {},
+);
+
+export default compose(
+    withConnect,
+    withNavigation
+)(RenderFeedItem);

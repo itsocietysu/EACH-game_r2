@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 
 import {makeSelectData, makeSelectError, makeSelectLoading} from "./selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+
+
 import saga from './saga';
 import reducer from './reducer';
 import injectReducer from '../../utils/injectReducer';
@@ -13,8 +16,6 @@ import injectSaga from '../../utils/injectSaga';
 import DataList from './../../components/DataList';
 import {loadMuseums} from "./actions";
 import RenderMuseumItem from "./RenderMuseumItem";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors} from "../../utils/constants";
 
 const ContainerView = styled.View`
@@ -31,7 +32,6 @@ class MuseumScreen extends Component {
     }
 
     render() {
-        const locale = this.props.language;
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
@@ -42,8 +42,6 @@ class MuseumScreen extends Component {
             loading,
             error,
             data,
-            locale,
-            theme,
             component: RenderMuseumItem,
         };
       return (
@@ -57,7 +55,6 @@ MuseumScreen.propTypes = {
     loading: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-    language: PropTypes.string,
     theme: PropTypes.string,
     init: PropTypes.func,
 };
@@ -76,7 +73,6 @@ const mapStateToProps = createStructuredSelector({
     data: makeSelectData(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
-    language: makeSelectLanguage(),
     theme: makeSelectTheme(),
 });
 

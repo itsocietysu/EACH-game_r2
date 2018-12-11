@@ -5,16 +5,21 @@ import {compose} from 'redux';
 import PropTypes from "prop-types";
 import styled from "styled-components/native";
 
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+
 import QuestItem from "../../components/QuestItem";
 import injectReducer from "../../utils/injectReducer";
 import reducer from "../GamePage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../GamePage/saga";
+
+import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectData, makeSelectError, makeSelectLoading} from "../GamePage/selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+
 import {loadGames} from "../GamePage/actions";
 import DataList from "../../components/DataList";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+
 
 const ContainerView = styled.View`
   flex: 1;
@@ -27,21 +32,15 @@ class GameItem extends Component{
     }
 
     render(){
-        const locale = this.props.language;
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
-        const theme = this.props.theme;
-        // const setData = data ? separateData(data) : false;
+
         const dataListProps = {
             loading,
             error,
             data,
-            locale,
-            theme,
             component: QuestItem,
-            scroll: false,
-            array: true,
         };
         return(
             <ContainerView>
@@ -74,6 +73,7 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
+    font: makeSelectFonts(),
 });
 const withConnect = connect(
     mapStateToProps,

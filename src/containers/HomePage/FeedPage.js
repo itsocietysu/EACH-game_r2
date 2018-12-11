@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
+
 import PropTypes from "prop-types";
 import styled from 'styled-components/native';
+
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-// import { withRequest } from '../../utils/auth';
-import RenderFeedItem from "./RenderFeedItem";
+
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
-import DataList from "./../../components/DataList"
 
-import {loadFeeds} from "./actions";
-import {
-    makeSelectData,
-    makeSelectError,
-    makeSelectLoading,
-} from './selectors';
 import reducer from "./reducer";
 import saga from "./saga";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {loadFeeds} from "./actions";
+
+import DataList from "./../../components/DataList";
+import RenderFeedItem from "./RenderFeedItem";
 import {colors} from "../../utils/constants";
+
+import { makeSelectData, makeSelectError, makeSelectLoading } from './selectors';
 import {makeSelectTheme} from "../../components/Theme/selectors";
+
+
 
 const ContainerView = styled.View`
   flex: 1;
@@ -49,7 +50,6 @@ class HomeScreen extends Component {
     }
 
     render() {
-        const locale = this.props.language;
         const loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
@@ -59,11 +59,7 @@ class HomeScreen extends Component {
             loading,
             error,
             data,
-            locale,
-            theme,
             component: RenderFeedItem,
-            scroll: false,
-            array: true,
         };
         return (
             <ContainerView color={colors.BASE[theme]}>
@@ -76,7 +72,6 @@ HomeScreen.propTypes = {
     loading: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-    language: PropTypes.string,
     theme: PropTypes.string,
     init: PropTypes.func,
 };
@@ -94,7 +89,6 @@ const mapStateToProps = createStructuredSelector({
     data: makeSelectData(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
-    language: makeSelectLanguage(),
     theme: makeSelectTheme(),
 });
 

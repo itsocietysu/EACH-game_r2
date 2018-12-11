@@ -1,9 +1,20 @@
-import {ImageBackground, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native'
-import styled from 'styled-components/native';
 import React, {Component} from 'react';
+import { ImageBackground, View, TouchableOpacity, Dimensions } from 'react-native'
 import {withNavigation} from 'react-navigation';
-import {TextContainer, TittleText, DescriptionText} from "../styles";
-import {colors} from "../../utils/constants";
+
+import {createStructuredSelector} from "reselect";
+import connect from "react-redux/es/connect/connect";
+import {compose} from "redux";
+
+import {
+    TittleContainer, TittleText, HeaderContainer, LogoAvatar, MainTextContainer, MainText, MoreText, ImageMask, Rectangle} from "../styles";
+import {colors, fonts} from "../../utils/constants";
+import getFont from "../../utils/getFont";
+
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+
 
 class RenderMuseumItem extends Component{
 
@@ -13,34 +24,59 @@ class RenderMuseumItem extends Component{
         const width = Dimensions.get('window').width;
         const locale = this.props.locale.toUpperCase();
         const theme = this.props.theme;
+        const fontLoaded = this.props.font;
         return (
-            <View style={{flex: 1, backgroundColor: colors.BASE[theme]}} >
+            <View style={{flex: 1}}>
                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item});}}>
-                    <View style={{flexDirection: 'row', backgroundColor: colors.BASE[theme], paddingLeft: 4, paddingBottom: 4, paddingTop: 2, paddingRight: 2}}>
-                        <View style={{flex: 0.15, flexDirection: 'row'}}>
-                            <Image source={{uri : item.image}}
-                                   style={{width: 40, height: 40, borderRadius: 40/2, borderWidth: 1, borderColor: colors.SECOND[theme]}} />
-                        </View>
-                        <View style={{flex: 1, justifyContent: 'center'}}>
-                            <Text style={{fontSize: 15, fontWeight: 'bold', color: colors.TEXT[theme]}}>{item.name[locale]}</Text>
-                        </View>
-                    </View>
-                    <View>
+                    <HeaderContainer bgColor={colors.BASE[theme]}>
+                        <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
+                        <TittleContainer>
+                            <TittleText
+                                color={colors.TEXT[theme]}
+                                font={getFont(fontLoaded, fonts.EACH)}
+                            >
+                                {item.name[locale]}
+                            </TittleText>)
+                        </TittleContainer>
+                    </HeaderContainer>
+                    <ImageBackground source={{uri: item.image}}
+                                     style={{width: width, height: width}}>
+                        <ImageMask height={width} width={width}/>
+                    </ImageBackground>
 
-                        <ImageBackground source={{uri: item.image}}
-                                         style={{width: width, height: width}}>
-                            <View style={{position: 'absolute', backgroundColor: 'rgba(160,160,160,0.5)', height: width, width: width}}/>
-                        </ImageBackground>
-                    </View>
-                    <View style={{flex: 1, width: width, height: 65, paddingLeft: 4, paddingBottom: 10}}>
-                        <Text numberOfLines={2} style={{color: colors.TEXT[theme]}}>{item.desc[locale]}</Text>
-                        <Text style={{alignSelf: 'center', color:'#0000ff'}}>more...</Text>
-                    </View>
-                    <View style={{width: width, height: 2, backgroundColor: colors.SECOND[theme]}}/>
+                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={65}>
+                        <MainText
+                            numberOfLines={3}
+                            color={colors.TEXT[theme]}
+                            font={getFont(fontLoaded, fonts.MURRAY)}
+                        >
+                            {item.desc[locale]}
+                        </MainText>
+                        <MoreText
+                            font={getFont(fontLoaded, fonts.MURRAY)}
+                        >
+                            more...
+                        </MoreText>
+                    </MainTextContainer>
+                    <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
                 </TouchableOpacity>
             </View>
         );
     }
 }
 
-export default withNavigation(RenderMuseumItem);
+const mapStateToProps = createStructuredSelector({
+    locale: makeSelectLanguage(),
+    theme: makeSelectTheme(),
+    font: makeSelectFonts(),
+});
+
+const withConnect = connect(
+    mapStateToProps,
+    {},
+);
+
+export default compose(
+    withConnect,
+    withNavigation
+)(RenderMuseumItem);

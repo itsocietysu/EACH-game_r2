@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Font} from 'expo';
 import { StatusBar, Platform, YellowBox } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
@@ -10,6 +11,8 @@ import configureStore from './configureStore';
 
 import Navigator from './Navigator';
 import { colors } from './utils/constants';
+import {fontLoaded} from "./components/Fonts/actions";
+import PropTypes from "prop-types";
 
 const Root = styled.View`
 flex: 1;
@@ -64,13 +67,26 @@ const ConnectedRootContainer = connect(mapStateToProps,null)(RootContainer);
 YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` of type `object` supplied to `Provider`, expected a single ReactElement.']);
 
 class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-			  <ConnectedRootContainer />
-      </Provider>
-    );
-  }
+    async componentDidMount(){
+        try{
+                await Font.loadAsync({
+                    eachFont: require('../assets/fonts/eachFont.ttf'),
+                    murray: require('../assets/fonts/MurraySlab.otf'),
+                });
+                store.dispatch(fontLoaded());
+            }
+            catch (e) {
+                console.log('Fonts are not loaded: ', e);
+            }
+        }
+
+      render() {
+      return (
+        <Provider store={store}>
+                <ConnectedRootContainer />
+        </Provider>
+      );
+    }
 }
 
 export default App;
