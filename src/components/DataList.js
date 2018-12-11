@@ -4,7 +4,7 @@ import {ActivityIndicator, View, Text} from 'react-native';
 
 import ScrollList from './ScrollList';
 
-function DataList({ loading, error, data, component, locale, theme, scroll, array }) {
+function DataList({ loading, error, data, component }) {
     if (loading) {
         return <View><ActivityIndicator/></View>;
     }
@@ -16,7 +16,7 @@ function DataList({ loading, error, data, component, locale, theme, scroll, arra
 
     if (data !== false) {
         return (
-            <ScrollList component = {component} data = {data} locale={locale} theme={theme}/>
+            <ScrollList component = {component} data = {data}/>
         );
     }
     return null;

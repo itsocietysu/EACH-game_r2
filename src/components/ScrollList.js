@@ -4,15 +4,13 @@ import PropTypes from 'prop-types';
 
 export default function ScrollList(props) {
     const ComponentToRender = props.component;
-    const locale = props.locale;
-    const theme = props.theme;
     let content;
     if (props.data){
         const data = props.data;
         content =
             <FlatList
                 data={data}
-                renderItem={({item}) => <ComponentToRender item={item} locale={locale} theme={theme}/>}
+                renderItem={({item}) => <ComponentToRender item={item}/>}
                 keyExtractor = {(item) => item.eid}
                 extraData = {props}
             />
