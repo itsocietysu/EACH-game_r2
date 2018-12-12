@@ -19,7 +19,7 @@ import {makeSelectLanguage} from "../../components/Locales/selectors";
 import messages from "../../Messages"
 
 
-
+import styled from "styled-components/native";
 
 import {loadScenario} from "../../components/ScenarioPage/actions";
 import {makeSelectData, makeSelectError, makeSelectLoading} from "../../components/ScenarioPage/selectors";
@@ -27,9 +27,46 @@ import injectReducer from "../../utils/injectReducer";
 import reducer from "../../components/ScenarioPage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../components/ScenarioPage/saga";
-import {TextContainer, TittleText, DescriptionText, StyledButton, ButtonText, SpamHello} from "../styles";
+import {MainTextContainer, MainText, TextContainer, TittleText, StyledButton, SpamHello} from "../styles";
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {colors} from "../../utils/constants";
+import {colors, fonts} from "../../utils/constants";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import getFont from "../../utils/getFont";
+
+import Rating from './Rating';
+import SpentTime from './SpentTime';
+import ArrowButton from "../../components/ArrowButton";
+import Button from "../../components/Button";
+
+const QuestTittle = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 38
+    paddingTop: 15
+    paddingBottom: 5
+`;
+
+const StatisticsContainer = styled.View`
+    flexDirection: row
+`;
+
+const DescriptionText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 16
+`;
+
+const DescriptionContainer = styled.View`
+    paddingLeft: 10
+`;
+
+const ButtonText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 20
+`;
 
 class QuestInfoScreen extends  Component {
 
@@ -38,11 +75,12 @@ class QuestInfoScreen extends  Component {
     }
 
     render(){
-        const width = Dimensions.get('window').width;
+        const {width, height} = Dimensions.get('window');
         const navigation = this.props.navigation;
         const quest = navigation.getParam('quest', '');
         const theme = this.props.theme;
         const locale = this.props.language.toUpperCase();
+        const fontLoaded = this.props.font;
 
         // loading scenario
         const loading = this.props.loading;
@@ -64,19 +102,37 @@ class QuestInfoScreen extends  Component {
                 <FormattedWrapper locale={this.props.language} messages={messages}>
                     <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
                         <ScrollView style={{flex: 1}}>
-                            <TittleText color={colors.TEXT[theme]}>{quest.name[locale]}</TittleText>
-                            <Image source={{uri: quest.image}} style={{width: width, height: width}}/>
-                            <TextContainer>
-                                <DescriptionText color={colors.TEXT[theme]}>{quest.desc[locale]}</DescriptionText>
-                            </TextContainer>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestPlay', {scenario})}>
-                                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                        <StyledButton color={colors.SECOND[theme]}>
-                                            <ButtonText color={colors.BUTTON_TEXT[theme]}><FormattedMessage message={'Play'}/></ButtonText>
-                                        </StyledButton>
-                                    </View>
 
-                            </TouchableOpacity>
+                            <QuestTittle color={colors.MAIN}
+                                         font={getFont(fontLoaded, fonts.EACH)}
+                            >
+                                {quest.name[locale]}
+                            </QuestTittle>
+                            <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
+                            <StatisticsContainer>
+                                <Rating/>
+                                <SpentTime/>
+                            </StatisticsContainer>
+
+                            <DescriptionContainer>
+                                <DescriptionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
+                                >
+                                    {quest.desc[locale]}
+                                </DescriptionText>
+                            </DescriptionContainer>
+
+                            <View style={{paddingTop: 25, justifyContent: 'center', alignItems: 'center'}}>
+
+                                <ArrowButton
+                                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
+                                    bgColor={colors.BASE[theme]}
+                                    borderColor={colors.MAIN}
+                                    width={width*0.55}
+                                    height={height*0.075}
+                                >
+                                    <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></ButtonText>
+                                </ArrowButton>
+                            </View>
                         </ScrollView>
                     </View>
                 </FormattedWrapper>
@@ -111,6 +167,7 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
+    font: makeSelectFonts(),
 });
 const withConnect = connect(
     mapStateToProps,

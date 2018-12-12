@@ -10,6 +10,8 @@ const messages = {
         Validate:   'Validate',
         Continue:   'Continue',
         TakePicture: 'Take a picture',
+        Rating:     'RATING:',
+        TimeSpent:  'AVERAGE PLAY TIME',
     },
 	ru: {
         Powered: 	'Создано в',
@@ -22,6 +24,8 @@ const messages = {
         Validate:   'Проверить',
         Continue:   'Продолжить',
         TakePicture: 'Сфотографировать',
+        Rating:     'РЕЙТИНГ:',
+        TimeSpent:  'СРЕДНЕЕ ВРЕМЯ ИГРЫ',
 	},
 	es: {
 		Welcome: 	'Bienvenido',
