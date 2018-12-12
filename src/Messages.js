@@ -12,6 +12,7 @@ const messages = {
         TakePicture: 'Take a picture',
         Rating:     'RATING:',
         TimeSpent:  'AVERAGE PLAY TIME',
+        ChoiceTaskDesc: 'This task contains a question and some possible choices, pick the correct one',
     },
 	ru: {
         Powered: 	'Создано в',
@@ -21,11 +22,12 @@ const messages = {
 		Settings: 	'Настройки',
         Games:      'Игры',
         Play:       'Играть',
-        Validate:   'Проверить',
+        Validate:   'Ответить',
         Continue:   'Продолжить',
         TakePicture: 'Сфотографировать',
         Rating:     'РЕЙТИНГ:',
         TimeSpent:  'СРЕДНЕЕ ВРЕМЯ ИГРЫ',
+        ChoiceTaskDesc: 'Это задание состоит из текстового вопроса с вариантами, выберете верный',
 	},
 	es: {
 		Welcome: 	'Bienvenido',
