@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator, Image
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
@@ -20,9 +20,39 @@ import reducer from "../../components/ValidateImage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../components/ValidateImage/saga";
 
-import {ButtonText, StyledButton,  TittleText} from "../styles";
+
 import messages from "../../Messages";
-import {colors} from "../../utils/constants";
+import {colors, fonts} from "../../utils/constants";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import getFont from "../../utils/getFont";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+import styled from "styled-components/native";
+import ArrowButton from "../../components/ArrowButton";
+
+const QuestionText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 20px
+    fontWeight: bold
+    textAlign: center
+    paddingTop: 10
+`;
+
+const DescText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 20
+    paddingTop: 20
+`;
+
+const ButtonText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 20
+`;
 
 class ARQuestion extends Component{
 
@@ -65,10 +95,11 @@ class ARQuestion extends Component{
     }
 
     render(){
-        const data = this.props.data;
+        const step = this.props.data;
         const theme = this.props.theme;
-        const ratio = data.target.ratio;
+        const ratio = step.target.ratio;
         const {width, height} = Dimensions.get('window');
+        const fontLoaded = this.props.font;
 
         let loadingInfo =<View/>;
         let imageTest = loadingInfo;
@@ -85,11 +116,34 @@ class ARQuestion extends Component{
         }
 
         return(
-            <FormattedWrapper locale={this.props.language} messages={messages}>
+            <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
                     {loadingInfo}
                     <ScrollView style={{flex: 1}}>
-                        <TittleText color={colors.TEXT[theme]}>{data.question}</TittleText>
+                        <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
+                            <Image source={{uri: step.avatar.uri}}
+                                   style={{width: width*0.45, height: width*0.45}}/>
+                            <View style={{flex: 1, paddingLeft: 5}}>
+                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                    <FormattedMessage message={'ARTaskDesc'}/>
+                                </DescText>
+                            </View>
+
+                        </View>
+                        <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
+                            {step.question}
+                        </QuestionText>
+                        <View style={{justifyContent: 'center', padding: 5}}>
+                            <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <FormattedMessage message={'ARTaskAdd'}/>
+                            </DescText>
+                        </View>
+                        {/* <TittleText
+                            color={colors.TEXT[theme]}
+                            font={getFont(fontLoaded, fonts.EACH)}
+                        >
+                            {step.question}
+                        </TittleText>
                         <TouchableOpacity
                             onPress={() => this.props.navigation.navigate('Camera', {
                                                 handler: this.handler,
@@ -101,7 +155,21 @@ class ARQuestion extends Component{
                                     <ButtonText color={colors.BUTTON_TEXT[theme]}><FormattedMessage message={'TakePicture'}/></ButtonText>
                                 </StyledButton>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity>*/}
+                        <View style={{alignItems: 'center'}}>
+                            <ArrowButton
+                                onPress={() => this.props.navigation.navigate('Camera', {
+                                    handler: this.handler,
+                                    aspectRatio: ratio})
+                                }
+                                bgColor={colors.BASE[theme]}
+                                borderColor={colors.MAIN}
+                                width={width*0.55}
+                                height={height*0.075}
+                            >
+                                <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></ButtonText>
+                            </ArrowButton>
+                        </View>
                     </ScrollView>
                     {imageTest}
                 </View>
@@ -124,6 +192,9 @@ const mapStateToProps = createStructuredSelector({
     result: makeSelectResult(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
+    theme: makeSelectTheme(),
+    locale: makeSelectLanguage(),
+    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

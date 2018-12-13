@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import { Platform, View } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 import QuestMap from "./QuestMap";
+import {createStructuredSelector} from "reselect";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import connect from "react-redux/es/connect/connect";
+import {compose} from "redux";
+import {withNavigation} from "react-navigation";
 
 class LocationQuestion extends Component{
 
@@ -40,5 +47,18 @@ class LocationQuestion extends Component{
         );
     }
 }
+const mapStateToProps = createStructuredSelector({
+    language: makeSelectLanguage(),
+    theme: makeSelectTheme(),
+    font: makeSelectFonts(),
+});
 
-export default LocationQuestion;
+const withConnect = connect(
+    mapStateToProps,
+    {},
+);
+
+export default compose(
+    withConnect,
+    withNavigation
+)(LocationQuestion);
