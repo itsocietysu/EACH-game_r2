@@ -34,7 +34,6 @@ const QuestionText = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 20px
-    fontWeight: bold
     textAlign: center
     paddingTop: 10
 `;

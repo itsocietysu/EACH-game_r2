@@ -66,7 +66,6 @@ export const TittleText = styled.Text`
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
     fontSize: 15
-    fontWeight: bold 
 `;
 
 export const TittleContainer = styled.View`
