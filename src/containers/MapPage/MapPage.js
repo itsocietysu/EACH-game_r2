@@ -15,6 +15,7 @@ import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
+import {colors} from "../../utils/constants";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -76,17 +77,31 @@ class MapsScreen extends Component {
 
   ShowDialog(museum, locName) {
     const locale = this.props.locale.toLocaleUpperCase();
+    const theme = this.props.theme;
+
     this.setState({
       showDialog : true,
       dialog: (
       <PopupDialog
-        dialogTitle={<DialogTitle title = {museum.name[locale]}/>}
+        dialogStyle={{backgroundColor: colors.BASE[theme],
+          height: 220,
+          borderColor: colors.MAIN,
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+        }}
+        dialogTitle={<View style={{backgroundColor: colors.BASE[theme], borderRadius: 10}}>
+          <Text style={{color: colors.TEXT[theme], align: 'center', borderBottomWidth: 1, borderBottomColor: colors.TEXT[theme], fontSize: 20}}>
+            {museum.name[locale]}
+          </Text>
+        </View>}
         ref={(popupDialog) => { this.refDialog = popupDialog;}}
         dialogAnimation={new SlideAnimation({
           slideFrom: 'bottom',
         })}
         actions={[
           <DialogButton
+            textStyle = {{color: colors.MAIN, borderTopWidth: 2,borderBottomWidth: 2, borderColor: colors.MAIN, fontSize: 30}}
+
             key = {id++}
             text="More..."
             onPress={()=>{
@@ -98,7 +113,7 @@ class MapsScreen extends Component {
         ]}
       >
         <View>
-          <Text>
+          <Text style = {{color: colors.TEXT[theme]}}>
             <Image
               align={"top"}
               style={{width: 200, height: 200}}
