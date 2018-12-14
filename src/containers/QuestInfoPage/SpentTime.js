@@ -28,9 +28,6 @@ const TimeContainer = styled.View`
     flex: 1
     justifyContent: flex-end
     flexDirection: row
-    paddingTop: 10
-    paddingBottom: 15
-    paddingRight: 15
 `;
 
 class SpentTime extends Component{

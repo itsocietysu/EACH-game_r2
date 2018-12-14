@@ -24,7 +24,7 @@ export const colors = {
         dark:     '',
     },
     MAIN: '#5b7bbc',
-
+    FRAME: '#5b7bbc',
 
     WHITE: '#FFFFFF',
     PINK_50: '#FCE4EC',

@@ -63,6 +63,7 @@ const mapStateToProps = (state) => ({
 
 const ConnectedRootContainer = connect(mapStateToProps,null)(RootContainer);
 
+YellowBox.ignoreWarnings(['You are not currently signed in to Expo on your development machine. As a result, the redirect URL for AuthSession will be']);
 // Ignore boilerplate warning
 YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` of type `object` supplied to `Provider`, expected a single ReactElement.']);
 

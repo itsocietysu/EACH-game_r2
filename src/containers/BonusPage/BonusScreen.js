@@ -2,8 +2,7 @@ import React from "react";
 import {Text, TouchableOpacity, View, Image, Dimensions, ScrollView} from "react-native";
 import {withNavigation} from 'react-navigation';
 
-import {StyledButton, ButtonText, TittleText} from "../styles";
-import {FormattedMessage} from "react-native-globalize";
+import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import {createStructuredSelector} from "reselect";
 import {compose} from "redux";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
@@ -11,18 +10,35 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {colors, fonts} from "../../utils/constants";
 import connect from "react-redux/es/connect/connect";
-import {mapDispatchToProps} from "../QuestInfoPage/QuestInfoScreen";
 import getFont from "../../utils/getFont";
+import messages from "../../Messages";
+import ArrowButton from "../../components/ArrowButton";
+import styled from "styled-components/native";
 
 const PHOTO_BONUS = "photo";
 const TEXT_BONUS = "text";
 const VIDEO_BONUS = "video";
 
+export const TittleText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: 30
+    textAlign: center
+`;
+
+const ButtonText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: 20
+`;
+
 class Bonus extends React.Component{
     render() {
-        const width = Dimensions.get('window').width;
+        const {width, height} = Dimensions.get('window');
         const bonus = this.props.bonus;
         const fontLoaded = this.props.font;
+        const theme = this.props.theme;
         // TODO: remove this field
         const next = 'next';
         let content = <View/>;
@@ -31,15 +47,15 @@ class Bonus extends React.Component{
             case PHOTO_BONUS:
                 content =
                     <View>
-                        <Image source={{uri: bonus.desc.image.uri}} style={{width: width, height: width}}/>
+                        <Image source={{uri: bonus.desc.image.uri}} style={{resizeMode: 'cover', width: '100%', height: '60%'}}/>
                     </View>;
 
                 break;
             case TEXT_BONUS:
                 content =
-                    <View>
+                    <ScrollView style={{flex: 1}}>
                         <Text>{bonus.desc.text}</Text>
-                    </View>;
+                    </ScrollView>;
                 break;
             case VIDEO_BONUS:
                 content =
@@ -52,37 +68,43 @@ class Bonus extends React.Component{
                 break;
         }
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <ScrollView>
-                    <TittleText
-                        font={getFont(fontLoaded, fonts.EACH)}
-                        color={'#000000'}>
-                        Congratulations!{'\n'}
-                        You are right!
-                    </TittleText>
-                    <View style={{flex: 1}}>{content}</View>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 20}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestPlay', {next})}>
-                            <StyledButton color={'#ffa366'}>
-                                <ButtonText color={'#ffffff'}><FormattedMessage message={'Continue'}/></ButtonText>
-                            </StyledButton>
-                        </TouchableOpacity>
+            <FormattedWrapper locale={this.props.locale} messages={messages}>
+                <View style={{flex: 1, backgroundColor: colors.BASE[theme], alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{width: '100%', height: '20%', alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 10}}>
+                        <TittleText
+                            font={getFont(fontLoaded, fonts.MURRAY)}
+                            color={colors.MAIN}
+                        >
+                            <FormattedMessage message={'Correct'}/>
+                        </TittleText>
                     </View>
-                </ScrollView>
-            </View>
+                    {content}
+                    <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 15}}>
+                        <ArrowButton
+                            onPress={()=>this.props.navigation.navigate('QuestPlay', {next})}
+                            bgColor={colors.BASE[theme]}
+                            borderColor={colors.MAIN}
+                            width={width*0.55}
+                            height={height*0.075}
+                        >
+                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Continue'}/>-></ButtonText>
+                        </ArrowButton>
+                    </View>
+                </View>
+            </FormattedWrapper>
         );
     }
 }
 
 const mapStateToProps = createStructuredSelector({
-    language: makeSelectLanguage(),
+    locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
     font: makeSelectFonts(),
 });
 
 const withConnect = connect(
     mapStateToProps,
-    mapDispatchToProps,
+    {},
 );
 export default compose(
     withNavigation,

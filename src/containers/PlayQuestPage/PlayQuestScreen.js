@@ -4,11 +4,11 @@ import {
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import {AR_PAINT_QUESTION, LOCATION_QUESTION, TEXT_QUESTION} from "../Question/constants";
+import {AR_PAINT_QUESTION, LOCATION_QUESTION, TEXT_QUESTION, FREE_QUESTION} from "../Question/constants";
 import TextQuestion from "../Question/TextQuestion";
 import LocationQuestion from "../Question/LocationQuestion";
 import ARQuestion from "../Question/ARQuestion";
-
+import FreeQuestion from '../Question/FreeQuestion';
 
 class PlayQuestScreen extends Component{
     state = {
@@ -33,9 +33,9 @@ class PlayQuestScreen extends Component{
        let currStep = 0;
        const next = navigation.getParam('next', '');
        if (next === 'next')
-           currStep = 1;
+           currStep = 0;
        else
-           currStep = 4;
+           currStep = 5;
        // TODO: current step should be loaded the from global state
 
        const step = scenario[0].scenario.steps[currStep];
@@ -46,6 +46,8 @@ class PlayQuestScreen extends Component{
                return <LocationQuestion data={step.desc}/>;
            case AR_PAINT_QUESTION:
                return <ARQuestion data={step.desc} scenarioID={scenario[0].scenario.scenario_id} stepID={currStep}/>;
+           case FREE_QUESTION:
+               return <FreeQuestion data={step.desc}/>;
            default:
                return <View/>;
        }

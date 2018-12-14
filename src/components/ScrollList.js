@@ -11,7 +11,7 @@ export default function ScrollList(props) {
             <FlatList
                 data={data}
                 renderItem={({item}) => <ComponentToRender item={item}/>}
-                keyExtractor = {(item) => item.eid}
+                keyExtractor = {(item) => item.eid.toString()}
                 extraData = {props}
             />
 

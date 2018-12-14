@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Alert, Image, Text, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
+import {View, Alert, Image, TextInput, KeyboardAvoidingView, Text, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import {TEXT_QUESTION, AR_PAINT_QUESTION, LOCATION_QUESTION} from "./constants";
@@ -32,7 +32,6 @@ const QuestionText = styled.Text`
 `;
 
 const DescText = styled.Text`
-    alignSelf: center
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 20
@@ -46,33 +45,26 @@ const ButtonText = styled.Text`
     fontSize: 20
 `;
 
-class TextQuestion extends Component{
-
-
+class FreeQuestion extends Component{
 
     constructor(){
         super();
         this.state={
-            pickerSelection: -1,
+            answer: null,
         };
-        this._changeSelection = this._changeSelection.bind(this);
     }
 
-    _changeSelection(e){
-        this.setState({
-            pickerSelection: e
-        })
-    }
 
     _validateResult(){
-        if (this.state.pickerSelection === -1) {
-            Alert.alert('Not selected!');
+        if (this.state.answer === null) {
+            Alert.alert('Fill the input field!');
             return;
         }
         let result = 'fail';
         const step = this.props.data;
+        const choices = step.choices;
         let bonus = null;
-        if(this.state.pickerSelection === step.correct) {
+        if(choices.includes(this.state.answer.toLowerCase())) {
             result = 'success';
             bonus = step.bonus;
         }
@@ -87,32 +79,38 @@ class TextQuestion extends Component{
         const {width, height} = Dimensions.get('window');
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
-                <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
-                    <ScrollView style={{flex: 1}}>
+                <KeyboardAvoidingView style={{flex: 1}} behavior="position" enabled>
+                    <View style={{height: '100%', backgroundColor: colors.BASE[theme]}}>
                         <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
                             <View style={{flex: 1, paddingLeft: 5}}>
                                 <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
-                                    <FormattedMessage message={'ChoiceTaskDesc'}/>
+                                    <FormattedMessage message={'FreeTaskDesc'}/>
                                 </DescText>
                             </View>
 
                         </View>
+
                         <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
                             {step.question}
                         </QuestionText>
 
-                        <FlatList
-                            data={step.choices}
-                            renderItem={(item)=><PickerItem text={item} state={this.state} theme={theme} fontLoaded={fontLoaded} handler={this._changeSelection}/>}
-                            keyExtractor={(item) => step.choices.indexOf(item).toString()}
-                            extraData={[theme, this.state]}
-                            scrollEnabled={false}
-                        />
-                        <View style={{alignItems: 'flex-end', paddingRight: 30}}>
+                        <View style={{alignItems: 'center'}}>
+                            <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <FormattedMessage message={'FreeTaskAdd'}/>
+                            </DescText>
+                            <TextInput
+                                selectionColor={colors.MAIN}
+                                onChangeText={(text => this.setState({answer: text}))}
+                                style={{fontFamily: getFont(fontLoaded, fonts.MURRAY), color: colors.MAIN, fontSize: 20, textAlign: 'center', width: '95%', height: 50, borderColor: colors.MAIN, borderWidth: 2}}
+
+                            />
+                        </View>
+
+                        <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
                             <ArrowButton
-                                onPress={() => this._validateResult(this)}
+                                onPress={() => this._validateResult()}
                                 bgColor={colors.BASE[theme]}
                                 borderColor={colors.MAIN}
                                 width={width*0.55}
@@ -121,10 +119,10 @@ class TextQuestion extends Component{
                                 <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></ButtonText>
                             </ArrowButton>
                         </View>
-                        <View style={{height: 20}}/>
-                    </ScrollView>
-                </View>
+                    </View>
+                </KeyboardAvoidingView>
             </FormattedWrapper>
+
         );
     }
 }
@@ -143,4 +141,4 @@ const withConnect = connect(
 export default compose(
     withConnect,
     withNavigation
-)(TextQuestion);
+)(FreeQuestion);

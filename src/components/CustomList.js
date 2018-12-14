@@ -11,7 +11,7 @@ export default class CustomList extends Component{
             <FlatList
                 data={array}
                 renderItem={(item)=><RNComponent item={item}/>}
-                keyExtractor={(item)=>array.indexOf(item)}
+                keyExtractor={(item)=>array.indexOf(item).toString()}
                 extraData={theme}
             />
         );
