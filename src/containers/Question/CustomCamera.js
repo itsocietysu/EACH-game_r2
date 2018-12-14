@@ -4,6 +4,7 @@ import { withNavigation } from 'react-navigation';
 import { ImageManipulator, Permissions, Camera} from 'expo';
 import {MaterialIcons} from '@expo/vector-icons';
 import {colors} from "../../utils/constants";
+import Back from "../../components/icons/Back";
 
 class CustomCamera extends React.Component {
     state = {
@@ -148,9 +149,12 @@ class CustomCamera extends React.Component {
                                 width: this.state.targetWidth,
                                 height: this.state.targetHeight,
                                 borderWidth: 3,
-                                borderColor: '#000',
+                                borderColor: colors.FRAME,
                                 backgroundColor: 'transparent'
                             }}/>
+                        </View>
+                        <View style={{position: 'absolute', top: 15}}>
+                            <Back onPress={ ()=>this.props.navigation.goBack() }/>
                         </View>
                         <View style={{position: 'absolute', left: (width-iconSize)/2, top: height *0.85}}>
                             <MaterialIcons name="photo-camera" size={iconSize} color={colors.SECOND.light}

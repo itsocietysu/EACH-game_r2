@@ -27,9 +27,6 @@ const RatingText = styled.Text`
 const RowContainer = styled.View`
     flex: 0.4
     flexDirection: row
-    paddingTop: 10
-    paddingBottom: 15
-    paddingLeft: 15
 `;
 
 class Rating extends Component{

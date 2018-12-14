@@ -43,12 +43,16 @@ const QuestTittle = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 38
-    paddingTop: 15
+    paddingTop: 10
     paddingBottom: 5
 `;
 
 const StatisticsContainer = styled.View`
     flexDirection: row
+    paddingTop: 10
+    paddingLeft: 15
+    paddingRight: 15
+    paddingBottom: 8
 `;
 
 const DescriptionText = styled.Text`
@@ -101,39 +105,35 @@ class QuestInfoScreen extends  Component {
             return (
                 <FormattedWrapper locale={this.props.language} messages={messages}>
                     <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
+                        <QuestTittle color={colors.MAIN}
+                                     font={getFont(fontLoaded, fonts.EACH)}
+                        >
+                            {quest.name[locale]}
+                        </QuestTittle>
+                        <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
+                        <StatisticsContainer>
+                            <Rating/>
+                            <SpentTime/>
+                        </StatisticsContainer>
                         <ScrollView style={{flex: 1}}>
-
-                            <QuestTittle color={colors.MAIN}
-                                         font={getFont(fontLoaded, fonts.EACH)}
-                            >
-                                {quest.name[locale]}
-                            </QuestTittle>
-                            <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
-                            <StatisticsContainer>
-                                <Rating/>
-                                <SpentTime/>
-                            </StatisticsContainer>
-
                             <DescriptionContainer>
                                 <DescriptionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
                                 >
                                     {quest.desc[locale]}
                                 </DescriptionText>
                             </DescriptionContainer>
-
-                            <View style={{paddingTop: 25, justifyContent: 'center', alignItems: 'center'}}>
-
-                                <ArrowButton
-                                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
-                                    bgColor={colors.BASE[theme]}
-                                    borderColor={colors.MAIN}
-                                    width={width*0.55}
-                                    height={height*0.075}
-                                >
-                                    <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></ButtonText>
-                                </ArrowButton>
-                            </View>
                         </ScrollView>
+                        <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
+                            <ArrowButton
+                                onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
+                                bgColor={colors.BASE[theme]}
+                                borderColor={colors.MAIN}
+                                width={width*0.55}
+                                height={height*0.075}
+                            >
+                                <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></ButtonText>
+                            </ArrowButton>
+                        </View>
                     </View>
                 </FormattedWrapper>
             );

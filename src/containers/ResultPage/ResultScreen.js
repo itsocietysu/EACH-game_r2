@@ -3,7 +3,7 @@ import {Text, View, Image, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import PlayQuestScreen from "../PlayQuestPage/PlayQuestScreen";
 import Bonus from "../BonusPage/BonusScreen";
-
+import FailureScreen from '../FailurePage/FailureScreen'
 
 class ResultScreen extends Component{
     render() {
@@ -14,10 +14,7 @@ class ResultScreen extends Component{
         if (result === 'success')
             answer = <Bonus bonus={bonus}/>;
         else
-            answer =
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text>Sorry, but you are wrong =( </Text>
-            </View>;
+            answer = <FailureScreen/>
         return (
             <View style={{flex: 1}}>{answer}</View>
         )

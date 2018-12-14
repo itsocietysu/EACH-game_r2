@@ -34,12 +34,12 @@ const QuestionText = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 20px
-    textAlign: center
+    paddingLeft: 10
     paddingTop: 10
 `;
 
 const DescText = styled.Text`
-    alignSelf: center
+    textAlign: center
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 20
@@ -118,7 +118,7 @@ class ARQuestion extends Component{
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
                     {loadingInfo}
-                    <ScrollView style={{flex: 1}}>
+
                         <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
@@ -132,44 +132,28 @@ class ARQuestion extends Component{
                         <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
                             {step.question}
                         </QuestionText>
-                        <View style={{justifyContent: 'center', padding: 5}}>
-                            <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
-                                <FormattedMessage message={'ARTaskAdd'}/>
-                            </DescText>
-                        </View>
-                        {/* <TittleText
-                            color={colors.TEXT[theme]}
-                            font={getFont(fontLoaded, fonts.EACH)}
-                        >
-                            {step.question}
-                        </TittleText>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('Camera', {
-                                                handler: this.handler,
-                                                aspectRatio: ratio})
-                            }
-                        >
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <StyledButton color={colors.SECOND[theme]}>
-                                    <ButtonText color={colors.BUTTON_TEXT[theme]}><FormattedMessage message={'TakePicture'}/></ButtonText>
-                                </StyledButton>
+                        <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 5, paddingBottom: 15}}>
+                            <View style={{justifyContent: 'center', padding: 5}}>
+                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                    <FormattedMessage message={'ARTaskAdd'}/>
+                                </DescText>
                             </View>
-                        </TouchableOpacity>*/}
-                        <View style={{alignItems: 'center'}}>
-                            <ArrowButton
-                                onPress={() => this.props.navigation.navigate('Camera', {
-                                    handler: this.handler,
-                                    aspectRatio: ratio})
-                                }
-                                bgColor={colors.BASE[theme]}
-                                borderColor={colors.MAIN}
-                                width={width*0.55}
-                                height={height*0.075}
-                            >
-                                <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></ButtonText>
-                            </ArrowButton>
+                            <View style={{alignItems: 'center'}}>
+                                <ArrowButton
+                                    onPress={() => this.props.navigation.navigate('Camera', {
+                                        handler: this.handler,
+                                        aspectRatio: ratio})
+                                    }
+                                    bgColor={colors.BASE[theme]}
+                                    borderColor={colors.MAIN}
+                                    width={width*0.55}
+                                    height={height*0.075}
+                                >
+                                    <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></ButtonText>
+                                </ArrowButton>
+                            </View>
                         </View>
-                    </ScrollView>
+
                     {imageTest}
                 </View>
             </FormattedWrapper>

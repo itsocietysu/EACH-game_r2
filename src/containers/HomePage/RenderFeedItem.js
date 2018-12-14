@@ -69,7 +69,6 @@ RenderFeedItem.propTypes = {
     locale: PropTypes.string,
     theme: PropTypes.string,
     font: PropTypes.bool,
-    item: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({

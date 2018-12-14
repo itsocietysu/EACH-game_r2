@@ -24,10 +24,9 @@ const ErrorText = styled.Text`
 `;
 
 const DescText = styled.Text`
-    alignSelf: center
     color: ${props => props.color}
     fontFamily: ${props => props.font}
-    fontSize: 20
+    fontSize: 30
     paddingTop: 20
 `;
 
@@ -44,13 +43,13 @@ class FailureScreen extends Component{
         const theme = this.props.theme;
         const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
-        const image = (theme === LIGHT_THEME)? require('./../../../assets/images/loading_screen.png') : require('./../../../assets/images/loading_screen.png');
+        const image = (theme === LIGHT_THEME)? require('./../../../assets/images/errorPage.png') : require('./../../../assets/images/errorPage.png');
         return(
             <View style={{flex: 1}}>
                 <FormattedWrapper locale={this.props.locale} messages={messages}>
                     <ImageBackground
-                        style={{width, height}}
-                        imageStyle={{resizeMode: 'contain'}}
+                        style={{width: '100%', height: '100%'}}
+                        imageStyle={{resizeMode: 'stretch'}}
                         source={image}
                     >
                         <View style={{flex: 1, paddingTop: 20, paddingLeft: 5}}>
@@ -59,9 +58,11 @@ class FailureScreen extends Component{
                             </ErrorText>
                         </View>
                         <View style={{flex: 1}}>
-                            <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
-                                <FormattedMessage message={'WrongAnsw'}/>
-                            </DescText>
+                            <View style={{paddingLeft: 10}}>
+                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                    <FormattedMessage message={'WrongAnsw'}/>
+                                </DescText>
+                            </View>
                             <View style={{paddingLeft: 10, paddingTop: 40}}>
                                 <ArrowButton
                                     onPress={() => this.props.navigation.goBack()}
