@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, Text, Image } from "react-native";
 import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
+import {Font} from 'expo';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,6 +17,7 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
 import {colors} from "../../utils/constants";
+
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -38,6 +40,10 @@ class MapsScreen extends Component {
   };
 
   componentDidMount() {
+    Font.loadAsync({
+      'eachFont': require('../../../assets/fonts/eachFont.ttf'),
+      'MurraySlab': require('../../../assets/fonts/MurraySlab.otf'),
+    });
     if (!this.props.data) this.props.init();
     else this.BuildMarkers();
   }
@@ -78,6 +84,7 @@ class MapsScreen extends Component {
   ShowDialog(museum, locName) {
     const locale = this.props.locale.toLocaleUpperCase();
     const theme = this.props.theme;
+    const fontLoaded = this.props.font;
 
     this.setState({
       showDialog : true,
@@ -85,12 +92,14 @@ class MapsScreen extends Component {
       <PopupDialog
         dialogStyle={{backgroundColor: colors.BASE[theme],
           height: 220,
-          borderColor: colors.MAIN,
           borderTopWidth: 1,
           borderBottomWidth: 1,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10,
+          borderColor: colors.MAIN,
         }}
-        dialogTitle={<View style={{backgroundColor: colors.BASE[theme], borderRadius: 10}}>
-          <Text style={{color: colors.TEXT[theme], align: 'center', borderBottomWidth: 1, borderBottomColor: colors.TEXT[theme], fontSize: 20}}>
+        dialogTitle={<View style={{backgroundColor: colors.BASE[theme], borderBottomWidth: 0.5, borderColor: colors.MAIN}}>
+          <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 20, fontFamily: 'eachFont'}}>
             {museum.name[locale]}
           </Text>
         </View>}
@@ -100,10 +109,10 @@ class MapsScreen extends Component {
         })}
         actions={[
           <DialogButton
-            textStyle = {{color: colors.MAIN, borderTopWidth: 2,borderBottomWidth: 2, borderColor: colors.MAIN, fontSize: 30}}
+            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30}}
 
             key = {id++}
-            text="More..."
+            text="More"
             onPress={()=>{
               this.props.navigation.navigate('MuseumItem', {data: museum, page: "Maps"});
 
@@ -113,14 +122,15 @@ class MapsScreen extends Component {
         ]}
       >
         <View>
-          <Text style = {{color: colors.TEXT[theme]}}>
+          <Text style = {{color: colors.TEXT[theme], textAlign: 'center', marginTop: 20}}>
             <Image
-              align={"top"}
-              style={{width: 200, height: 200}}
+              style={{width: 230, height: 230, borderRadius: 10, borderTopWidth: 3}}
               source={{uri: museum.logo}}
             />
+          </Text>
+          <Text style = {{color: colors.TEXT[theme], textAlign: 'center', fontFamily: 'MurraySlab'}}>
             { locName }
-            </Text>
+          </Text>
         </View>
       </PopupDialog>
     )});
