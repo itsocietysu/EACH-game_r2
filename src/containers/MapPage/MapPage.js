@@ -84,7 +84,7 @@ class MapsScreen extends Component {
       dialog: (
       <PopupDialog
         dialogStyle={{backgroundColor: colors.BASE[theme],
-          height: 220,
+          height: '40%',
           borderTopWidth: 1,
           borderBottomWidth: 1,
           borderTopRightRadius: 10,
@@ -112,13 +112,11 @@ class MapsScreen extends Component {
           />
         ]}
       >
-        <View>
-          <Text style = {{color: colors.TEXT[theme], textAlign: 'center', marginTop: 20}}>
+        <View style = {{ alignItems: 'center', marginTop: 20}}>
             <Image
-              style={{width: 230, height: 230}}
+              style={{width: 95, height: 95}}
               source={{uri: museum.logo}}
             />
-          </Text>
           <Text style = {{color: colors.TEXT[theme], textAlign: 'center', fontFamily: fonts.MURRAY}}>
             { locName }
           </Text>
