@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, Text, Image } from "react-native";
 import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
-import {Font} from 'expo';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,7 +15,7 @@ import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
-import {colors} from "../../utils/constants";
+import {colors, fonts} from "../../utils/constants";
 
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
@@ -39,10 +38,6 @@ class MapsScreen extends Component {
   };
 
   componentDidMount() {
-    Font.loadAsync({
-      'eachFont': require('../../../assets/fonts/eachFont.ttf'),
-      'MurraySlab': require('../../../assets/fonts/MurraySlab.otf'),
-    });
     if (!this.props.data) this.props.init();
     else this.BuildMarkers();
   }
@@ -97,7 +92,7 @@ class MapsScreen extends Component {
           borderColor: colors.MAIN,
         }}
         dialogTitle={<View style={{backgroundColor: colors.BASE[theme], borderBottomWidth: 0.5, borderColor: colors.MAIN}}>
-          <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 20, fontFamily: 'eachFont'}}>
+          <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 20, fontFamily: fonts.EACH}}>
             {museum.name[locale]}
           </Text>
         </View>}
@@ -107,7 +102,7 @@ class MapsScreen extends Component {
         })}
         actions={[
           <DialogButton
-            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30, fontFamily: 'MurraySlab'}}
+            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30, fontFamily: fonts.MURRAY}}
             key = {id++}
             text="More"
             onPress={()=>{
@@ -124,7 +119,7 @@ class MapsScreen extends Component {
               source={{uri: museum.logo}}
             />
           </Text>
-          <Text style = {{color: colors.TEXT[theme], textAlign: 'center', fontFamily: 'MurraySlab'}}>
+          <Text style = {{color: colors.TEXT[theme], textAlign: 'center', fontFamily: fonts.MURRAY}}>
             { locName }
           </Text>
         </View>
