@@ -18,7 +18,6 @@ import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
 import {colors} from "../../utils/constants";
 
-
 const LATITUDE = 60.0074;
 const LONGITUDE = 30.3729;
 const LATITUDE_DELTA = 0.005;
@@ -84,7 +83,6 @@ class MapsScreen extends Component {
   ShowDialog(museum, locName) {
     const locale = this.props.locale.toLocaleUpperCase();
     const theme = this.props.theme;
-    const fontLoaded = this.props.font;
 
     this.setState({
       showDialog : true,
@@ -109,13 +107,11 @@ class MapsScreen extends Component {
         })}
         actions={[
           <DialogButton
-            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30}}
-
+            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30, fontFamily: 'MurraySlab'}}
             key = {id++}
             text="More"
             onPress={()=>{
               this.props.navigation.navigate('MuseumItem', {data: museum, page: "Maps"});
-
               this.refDialog.dismiss();
             }}
           />
@@ -124,7 +120,7 @@ class MapsScreen extends Component {
         <View>
           <Text style = {{color: colors.TEXT[theme], textAlign: 'center', marginTop: 20}}>
             <Image
-              style={{width: 230, height: 230, borderRadius: 10, borderTopWidth: 3}}
+              style={{width: 230, height: 230}}
               source={{uri: museum.logo}}
             />
           </Text>
