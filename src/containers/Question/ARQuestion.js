@@ -20,7 +20,7 @@ import reducer from "../../components/ValidateImage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../components/ValidateImage/saga";
 
-
+import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
@@ -149,7 +149,7 @@ class ARQuestion extends Component{
                                     width={width*0.55}
                                     height={height*0.075}
                                 >
-                                    <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></ButtonText>
+                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                 </ArrowButton>
                             </View>
                         </View>

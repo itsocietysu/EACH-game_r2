@@ -1,3 +1,5 @@
+import {Dimensions} from 'react-native';
+
 export const colors = {
     BASE: {
         light:    '#FFFFFF',
@@ -47,8 +49,21 @@ export const fonts = {
     EACH: 'eachFont',
     MURRAY: 'murray',
 };
-export const HeaderHeight = 40;
+export const MAX_COMMENT_INPUT_LENGTH = 250;
+export const SCREEN_WIDTH = Dimensions.get('window').width;
+export const SCREEN_HEIGHT = Dimensions.get('window').height;
+export const HeaderHeight = SCREEN_HEIGHT*0.8/10.5;
+export const TabBarHeight = SCREEN_HEIGHT*0.8/10.5;
+export const SlidingPanelHeight = SCREEN_HEIGHT*0.8/10.5;
+export const StatusBarHeight = 45;
 export const TabLabelFontSize = 12;
+export const HeaderLabelWidth = SCREEN_WIDTH*1.9/5.9;
+export const HeaderLabelHeight = SCREEN_WIDTH*0.4/10.5;
+
+export const DESC_BLOCK_HEIGHT = SCREEN_HEIGHT*1.2/10.5;
+export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
+export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
+
 
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';

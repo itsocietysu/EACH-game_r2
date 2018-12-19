@@ -16,13 +16,7 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import getFont from "../../utils/getFont";
-
-const TimeText = styled.Text`
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    paddingLeft: ${props => props.paddingLeft || 0}
-    fontSize: 17
-`;
+import {TimeText} from "../styles";
 
 const TimeContainer = styled.View`
     flex: 1

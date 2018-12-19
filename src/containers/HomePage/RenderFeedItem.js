@@ -8,8 +8,8 @@ import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 
 import getFont from '../../utils/getFont';
-import {colors, fonts} from "../../utils/constants";
-import {TittleContainer, TittleText, HeaderContainer, LogoAvatar, MainTextContainer, MainText, MoreText, ImageMask, Rectangle} from "../styles";
+import {colors, DESC_BLOCK_HEIGHT, fonts} from "../../utils/constants";
+import {TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextContainer, FeedDescriptionText, FeedMoreText, ImageMask, Rectangle} from "../styles";
 
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
@@ -31,12 +31,12 @@ class RenderFeedItem extends Component{
                     <HeaderContainer bgColor={colors.BASE[theme]}>
                         <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
                         <TittleContainer>
-                            <TittleText
+                            <FeedTittleText
                                 color={colors.TEXT[theme]}
                                 font={getFont(fontLoaded, fonts.EACH)}
                             >
                                 {item.title[locale]}
-                            </TittleText>
+                            </FeedTittleText>
                         </TittleContainer>
                     </HeaderContainer>
                     <ImageBackground source={{uri: item.image}}
@@ -44,19 +44,19 @@ class RenderFeedItem extends Component{
                         <ImageMask height={width} width={width}/>
                     </ImageBackground>
 
-                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={65}>
-                        <MainText
+                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={DESC_BLOCK_HEIGHT}>
+                        <FeedDescriptionText
                             numberOfLines={3}
                             color={colors.TEXT[theme]}
                             font={getFont(fontLoaded, fonts.MURRAY)}
                         >
                             {item.desc[locale]}
-                        </MainText>
-                        <MoreText
+                        </FeedDescriptionText>
+                        <FeedMoreText
                             font={getFont(fontLoaded, fonts.MURRAY)}
                         >
                             more...
-                        </MoreText>
+                        </FeedMoreText>
                     </MainTextContainer>
                     <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
                 </TouchableOpacity>

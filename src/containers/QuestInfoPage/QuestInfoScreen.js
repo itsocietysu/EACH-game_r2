@@ -27,7 +27,7 @@ import injectReducer from "../../utils/injectReducer";
 import reducer from "../../components/ScenarioPage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../components/ScenarioPage/saga";
-import {MainTextContainer, MainText, TextContainer, TittleText, StyledButton, SpamHello} from "../styles";
+import {QuestButtonText, FeedPlainText, QuestTittle, MainTextContainer, MainText, TextContainer, TittleText, StyledButton, SpamHello} from "../styles";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors, fonts} from "../../utils/constants";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
@@ -38,14 +38,6 @@ import SpentTime from './SpentTime';
 import ArrowButton from "../../components/ArrowButton";
 import Button from "../../components/Button";
 
-const QuestTittle = styled.Text`
-    alignSelf: center
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 38
-    paddingTop: 10
-    paddingBottom: 5
-`;
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -117,10 +109,10 @@ class QuestInfoScreen extends  Component {
                         </StatisticsContainer>
                         <ScrollView style={{flex: 1}}>
                             <DescriptionContainer>
-                                <DescriptionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
+                                <FeedPlainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
                                 >
                                     {quest.desc[locale]}
-                                </DescriptionText>
+                                </FeedPlainText>
                             </DescriptionContainer>
                         </ScrollView>
                         <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
@@ -131,7 +123,7 @@ class QuestInfoScreen extends  Component {
                                 width={width*0.55}
                                 height={height*0.075}
                             >
-                                <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></ButtonText>
+                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></QuestButtonText>
                             </ArrowButton>
                         </View>
                     </View>

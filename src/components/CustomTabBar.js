@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Dimensions} from 'react-native';
 import {BottomTabBar, withNavigation} from 'react-navigation';
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
@@ -7,7 +8,7 @@ import {createStructuredSelector} from "reselect";
 
 import {makeSelectLanguage} from "./Locales/selectors";
 import {makeSelectTheme} from "./Theme/selectors";
-import {colors} from "../utils/constants";
+import {colors, TabBarHeight} from "../utils/constants";
 
 class CustomTabBar extends Component{
     render(){
@@ -18,7 +19,7 @@ class CustomTabBar extends Component{
             {
                 style: {
                     backgroundColor: colors.BASE[theme],
-                    height: 50,
+                    height: TabBarHeight,
                 },
                 activeTintColor: colors.SECOND[theme],
                 inactiveTintColor: colors.TEXT[theme],

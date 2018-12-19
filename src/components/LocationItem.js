@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View} from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import {colors, fonts} from "../utils/constants";
-import {MainText} from "../containers/styles";
+import {LocationText} from "../containers/styles";
 import getFont from "../utils/getFont";
 import {createStructuredSelector} from "reselect";
 import {makeSelectTheme} from "./Theme/selectors";
@@ -20,7 +20,7 @@ class LocationItem extends Component{
         return(
             <View style={{flex:1, flexDirection: 'row'}}>
                 <EvilIcons name="location" size={25} color={colors.SECOND[theme]}/>
-                <MainText font={getFont(font, fonts.MURRAY)} color={colors.TEXT[theme]}>{item.name}</MainText>
+                <LocationText font={getFont(font, fonts.MURRAY)} color={colors.TEXT[theme]}>{item.name}</LocationText>
             </View>
         );
     };
