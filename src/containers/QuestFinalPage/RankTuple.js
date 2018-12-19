@@ -1,44 +1,45 @@
 import React, {Component} from 'react';
+import {View} from 'react-native';
 import {withNavigation} from "react-navigation";
+import styled from "styled-components/native";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
-import styled from 'styled-components/native';
 
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 import {createStructuredSelector} from "reselect";
-
-import messages from "../../Messages";
-
-import {colors, fonts} from "../../utils/constants";
-
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 
+import messages from "../../Messages";
+import {colors, fonts} from "../../utils/constants";
 import getFont from "../../utils/getFont";
-import {RatingText} from "../styles";
+import {KeyText, ValueText} from "../styles";
 
 const RowContainer = styled.View`
-    flex: 0.4
     flexDirection: row
 `;
 
-class Rating extends Component{
+class RankTuple extends Component{
 
-    render(){
-        const rating = 4.7;
+    render() {
+        const rank = 'СЕРЖАНТ';
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
-        return(
+        return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
-                <RowContainer style={{flexDirection: 'row'}}>
-                    <RatingText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}><FormattedMessage message={'Rating'}/></RatingText>
-                    <RatingText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)} paddingLeft={12}>{rating}</RatingText>
+                <RowContainer style={{flexDirection: 'row', width: '100%'}}>
+                    <KeyText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}><FormattedMessage
+                        message={'Rank'}/></KeyText>
+                    <View style={{flex: 1}}>
+                        <ValueText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)} paddingLeft={12}>
+                            {rank}
+                        </ValueText>
+                    </View>
                 </RowContainer>
             </FormattedWrapper>
         );
     }
-
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -53,6 +54,8 @@ const withConnect = connect(
 );
 
 export default compose(
-withConnect,
-withNavigation
-)(Rating);
+    withConnect,
+    withNavigation
+)(RankTuple);
+
+

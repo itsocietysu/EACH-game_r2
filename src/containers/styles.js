@@ -2,9 +2,131 @@
 import React from 'react';
 import styled from "styled-components/native";
 import {View, Text, Dimensions} from 'react-native';
-import {colors} from "../utils/constants";
+import {colors, SCREEN_HEIGHT} from "../utils/constants";
 
-const width = Dimensions.get('window').width;
+const {width, height} = Dimensions.get('window');
+
+/*
+ * News and Museums Feed
+ */
+export const FeedTittleText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.28/10.5*height}
+`;
+
+export const FeedDescriptionText = styled.Text`
+    color: ${props=>props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.25/10.5*height}
+    textAlign: justify
+`;
+
+export const FeedPlainText = styled.Text`
+    color: ${props=>props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.28/10.5*height}
+    textAlign: justify
+`;
+
+export const FeedMoreText = styled.Text`
+    alignSelf: center
+    color: #0000ff
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.25/10.5*height}
+`;
+
+/*
+ * Museum item
+ */
+export const MuseumItemPanelHeader = styled.View`
+    height: ${props=> props.height}
+    backgroundColor: ${props => props.color}
+    alignItems: center
+    justifyContent: center
+`;
+
+export const MuseumItemPanelText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.28/10.5*height}
+`;
+
+/*
+ * Quests
+ */
+export const QuestButtonText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: ${0.35/10.5*height}
+`;
+
+/*
+ * Quest Info
+ */
+export const QuestTittle = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: ${0.5/10.5*height}
+    paddingTop: 10
+    paddingBottom: 5
+`;
+
+export const RatingText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    paddingLeft: ${props => props.paddingLeft || 0}
+    fontSize: ${0.28/10.5*height}
+`;
+
+export const TimeText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    paddingLeft: ${props => props.paddingLeft || 0}
+    fontSize: ${0.28/10.5*height}
+`;
+
+/*
+ * Final screen
+ */
+export const FinishTitleText = styled.Text`
+    textAlign: center
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: ${0.5/10.5*height}
+`;
+
+export const ValueText = styled.Text`
+    flex: 1
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    paddingLeft: ${props => props.paddingLeft || 0}
+    fontSize: ${0.45/10.5*height}
+    textAlign: right
+`;
+
+export const KeyText = styled.Text`
+    alignSelf: flex-end
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    paddingLeft: ${props => props.paddingLeft || 0}
+    fontSize: ${0.45/10.5*height}
+`;
+
+export const CommentTextInput = styled.TextInput`
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+    fontSize: ${0.35/10.5*height}
+    textAlign: center
+    width: 95%
+    height: ${1.2/10.5*height}
+    borderColor: ${props => props.color}
+    borderWidth: 2
+`;
+
+
 export const TextContainer = styled.View`
     flex: 1
     paddingLeft: ${width*0.03} 
@@ -65,7 +187,7 @@ export const CentroidFigure = styled.View`
 export const TittleText = styled.Text`
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
-    fontSize: 15
+    fontSize: ${0.3/10.5*height}
 `;
 
 export const TittleContainer = styled.View`
@@ -104,15 +226,24 @@ export const MainTextContainer = styled.View`
     backgroundColor: ${props => props.bgColor}
     width: ${props => props.width || '100%'}
     height: ${props => props.height || '100%'}
-    paddingLeft: 4
+    paddingLeft: 8
     paddingBottom: 10
+    paddingRight: 8
+    paddingTop: 5
 `;
 
 export const MainText = styled.Text`
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
 `;
 
+export const LocationText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.25/10.5*height}
+    alignSelf: flex-end
+`;
 export const MoreText = styled.Text`
     alignSelf: center
     color: #0000ff

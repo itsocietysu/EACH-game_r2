@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import { MaterialCommunityIcons, Foundation, FontAwesome } from '@expo/vector-icons';
 
 const TabIconContent = ({ navigation, tintColor }) => {
@@ -13,7 +14,7 @@ const TabIconContent = ({ navigation, tintColor }) => {
         case 'Settings':
             return <MaterialCommunityIcons name={'settings'} size={25} color={tintColor}/>;
         default:
-            break;
+            return <View/>;
     }
 };
 

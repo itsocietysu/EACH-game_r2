@@ -7,7 +7,7 @@ import {withNavigation} from "react-navigation";
 
 import {makeSelectLanguage} from "./Locales/selectors";
 import {makeSelectTheme} from "./Theme/selectors";
-import {colors, images} from "../utils/constants";
+import {colors, HeaderLabelHeight, HeaderLabelWidth, images} from "../utils/constants";
 import {DARK_THEME} from "./Theme/constants";
 
 class CustomHeader extends React.Component {
@@ -20,7 +20,7 @@ class CustomHeader extends React.Component {
                 <View style={{flex:1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.BASE[theme], paddingTop: 12}}>
                     <Image
                         source={logo}
-                        style={{ width: 120, height: 20, resizeMode: 'stretch' }}
+                        style={{ width: HeaderLabelWidth, height: HeaderLabelHeight, resizeMode: 'stretch' }}
                     />
                 </View>
                 <View style={{height: 1, width: width, backgroundColor: colors.SECOND[theme]}}/>

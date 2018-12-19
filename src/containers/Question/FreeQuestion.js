@@ -6,7 +6,7 @@ import {TEXT_QUESTION, AR_PAINT_QUESTION, LOCATION_QUESTION} from "./constants";
 import CustomList from "../../components/CustomList";
 import PickerItem from "../../components/Picker";
 import styled from "styled-components/native";
-import {SpamHello, CentroidFigure, StyledButton} from "../styles";
+import {QuestButtonText, SpamHello, CentroidFigure, StyledButton} from "../styles";
 import messages from "../../Messages";
 import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
@@ -26,7 +26,6 @@ const QuestionText = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     fontSize: 20px
-    fontWeight: bold
     textAlign: center
     paddingTop: 10
 `;
@@ -116,7 +115,7 @@ class FreeQuestion extends Component{
                                 width={width*0.55}
                                 height={height*0.075}
                             >
-                                <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></ButtonText>
+                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
                             </ArrowButton>
                         </View>
                     </View>
