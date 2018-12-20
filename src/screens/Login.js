@@ -42,21 +42,15 @@ class LoginScreen extends Component {
 
     this._storeUserData =this._storeUserData.bind(this);
     this._fetchUserData =this._fetchUserData.bind(this);
-    this.getUserInfo = this.getUserInfo.bind(this);
-    this.revokeToken = this.revokeToken.bind(this);
+    this._getUserInfo = this._getUserInfo.bind(this);
+    this._revokeToken = this._revokeToken.bind(this);
   }
 
   componentDidMount() {
     this._fetchUserData().then((res)=> console.log(res));
   }
 
-  /*
-  componentWillUnmount() {
-    this._storeUserData().then();
-  }
-  */
-
-  async getUserInfo(Code, App, RedirectUrl) {
+  _getUserInfo = async(Code, App, RedirectUrl) => {
     const form = {
       redirect_uri: RedirectUrl,
       code: Code,
@@ -81,9 +75,9 @@ class LoginScreen extends Component {
     } catch(e) {
       return { error: true };
     }
-  }
+  };
 
-  async getCodeByAuthUrl(url) {
+  _getCodeByAuthUrl = async(url) => {
     try {
       const result = await AuthSession.startAsync({
         authUrl: url,
@@ -96,7 +90,29 @@ class LoginScreen extends Component {
     } catch (e) {
       return { error: true };
     }
-  }
+  };
+
+  _revokeToken = async(appToken, appType) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${appToken} ${appType}`
+      },
+      body: JSON.stringify({
+        access_token: appToken,
+        type: appType
+      })
+    };
+    try {
+      const result = await request(requestUrlRevoke, options);
+      if (result) {
+        this._deleteUserData().then();
+        return result;
+      }
+    } catch(e) {
+      return { error: true };
+    }
+  };
 
   _storeUserData = async() => {
     try {
@@ -127,7 +143,6 @@ class LoginScreen extends Component {
     }
   };
 
-
   _deleteUserData = async() => {
     SecureStore.deleteItemAsync('username');
     SecureStore.deleteItemAsync('email');
@@ -135,28 +150,6 @@ class LoginScreen extends Component {
     SecureStore.deleteItemAsync('App');
     SecureStore.deleteItemAsync('token');
   };
-
-  async revokeToken(appToken, appType) {
-    const options = {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${appToken} ${appType}`
-      },
-      body: JSON.stringify({
-        access_token: appToken,
-        type: appType
-      })
-    };
-    try {
-      const result = await request(requestUrlRevoke, options);
-      if (result) {
-        this._deleteUserData().then();
-        return result;
-      }
-    } catch(e) {
-      return { error: true };
-    }
-  }
 
   render() {
     return (
@@ -167,18 +160,18 @@ class LoginScreen extends Component {
           <Text>Sign in</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <GoogleIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(googleAuthUrl).then(code => this.setState({redirectCode: code, App: "google"}));}}/>
+                        onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this.setState({redirectCode: code, App: "google"}));}}/>
             <EachIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(eachAuthUrl).then(code => this.setState({redirectCode: code, App: "each"}));}}/>
+                        onPress={() => {this._getCodeByAuthUrl(eachAuthUrl).then(code => this.setState({redirectCode: code, App: "each"}));}}/>
             <VkontakteIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
+                        onPress={() => {this._getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
           </View>
           <Button title="get token and user info"
                   style={styles.button}
-                  onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then((res)=>{console.log(res);}) }}/>
+                  onPress={() => {this._getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then((res)=>{console.log(res);}) }}/>
           <Button title="revoke token"
                   style={styles.button}
-                  onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
+                  onPress={() => {this._revokeToken(this.state.token, this.state.App).then()}}/>
           <Button title="go home"
                   style={styles.button}
                   onPress={() => {this.props.navigation.navigate('Feeds')}}/>
