@@ -172,12 +172,12 @@ class LoginScreen extends Component {
           ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ
         </Text>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-          <GoogleIcon size={65}
-                      onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
           <EachIcon size={65}
                     onPress={() => {this._getCodeByAuthUrl(eachAuthUrl).then(code => this._getUserInfo(code, "each", redirectUrl));}}/>
           <VkontakteIcon size={65}
                          onPress={() => {this._getCodeByAuthUrl(vkontakteAuthUrl).then(code => this._getUserInfo(code, "vkontakte", redirectUrl));}}/>
+          <GoogleIcon size={65}
+                      onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
         </View>
         <Button title="revoke token"
                 style={styles.button}

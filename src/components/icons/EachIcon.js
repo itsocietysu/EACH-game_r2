@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import React from 'react';
+import Image from 'react-native-remote-svg';
 import styled from "styled-components/native";
 
 const IconLeftContainer = styled.TouchableOpacity`
@@ -11,7 +11,7 @@ const IconLeftContainer = styled.TouchableOpacity`
 const EachIcon = ({onPress, size}) => (
     <IconLeftContainer onPress={onPress}>
         <Image
-            source={require('../../../assets/icons/map_icon_128.png')}
+            source={require('../../../assets/icons/logo.svg')}
             fadeDuration={0}
             style={{width: size, height: size}}
         />
