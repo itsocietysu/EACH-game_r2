@@ -179,6 +179,9 @@ class LoginScreen extends Component {
           <Button title="revoke token"
                   style={styles.button}
                   onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
+          <Button title="go home"
+                  style={styles.button}
+                  onPress={() => {this.props.navigation.navigate('Feeds')}}/>
           <Text>{`DON'T HAVE AN ACCOUNT YET? ${this.state.redirectCode}`}</Text>
           <Text>{`user: ${this.state.username}`}</Text>
           <Text>{`email: ${this.state.email}`}</Text>
