@@ -2,17 +2,27 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    ImageBackground,
     View,
     Button,
     Text,
 } from 'react-native'
 import { AuthSession, SecureStore } from 'expo';
+
+import connect from "react-redux/es/connect/connect";
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import {makeSelectTheme} from "../components/Theme/selectors";
+import {colors, fonts} from "../utils/constants";
+
+// import {ProfileScreen} from "./Profile"
+
 import EachIcon from "../components/icons/EachIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet, requestUrlRevoke} from "../containers/AuthPage/constants";
 import request from './../utils/request';
+
+
 
 const buildFormData = data => {
   const formArr = [];
@@ -35,28 +45,21 @@ class LoginScreen extends Component {
       username: '',
       email: '',
       image: '',
-      redirectCode: '',
-      App: '',
+      app: '',
       token: '',
     };
 
     this._storeUserData =this._storeUserData.bind(this);
     this._fetchUserData =this._fetchUserData.bind(this);
-    this.getUserInfo = this.getUserInfo.bind(this);
-    this.revokeToken = this.revokeToken.bind(this);
+    this._getUserInfo = this._getUserInfo.bind(this);
+    this._revokeToken = this._revokeToken.bind(this);
   }
 
   componentDidMount() {
     this._fetchUserData().then((res)=> console.log(res));
   }
 
-  /*
-  componentWillUnmount() {
-    this._storeUserData().then();
-  }
-  */
-
-  async getUserInfo(Code, App, RedirectUrl) {
+  _getUserInfo = async(Code, App, RedirectUrl) => {
     const form = {
       redirect_uri: RedirectUrl,
       code: Code,
@@ -74,16 +77,16 @@ class LoginScreen extends Component {
     try {
       const result = await request(requestURL, options);
       if (result) {
-        this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token});
+        this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token, app: App});
         this._storeUserData().then((e)=>{console.log(e);});
         return result;
       }
     } catch(e) {
       return { error: true };
     }
-  }
+  };
 
-  async getCodeByAuthUrl(url) {
+  _getCodeByAuthUrl = async(url) => {
     try {
       const result = await AuthSession.startAsync({
         authUrl: url,
@@ -96,47 +99,9 @@ class LoginScreen extends Component {
     } catch (e) {
       return { error: true };
     }
-  }
-
-  _storeUserData = async() => {
-    try {
-      SecureStore.setItemAsync('username', this.state.username);
-      SecureStore.setItemAsync('email', this.state.email);
-      SecureStore.setItemAsync('image', this.state.image);
-      SecureStore.setItemAsync('App', this.state.App);
-      SecureStore.setItemAsync('token', this.state.token);
-
-    } catch (e) {
-      return { error: true };
-    }
   };
 
-  _fetchUserData = async () => {
-    try {
-      const username1 = await SecureStore.getItemAsync('username');
-      const email1 = await SecureStore.getItemAsync('email');
-      const image1 = await SecureStore.getItemAsync('image');
-      const App1 = await SecureStore.getItemAsync('App');
-      const token1 = await SecureStore.getItemAsync('token');
-
-      if (email1 !== null && username1 !== null && image1 !== null && App1 !== null && token1 !== null) {
-        this.setState({username: username1, email: email1, image: image1, App: App1, token: token1})
-      }
-    } catch (error) {
-      return { error: true };
-    }
-  };
-
-
-  _deleteUserData = async() => {
-    SecureStore.deleteItemAsync('username');
-    SecureStore.deleteItemAsync('email');
-    SecureStore.deleteItemAsync('image');
-    SecureStore.deleteItemAsync('App');
-    SecureStore.deleteItemAsync('token');
-  };
-
-  async revokeToken(appToken, appType) {
+  _revokeToken = async(appToken, appType) => {
     const options = {
       method: 'POST',
       headers: {
@@ -156,48 +121,79 @@ class LoginScreen extends Component {
     } catch(e) {
       return { error: true };
     }
-  }
+  };
+
+  _storeUserData = async() => {
+    try {
+      SecureStore.setItemAsync('username', this.state.username);
+      SecureStore.setItemAsync('email', this.state.email);
+      SecureStore.setItemAsync('image', this.state.image);
+      SecureStore.setItemAsync('app', this.state.app);
+      SecureStore.setItemAsync('token', this.state.token);
+
+    } catch (e) {
+      return { error: true };
+    }
+  };
+
+  _fetchUserData = async () => {
+    try {
+      const username1 = await SecureStore.getItemAsync('username');
+      const email1 = await SecureStore.getItemAsync('email');
+      const image1 = await SecureStore.getItemAsync('image');
+      const app1 = await SecureStore.getItemAsync('app');
+      const token1 = await SecureStore.getItemAsync('token');
+
+      if (email1 !== null && username1 !== null && image1 !== null && app1 !== null && token1 !== null) {
+        this.setState({username: username1, email: email1, image: image1, app: app1, token: token1})
+      }
+    } catch (error) {
+      return { error: true };
+    }
+  };
+
+  _deleteUserData = async() => {
+    SecureStore.deleteItemAsync('username');
+    SecureStore.deleteItemAsync('email');
+    SecureStore.deleteItemAsync('image');
+    SecureStore.deleteItemAsync('app');
+    SecureStore.deleteItemAsync('token');
+  };
 
   render() {
+    const theme = this.props.theme;
+
     return (
-      <View style={styles.wrapper}>
-        <ImageBackground
-          source={require('./../../assets/images/logo.png')}
-          style={styles.logoContainer}>
-          <Text>Sign in</Text>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <GoogleIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(googleAuthUrl).then(code => this.setState({redirectCode: code, App: "google"}));}}/>
-            <EachIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(eachAuthUrl).then(code => this.setState({redirectCode: code, App: "each"}));}}/>
-            <VkontakteIcon size={65}
-                        onPress={() => {this.getCodeByAuthUrl(vkontakteAuthUrl).then(code => this.setState({redirectCode: code, App: "vkontakte"}));}}/>
-          </View>
-          <Button title="get token and user info"
-                  style={styles.button}
-                  onPress={() => {this.getUserInfo(this.state.redirectCode, this.state.App, redirectUrl).then((res)=>{console.log(res);}) }}/>
-          <Button title="revoke token"
-                  style={styles.button}
-                  onPress={() => {this.revokeToken(this.state.token, this.state.App).then()}}/>
-          <Text>{`DON'T HAVE AN ACCOUNT YET? ${this.state.redirectCode}`}</Text>
-          <Text>{`user: ${this.state.username}`}</Text>
-          <Text>{`email: ${this.state.email}`}</Text>
-          <Text style={{ color: '#0000ff' }}>{`Sign up`}</Text>
-        </ImageBackground>
+      <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
+        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 80, fontFamily: fonts.MURRAY, marginTop: 20}}>
+          ВХОД
+        </Text>
+        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 80}}>
+          ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ
+        </Text>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+          <EachIcon size={65}
+                    onPress={() => {this._getCodeByAuthUrl(eachAuthUrl).then(code => this._getUserInfo(code, "each", redirectUrl));}}/>
+          <VkontakteIcon size={65}
+                         onPress={() => {this._getCodeByAuthUrl(vkontakteAuthUrl).then(code => this._getUserInfo(code, "vkontakte", redirectUrl));}}/>
+          <GoogleIcon size={65}
+                      onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
+        </View>
+        <Button title="revoke token"
+                style={styles.button}
+                onPress={() => {this._revokeToken(this.state.token, this.state.app).then()}}/>
+        <Button title="go home"
+                style={styles.button}
+                onPress={() => {this.props.navigation.navigate('Feeds')}}/>
+        <Text>{`user info: `}</Text>
+        <Text>{`user: ${this.state.username}`}</Text>
+        <Text>{`email: ${this.state.email}`}</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    wrapper:{
-        flex: 1,
-    },
-    logoContainer:{
-        flex: 1,
-        width: '100%',
-        height: '100%',
-    },
     container:{
         flex: 1,
         justifyContent: 'flex-end',
@@ -220,5 +216,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     }
 });
-export default LoginScreen;
+
+export function mapDispatchToProps(dispatch) {
+  return {}
+}
+
+const mapStateToProps = createStructuredSelector({
+  theme: makeSelectTheme(),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(LoginScreen);
+
 
