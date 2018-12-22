@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import { Platform, View } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
-import QuestMap from "./QuestMap";
+import {withNavigation} from "react-navigation";
+
+import connect from "react-redux/es/connect/connect";
+import {compose} from "redux";
+
 import {createStructuredSelector} from "reselect";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
-import connect from "react-redux/es/connect/connect";
-import {compose} from "redux";
-import {withNavigation} from "react-navigation";
+
+import QuestMap from "./QuestMap";
 
 class LocationQuestion extends Component{
 
@@ -42,7 +45,7 @@ class LocationQuestion extends Component{
     render() {
         return (
             <View style={{flex: 1}}>
-                <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme}/>
+                <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme} locale={this.props.language}/>
             </View>
         );
     }

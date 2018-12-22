@@ -4,7 +4,6 @@ import { withTheme } from 'styled-components';
 import styled from 'styled-components/native';
 
 const ButtonContainer = styled.View`
-  flexDirection: row
   backgroundColor: ${props => props.bgColor}
   borderColor: ${props => props.borderColor}
   borderWidth: 2

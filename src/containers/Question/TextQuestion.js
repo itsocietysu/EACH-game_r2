@@ -6,7 +6,7 @@ import {TEXT_QUESTION, AR_PAINT_QUESTION, LOCATION_QUESTION} from "./constants";
 import CustomList from "../../components/CustomList";
 import PickerItem from "../../components/Picker";
 import styled from "styled-components/native";
-import {QuestButtonText, SpamHello, CentroidFigure, StyledButton} from "../styles";
+import {QuestButtonText, Rectangle, SpamHello, CentroidFigure, StyledButton} from "../styles";
 import messages from "../../Messages";
 import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
@@ -20,7 +20,10 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {compose} from "redux";
 import getFont from "../../utils/getFont";
 import ArrowButton from "../../components/ArrowButton";
-
+import HintIcon from "../../components/icons/HintIcon";
+import Back from "../../components/icons/Back";
+import {Dialog, DialogTitle} from "react-native-popup-dialog";
+import showDialog from '../../components/CustomPopUpDialog';
 
 const QuestionText = styled.Text`
     color: ${props => props.color}
@@ -87,6 +90,7 @@ class TextQuestion extends Component{
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
+                    {showDialog(this, <FormattedMessage message={'Hint'}/>, step.hint)}
                     <ScrollView style={{flex: 1}}>
                         <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
                             <Image source={{uri: step.avatar.uri}}
@@ -109,16 +113,19 @@ class TextQuestion extends Component{
                             extraData={[theme, this.state]}
                             scrollEnabled={false}
                         />
-                        <View style={{alignItems: 'flex-end', paddingRight: 30}}>
-                            <ArrowButton
-                                onPress={() => this._validateResult(this)}
-                                bgColor={colors.BASE[theme]}
-                                borderColor={colors.MAIN}
-                                width={width*0.55}
-                                height={height*0.075}
-                            >
-                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
-                            </ArrowButton>
+                        <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                <ArrowButton
+                                    onPress={() => this._validateResult()}
+                                    bgColor={colors.BASE[theme]}
+                                    borderColor={colors.MAIN}
+                                    width={width*0.55}
+                                    height={height*0.075}
+                                >
+                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
+                                </ArrowButton>
+                                <HintIcon onPress={()=>this.refDialog.show()}/>
+                            </View>
                         </View>
                         <View style={{height: 20}}/>
                     </ScrollView>
