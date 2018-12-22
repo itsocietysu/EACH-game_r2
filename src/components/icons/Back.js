@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import {colors} from "../../utils/constants";
 
 const IconLeftContainer = styled.TouchableOpacity`
-  height: 100%;
   paddingLeft: 15;
   justifyContent: center;
 `;

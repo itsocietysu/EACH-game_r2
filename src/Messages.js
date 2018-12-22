@@ -16,7 +16,7 @@ const messages = {
         ChoiceTaskDesc:     'This task contains a question and some possible choices, pick the correct one',
         ARTaskDesc:         'This task is related to searching an object. Read the task, find an object described in the task and take a photo',
         ARTaskAdd:          'to pass the task take a picture of the object, try to place it exactly to the frame',
-        FreeTaskDesc:       'This task is an open answer task. Find out a glue and write it down to the input field',
+        FreeTaskDesc:       'This task is an open answer task. Find out a clue and write it down to the input field',
         FreeTaskAdd:        'Write down the answer to the input field below',
         Failed:             'FAIL',
         WrongAnsw:          'You have given\na wrong answer\nplease try again',
@@ -28,6 +28,7 @@ const messages = {
         Rate:               'RATE THE GAME, PLEASE',
         Comment:            'COMMENT:',
         End:                'FINISH',
+        Hint:               'Hint',
     },
 	ru: {
         Powered: 	        'Создано в',
@@ -58,6 +59,7 @@ const messages = {
         Rate:               'ВАША ОЦЕНКА ИГРЕ',
         Comment:            'КОММЕНТАРИЙ:',
         End:                'ЗАВЕРШИТЬ',
+        Hint:               'Подсказка'
     },
 	es: {
 		Welcome: 	'Bienvenido',

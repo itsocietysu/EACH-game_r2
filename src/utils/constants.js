@@ -64,7 +64,7 @@ export const DESC_BLOCK_HEIGHT = SCREEN_HEIGHT*1.2/10.5;
 export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
 export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
 
-
+export const ICON_SIZE = 1/10.9*SCREEN_HEIGHT;
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';

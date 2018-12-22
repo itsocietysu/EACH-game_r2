@@ -29,6 +29,8 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import styled from "styled-components/native";
 import ArrowButton from "../../components/ArrowButton";
+import showDialog from "../../components/CustomPopUpDialog";
+import HintIcon from "../../components/icons/HintIcon";
 
 const QuestionText = styled.Text`
     color: ${props => props.color}
@@ -118,7 +120,7 @@ class ARQuestion extends Component{
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
                     {loadingInfo}
-
+                    {showDialog(this,<FormattedMessage message={'Hint'}/>, step.hint)}
                         <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
@@ -138,7 +140,7 @@ class ARQuestion extends Component{
                                     <FormattedMessage message={'ARTaskAdd'}/>
                                 </DescText>
                             </View>
-                            <View style={{alignItems: 'center'}}>
+                            {/* <View style={{alignItems: 'center'}}>
                                 <ArrowButton
                                     onPress={() => this.props.navigation.navigate('Camera', {
                                         handler: this.handler,
@@ -151,6 +153,23 @@ class ARQuestion extends Component{
                                 >
                                     <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                 </ArrowButton>
+                            </View>*/}
+                            <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <ArrowButton
+                                        onPress={() => this.props.navigation.navigate('Camera', {
+                                            handler: this.handler,
+                                            aspectRatio: ratio})
+                                        }
+                                        bgColor={colors.BASE[theme]}
+                                        borderColor={colors.MAIN}
+                                        width={width*0.55}
+                                        height={height*0.075}
+                                    >
+                                        <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
+                                    </ArrowButton>
+                                    <HintIcon onPress={()=>this.refDialog.show()}/>
+                                </View>
                             </View>
                         </View>
 

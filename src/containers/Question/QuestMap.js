@@ -15,6 +15,10 @@ import {Entypo, MaterialIcons} from '@expo/vector-icons';
 import {colors} from "../../utils/constants";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {LightMapStyle, NightMapStyle} from "../../components/MapStyles";
+import HintIcon from "../../components/icons/HintIcon";
+import showDialog from "../../components/CustomPopUpDialog";
+import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
+import messages from "../../Messages";
 
 
 class QuestMap extends Component{
@@ -242,12 +246,17 @@ class QuestMap extends Component{
                         />
 
                     </MapView>
+                    <View style={{position: 'absolute', left: 0, top: 0}}>
+                        <HintIcon onPress={()=>this.refDialog.show()} size={45}/>
+                    </View>
                     <View style={{position: 'absolute', left: (width-50), top: height*0.4}}>
+
                         <View style={{flex: 1}}>
                             <Entypo name="circle-with-plus" size={45} color={colors.SECOND.light} onPress={this._zoomIn}/>
                             <Entypo name="circle-with-minus" size={45} color={colors.SECOND.light} onPress={this._zoomOut}/>
                             <MaterialIcons name="my-location" size={45} color={colors.SECOND.light} onPress={this._toCurrLoc}/>
                             <Entypo name="flag" size={45} color={colors.SECOND.light} onPress={this._toDestinationLoc}/>
+
                         </View>
                     </View>
                 </View>
@@ -256,10 +265,12 @@ class QuestMap extends Component{
             content = <ActivityIndicator/>
         }
         return(
-
-            <View style={{flex: 1}}>
-                {content}
-            </View>
+            <FormattedWrapper locale={this.props.locale} messages={messages}>
+                <View style={{flex: 1}}>
+                    {showDialog(this, <FormattedMessage message={'Hint'}/>, data.hint)}
+                    {content}
+                </View>
+            </FormattedWrapper>
         );
     }
 }
