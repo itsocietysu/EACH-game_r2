@@ -49,6 +49,12 @@ export const fonts = {
     EACH: 'eachFont',
     MURRAY: 'murray',
 };
+
+export const languages = {
+    'en': 'English',
+    'ru': 'Русский',
+};
+
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
