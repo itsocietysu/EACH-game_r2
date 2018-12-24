@@ -29,6 +29,12 @@ const messages = {
         Comment:            'COMMENT:',
         End:                'FINISH',
         Hint:               'Hint',
+        NightMode:          'Night mode:',
+        Language:           'Language:',
+        Notifications:      'Notifications:',
+        CompressImg:        'Compress images:',
+        Terms:              'Terms and conditions',
+        Logout:             'Log out',
     },
 	ru: {
         Powered: 	        'Создано в',
@@ -59,7 +65,13 @@ const messages = {
         Rate:               'ВАША ОЦЕНКА ИГРЕ',
         Comment:            'КОММЕНТАРИЙ:',
         End:                'ЗАВЕРШИТЬ',
-        Hint:               'Подсказка'
+        Hint:               'Подсказка',
+        NightMode:          'Ночной режим:',
+        Language:           'Язык:',
+        Notifications:      'Уведомления:',
+        CompressImg:        'Сжимать картинки:',
+        Terms:              'Пользовательское соглашение',
+        Logout:             'Выйти',
     },
 	es: {
 		Welcome: 	'Bienvenido',

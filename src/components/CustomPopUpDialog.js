@@ -22,7 +22,7 @@ export default function showDialog(parent, Tittle, Content){
                        {Tittle}
                    </PopUpTittleText>
                 </View>
-                <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>*/}
+                <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>
                 <ScrollView style={{flex: 1, paddingLeft: 5}}>
                     <PopUpContentText font={fonts.MURRAY} color={colors.TEXT[parent.props.theme]}>
                         {Content}

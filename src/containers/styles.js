@@ -141,6 +141,33 @@ export const PopUpContentText = styled.Text`
     fontSize: ${0.32/10.5*height}
 `;
 
+/*
+ * Settings screen
+ */
+export const SettingsText = styled.Text`
+    fontSize: ${0.45/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsTitleText = styled.Text`
+    fontSize: ${0.50/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsAddText = styled.Text`
+    fontSize: ${0.35/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsContainer = styled.View`
+    height: 12%
+    flexDirection: row
+    alignItems: center
+`;
+
+
+
+
 
 
 export const TextContainer = styled.View`
