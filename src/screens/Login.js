@@ -39,7 +39,7 @@ class LoginScreen extends Component {
     this._revokeToken = this._revokeToken.bind(this);
   }
 
-  componentDid () {
+  componentDidMount() {
     this._fetchUserData().then((data) => {
       if (data !== undefined) {
         // check token with tokeninfo is here

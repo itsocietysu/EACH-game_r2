@@ -11,8 +11,8 @@ const TabIconContent = ({ navigation, tintColor }) => {
             return <Foundation name={'map'} size={25} color={tintColor}/>;
         case 'Museums':
             return <FontAwesome name={'empire'} size={25} color={tintColor}/>;
-        case 'Settings':
-            return <MaterialCommunityIcons name={'settings'} size={25} color={tintColor}/>;
+        case 'Profile':
+            return <FontAwesome name={'user'} size={25} color={tintColor}/>;
         default:
             return <View/>;
     }
