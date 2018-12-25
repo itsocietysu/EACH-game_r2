@@ -13,20 +13,7 @@ import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet, requestUrlRevoke} from "../containers/AuthPage/constants";
 import request from './../utils/request';
-
-const buildFormData = data => {
-  const formArr = [];
-
-  for (const name in data) {
-    const val = data[name];
-    if (val !== undefined && val !== '') {
-      formArr.push(
-        [name, '=', val].join(''),
-      );
-    }
-  }
-  return formArr.join('&');
-};
+import buildFormData from './../utils/buildFormData';
 
 class LoginScreen extends Component {
   constructor(props) {
