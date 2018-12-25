@@ -23,7 +23,6 @@ import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet
 import request from './../utils/request';
 
 
-
 const buildFormData = data => {
   const formArr = [];
 
@@ -55,8 +54,13 @@ class LoginScreen extends Component {
     this._revokeToken = this._revokeToken.bind(this);
   }
 
-  componentDidMount() {
-    this._fetchUserData().then((res)=> console.log(res));
+  componentDid () {
+    this._fetchUserData().then((data) => {
+      if (data !== undefined) {
+        // check token with tokeninfo is here
+        this.props.navigation.navigate('Profile', { name: data.username, avatar: data.image });
+      }
+    });
   }
 
   _getUserInfo = async(Code, App, RedirectUrl) => {
@@ -78,7 +82,7 @@ class LoginScreen extends Component {
       const result = await request(requestURL, options);
       if (result) {
         this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token, app: App});
-        this._storeUserData().then((e)=>{console.log(e);});
+        this._storeUserData().then();
         return result;
       }
     } catch(e) {
@@ -145,7 +149,8 @@ class LoginScreen extends Component {
       const token1 = await SecureStore.getItemAsync('token');
 
       if (email1 !== null && username1 !== null && image1 !== null && app1 !== null && token1 !== null) {
-        this.setState({username: username1, email: email1, image: image1, app: app1, token: token1})
+        this.setState({username: username1, email: email1, image: image1, app: app1, token: token1});
+        return {username: username1, image: image1, app: app1, token: token1};
       }
     } catch (error) {
       return { error: true };
@@ -163,33 +168,33 @@ class LoginScreen extends Component {
   render() {
     const theme = this.props.theme;
 
-    return (
-      <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
-        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 80, fontFamily: fonts.MURRAY, marginTop: 20}}>
-          ВХОД
-        </Text>
-        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 80}}>
-          ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ
-        </Text>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-          <EachIcon size={65}
-                    onPress={() => {this._getCodeByAuthUrl(eachAuthUrl).then(code => this._getUserInfo(code, "each", redirectUrl));}}/>
-          <VkontakteIcon size={65}
-                         onPress={() => {this._getCodeByAuthUrl(vkontakteAuthUrl).then(code => this._getUserInfo(code, "vkontakte", redirectUrl));}}/>
-          <GoogleIcon size={65}
-                      onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
+      return (
+        <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
+          <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 80, fontFamily: fonts.MURRAY, marginTop: 20}}>
+            ВХОД
+          </Text>
+          <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 80}}>
+            ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ
+          </Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+            <EachIcon size={65}
+                      onPress={() => {this._getCodeByAuthUrl(eachAuthUrl).then(code => this._getUserInfo(code, "each", redirectUrl));}}/>
+            <VkontakteIcon size={65}
+                           onPress={() => {this._getCodeByAuthUrl(vkontakteAuthUrl).then(code => this._getUserInfo(code, "vkontakte", redirectUrl));}}/>
+            <GoogleIcon size={65}
+                        onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
+          </View>
+          <Button title="revoke token"
+                  style={styles.button}
+                  onPress={() => {this._revokeToken(this.state.token, this.state.app).then()}}/>
+          <Button title="go home"
+                  style={styles.button}
+                  onPress={() => {this.props.navigation.navigate('Feeds')}}/>
+          <Text>{`user info: `}</Text>
+          <Text>{`user: ${this.state.username}`}</Text>
+          <Text>{`email: ${this.state.email}`}</Text>
         </View>
-        <Button title="revoke token"
-                style={styles.button}
-                onPress={() => {this._revokeToken(this.state.token, this.state.app).then()}}/>
-        <Button title="go home"
-                style={styles.button}
-                onPress={() => {this.props.navigation.navigate('Feeds')}}/>
-        <Text>{`user info: `}</Text>
-        <Text>{`user: ${this.state.username}`}</Text>
-        <Text>{`email: ${this.state.email}`}</Text>
-      </View>
-    );
+      );
   }
 }
 

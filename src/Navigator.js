@@ -18,6 +18,7 @@ import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
 import ResultScreen from "./containers/ResultPage/ResultScreen";
 import LoginScreen from "./screens/Login";
 import AuthPage from "./containers/AuthPage/AuthPage";
+import ProfileScreen from "./screens/Profile"
 
 import { HamburgerIcon, BackIcon } from './components/icons';
 
@@ -155,6 +156,7 @@ const AuthStack = createStackNavigator(
     {
         Login: {screen: LoginScreen},
         Auth: {screen: AuthPage},
+        Profile: {screen: ProfileScreen},
     },
     {
         navigationOptions:{
