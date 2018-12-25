@@ -15,27 +15,12 @@ import {makeSelectTheme} from "../components/Theme/selectors";
 import {colors, fonts} from "../utils/constants";
 
 // import {ProfileScreen} from "./Profile"
-
+import buildFormData from './../utils/buildFormData'
 import EachIcon from "../components/icons/EachIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet, requestUrlRevoke} from "../containers/AuthPage/constants";
 import request from './../utils/request';
-
-
-const buildFormData = data => {
-  const formArr = [];
-
-  for (const name in data) {
-    const val = data[name];
-    if (val !== undefined && val !== '') {
-      formArr.push(
-        [name, '=', val].join(''),
-      );
-    }
-  }
-  return formArr.join('&');
-};
 
 class LoginScreen extends Component {
   constructor(props) {
