@@ -49,6 +49,12 @@ export const fonts = {
     EACH: 'eachFont',
     MURRAY: 'murray',
 };
+
+export const languages = {
+    'en': 'English',
+    'ru': 'Русский',
+};
+
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -64,7 +70,7 @@ export const DESC_BLOCK_HEIGHT = SCREEN_HEIGHT*1.2/10.5;
 export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
 export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
 
-
+export const ICON_SIZE = 1/10.9*SCREEN_HEIGHT;
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';

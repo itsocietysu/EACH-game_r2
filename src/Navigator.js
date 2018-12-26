@@ -19,7 +19,7 @@ import LoginScreen from "./screens/Login";
 import AuthPage from "./containers/AuthPage/AuthPage";
 import ProfileScreen from "./screens/Profile"
 
-import { BackIcon } from './components/icons';
+import { BackIcon, SettingsIcon} from './components/icons';
 
 import TabIconContent from "./components/TabIconContent";
 import CustomTabBar from "./components/CustomTabBar";
@@ -105,7 +105,11 @@ const ProfileStack = createStackNavigator(
   {
     navigationOptions: ({navigation})=> {
       let content = null;
+      let rightContent = null;
 
+      if(navigation.state.routeName === 'Profile') {
+        rightContent =  <SettingsIcon onPress={() => navigation.navigate('Settings')}/>
+      }
       if (navigation.state.routeName !== 'Login' && navigation.state.routeName !== 'Profile' ) {
         content = <BackIcon onPress={() => navigation.goBack(null)}/>;
       }
@@ -114,7 +118,8 @@ const ProfileStack = createStackNavigator(
         headerStyle: {
           height: HeaderHeight,
         },
-        headerLeft: content
+        headerLeft: content,
+        headerRight: rightContent,
       });
     }
   }

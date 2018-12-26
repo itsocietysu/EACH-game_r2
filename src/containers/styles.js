@@ -19,7 +19,6 @@ export const FeedDescriptionText = styled.Text`
     color: ${props=>props.color}
     fontFamily: ${props=> props.font}
     fontSize: ${0.25/10.5*height}
-    textAlign: justify
 `;
 
 export const FeedPlainText = styled.Text`
@@ -125,6 +124,50 @@ export const CommentTextInput = styled.TextInput`
     borderColor: ${props => props.color}
     borderWidth: 2
 `;
+
+
+/*
+ * Pop-up dialog
+ */
+export const PopUpTittleText = styled.Text`
+   color: ${props => props.color}
+   fontFamily: ${props => props.font}
+   fontSize: ${0.45/10.5*height}     
+`;
+
+export const PopUpContentText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props => props.font}
+    fontSize: ${0.32/10.5*height}
+`;
+
+/*
+ * Settings screen
+ */
+export const SettingsText = styled.Text`
+    fontSize: ${0.45/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsTitleText = styled.Text`
+    fontSize: ${0.50/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsAddText = styled.Text`
+    fontSize: ${0.35/10.5*height}
+    fontFamily: ${props => props.font}
+    color: ${props => props.color}
+`;
+export const SettingsContainer = styled.View`
+    height: 12%
+    flexDirection: row
+    alignItems: center
+`;
+
+
+
+
 
 
 export const TextContainer = styled.View`

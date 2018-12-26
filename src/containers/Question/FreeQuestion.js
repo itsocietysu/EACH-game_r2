@@ -20,6 +20,10 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {compose} from "redux";
 import getFont from "../../utils/getFont";
 import ArrowButton from "../../components/ArrowButton";
+import HintIcon from "../../components/icons/HintIcon";
+import {Dialog, DialogButton, DialogTitle, SlideAnimation} from "react-native-popup-dialog";
+import PopupDialog from "react-native-popup-dialog";
+import showDialog from "../../components/CustomPopUpDialog";
 
 
 const QuestionText = styled.Text`
@@ -79,6 +83,7 @@ class FreeQuestion extends Component{
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <KeyboardAvoidingView style={{flex: 1}} behavior="position" enabled>
+                    {showDialog(this, <FormattedMessage message={'Hint'}/>, step.hint)}
                     <View style={{height: '100%', backgroundColor: colors.BASE[theme]}}>
                         <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft:5, paddingRight: 5}}>
                             <Image source={{uri: step.avatar.uri}}
@@ -108,15 +113,18 @@ class FreeQuestion extends Component{
                         </View>
 
                         <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
-                            <ArrowButton
-                                onPress={() => this._validateResult()}
-                                bgColor={colors.BASE[theme]}
-                                borderColor={colors.MAIN}
-                                width={width*0.55}
-                                height={height*0.075}
-                            >
-                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
-                            </ArrowButton>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                <ArrowButton
+                                    onPress={() => this._validateResult()}
+                                    bgColor={colors.BASE[theme]}
+                                    borderColor={colors.MAIN}
+                                    width={width*0.55}
+                                    height={height*0.075}
+                                >
+                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
+                                </ArrowButton>
+                                <HintIcon onPress={()=>this.refDialog.show()}/>
+                            </View>
                         </View>
                     </View>
                 </KeyboardAvoidingView>

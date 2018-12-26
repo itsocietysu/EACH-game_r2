@@ -14,12 +14,11 @@ import { createStructuredSelector } from 'reselect';
 import {makeSelectTheme} from "../components/Theme/selectors";
 import {colors, fonts} from "../utils/constants";
 
-// import {ProfileScreen} from "./Profile"
 import buildFormData from './../utils/buildFormData'
 import EachIcon from "../components/icons/EachIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import VkontakteIcon from "../components/icons/VkontakteIcon";
-import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet, requestUrlRevoke} from "../containers/AuthPage/constants";
+import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "../containers/AuthPage/constants";
 import request from './../utils/request';
 
 class LoginScreen extends Component {
@@ -36,7 +35,6 @@ class LoginScreen extends Component {
     this._storeUserData =this._storeUserData.bind(this);
     this._fetchUserData =this._fetchUserData.bind(this);
     this._getUserInfo = this._getUserInfo.bind(this);
-    this._revokeToken = this._revokeToken.bind(this);
   }
 
   componentDidMount() {
@@ -90,28 +88,6 @@ class LoginScreen extends Component {
     }
   };
 
-  _revokeToken = async(appToken, appType) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${appToken} ${appType}`
-      },
-      body: JSON.stringify({
-        access_token: appToken,
-        type: appType
-      })
-    };
-    try {
-      const result = await request(requestUrlRevoke, options);
-      if (result) {
-        this._deleteUserData().then();
-        return result;
-      }
-    } catch(e) {
-      return { error: true };
-    }
-  };
-
   _storeUserData = async() => {
     try {
       SecureStore.setItemAsync('username', this.state.username);
@@ -142,14 +118,6 @@ class LoginScreen extends Component {
     }
   };
 
-  _deleteUserData = async() => {
-    SecureStore.deleteItemAsync('username');
-    SecureStore.deleteItemAsync('email');
-    SecureStore.deleteItemAsync('image');
-    SecureStore.deleteItemAsync('app');
-    SecureStore.deleteItemAsync('token');
-  };
-
   render() {
     const theme = this.props.theme;
 
@@ -169,12 +137,6 @@ class LoginScreen extends Component {
             <GoogleIcon size={65}
                         onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
           </View>
-          <Button title="revoke token"
-                  style={styles.button}
-                  onPress={() => {this._revokeToken(this.state.token, this.state.app).then()}}/>
-          <Button title="go home"
-                  style={styles.button}
-                  onPress={() => {this.props.navigation.navigate('Feeds')}}/>
           <Text>{`user info: `}</Text>
           <Text>{`user: ${this.state.username}`}</Text>
           <Text>{`email: ${this.state.email}`}</Text>
@@ -182,30 +144,6 @@ class LoginScreen extends Component {
       );
   }
 }
-
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingLeft: 40,
-        paddingRight: 40,
-    },
-    textInput:{
-        alignSelf: 'stretch',
-        padding: 16,
-        color: 'white',
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: 'yellow',
-        alignSelf: 'stretch',
-        padding: 20,
-        alignItems: 'center',
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 10,
-    }
-});
 
 export function mapDispatchToProps(dispatch) {
   return {}
