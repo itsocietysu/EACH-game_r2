@@ -40,7 +40,7 @@ class GameItem extends Component{
             loading,
             error,
             data,
-            component: QuestItem,
+            Component: QuestItem,
         };
         return(
             <ContainerView>

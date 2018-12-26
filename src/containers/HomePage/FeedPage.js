@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Button} from 'react-native';
 import PropTypes from "prop-types";
 import styled from 'styled-components/native';
 
@@ -59,7 +59,7 @@ class HomeScreen extends Component {
             loading,
             error,
             data,
-            component: RenderFeedItem,
+            Component: RenderFeedItem,
         };
         return (
             <ContainerView color={colors.BASE[theme]}>
