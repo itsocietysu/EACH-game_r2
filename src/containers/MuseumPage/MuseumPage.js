@@ -42,7 +42,7 @@ class MuseumScreen extends Component {
             loading,
             error,
             data,
-            component: RenderMuseumItem,
+            Component: RenderMuseumItem,
         };
       return (
         <ContainerView color={colors.BASE[theme]}>
