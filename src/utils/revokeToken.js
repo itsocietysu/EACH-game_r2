@@ -19,7 +19,6 @@ export async function revokeToken(){
     appType = await SecureStore.getItemAsync('app');
   }
   catch (e) {
-    console.log("error from secure store");
     return {error: true}
   }
 
@@ -35,15 +34,13 @@ export async function revokeToken(){
   };
 
   try {
-    console.log("request.block");
     const result = await request(requestUrlRevoke, options);
-    console.log(result);
     if (result) {
       deleteUserData().then(console.log("user data successfully deleted"));
+
       return result;
     }
   } catch(e) {
-    console.log("error from delete user data");
     return { error: true };
   }
 }

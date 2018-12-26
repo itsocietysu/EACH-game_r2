@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
 import Image from 'react-native-remote-svg';
-import { Button } from "react-native";
 import {withNavigation} from "react-navigation";
 
 const ContainerView = styled.View`
@@ -12,17 +11,15 @@ const ContainerView = styled.View`
 
 class ProfileScreen extends Component {
   render() {
-    const avatar = this.props.navigation.state.params.avatar;
+    const userData = this.props.navigation.state.params;
 
     return (
       <ContainerView>
         <Image
-          source={{uri: avatar}}
+          source={{uri: userData.avatar}}
           fadeDuration={0}
           style={{width: 100, height: 100}}
         />
-        <Button title="go home"
-                onPress={() => {this.props.navigation.navigate('Feeds')}}/>
       </ContainerView>
     );
   }

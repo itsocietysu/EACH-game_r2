@@ -1,9 +1,7 @@
 /* eslint-disable guard-for-in, no-restricted-syntax */
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     View,
-    Button,
     Text,
 } from 'react-native'
 import { AuthSession, SecureStore } from 'expo';
@@ -64,8 +62,8 @@ class LoginScreen extends Component {
     try {
       const result = await request(requestURL, options);
       if (result) {
-        this.setState({username: result.name, email: result.email, image: result.image, token: result.access_token, app: App});
-        this._storeUserData().then();
+        this.setState({username: result.name, image: result.image, token: result.access_token, app: App});
+        this._storeUserData().then(this.props.navigation.navigate('Profile', { name: result.username, avatar: result.image }));
         return result;
       }
     } catch(e) {
@@ -137,9 +135,6 @@ class LoginScreen extends Component {
             <GoogleIcon size={65}
                         onPress={() => {this._getCodeByAuthUrl(googleAuthUrl).then(code => this._getUserInfo(code, "google", redirectUrl));}}/>
           </View>
-          <Text>{`user info: `}</Text>
-          <Text>{`user: ${this.state.username}`}</Text>
-          <Text>{`email: ${this.state.email}`}</Text>
         </View>
       );
   }

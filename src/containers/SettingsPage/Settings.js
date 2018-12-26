@@ -150,12 +150,16 @@ class SettingsScreen extends Component {
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
-                            onPress={()=>{revokeToken().then(res => {console.log(res)})}}
+                            onPress={()=>{revokeToken().then(res => {
+                                console.log(res);
+                                this.props.navigation.navigate('Login');
+                            })}}
                         >
                             <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
                                 <FormattedMessage message={'Logout'}/>
                             </SettingsAddText>
                         </TouchableOpacity>
+
                     </View>
                 </ContainerView>
 			</FormattedWrapper>
