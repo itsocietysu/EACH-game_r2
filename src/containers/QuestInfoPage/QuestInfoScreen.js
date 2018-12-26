@@ -37,7 +37,7 @@ import Rating from './Rating';
 import SpentTime from './SpentTime';
 import ArrowButton from "../../components/ArrowButton";
 import Button from "../../components/Button";
-
+import tokenInfo from './../../utils/tokenInfo';
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -66,8 +66,9 @@ const ButtonText = styled.Text`
 
 class QuestInfoScreen extends  Component {
 
-    componentDidMount(){
+    async componentDidMount(){
         this.props.init();
+        await tokenInfo();
     }
 
     render(){
@@ -89,7 +90,6 @@ class QuestInfoScreen extends  Component {
         }
 
         if (error !== false) {
-            console.error(error);
             return <Text>Something went wrong</Text>;
         }
 

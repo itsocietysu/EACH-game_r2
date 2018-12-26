@@ -10,7 +10,6 @@ function DataList({ loading, error, data, component }) {
     }
 
     if (error !== false) {
-        console.error(error);
         return <Text>Something went wrong</Text>;
     }
 
