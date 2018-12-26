@@ -98,8 +98,8 @@ const MuseumStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     Login: {screen: LoginScreen},
-    Auth: {screen: AuthPage},
     Profile: {screen: ProfileScreen},
+    Auth: {screen: AuthPage},
     Settings: {screen: SettingsScreen}
   },
   {
