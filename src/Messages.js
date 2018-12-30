@@ -35,6 +35,7 @@ const messages = {
         CompressImg:        'Compress images:',
         Terms:              'Terms and conditions',
         Logout:             'Log out',
+        ReachTarget:        'Reach the destination point!',
     },
 	ru: {
         Powered: 	        'Создано в',
@@ -72,6 +73,7 @@ const messages = {
         CompressImg:        'Сжимать картинки:',
         Terms:              'Пользовательское соглашение',
         Logout:             'Выйти',
+        ReachTarget:        'Достигните точки назначения!',
     },
 	es: {
 		Welcome: 	'Bienvenido',

@@ -73,12 +73,13 @@ class TextQuestion extends Component{
         }
         let result = 'fail';
         const step = this.props.data;
+        const stepsAmount = this.props.stepsAmount;
         let bonus = null;
         if(this.state.pickerSelection === step.correct) {
             result = 'success';
             bonus = step.bonus;
         }
-        this.props.navigation.navigate('Result', {result, bonus});
+        this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
     }
 
     render(){

@@ -15,6 +15,7 @@ import scenarioReducer from "./components/ScenarioPage/reducer";
 import themeReducer from "./components/Theme/reducer";
 import imageComparisonReducer from "./components/ValidateImage/reducer";
 import fontReducer from "./components/Fonts/reducer";
+import stepReducer from "./components/GameStep/reducer";
 /*
  * routeReducer
  *
@@ -58,6 +59,7 @@ export default function createReducer(injectedReducers) {
         scenario: scenarioReducer,
         result: imageComparisonReducer,
         font: fontReducer,
+        gameStep: stepReducer,
         ...injectedReducers,
     });
 }

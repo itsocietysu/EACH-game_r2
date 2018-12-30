@@ -12,14 +12,15 @@ import {Location, Permissions} from 'expo';
 import {withNavigation} from 'react-navigation';
 import {Entypo, MaterialIcons} from '@expo/vector-icons';
 
-import {colors} from "../../utils/constants";
+import {colors, fonts} from "../../utils/constants";
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {LightMapStyle, NightMapStyle} from "../../components/MapStyles";
 import HintIcon from "../../components/icons/HintIcon";
 import showDialog from "../../components/CustomPopUpDialog";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import messages from "../../Messages";
-
+import {MapText} from "../styles";
+import ErrorMessage from "../../components/ErrorMessage";
 
 class QuestMap extends Component{
 
@@ -42,100 +43,111 @@ class QuestMap extends Component{
 
     componentDidMount() {
         // this._buildTargetMarker();
-        Location.getProviderStatusAsync()
-            .then(status => {
-                console.log('Getting status');
-                if (!status.locationServicesEnabled) {
-                    throw new Error('Location services disabled');
-                }
-            })
-            .then(() => Permissions.askAsync(Permissions.LOCATION))
-            .then(permissions => {
-                console.log('Getting permissions');
-                if (permissions.status !== 'granted') {
-                    throw new Error('Ask for permissions');
-                }
-            })
-            .then(() => {
-                console.log('Have permissions');
-                const subscriber = Location.watchPositionAsync({
-                    enableHighAccuracy: true,
-                    timeInterval: 1000,
-                    distanceInterval: 10,
-                },
-                    this._updateLocation
-                );
-                this.setState({ subscriber });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({
-                    errorMessage: 'Permission to access location was denied',
+        try {
+            Location.getProviderStatusAsync()
+                .then(status => {
+                    console.log('Getting status');
+                    if (!status.locationServicesEnabled) {
+                        throw new Error('Location services disabled');
+                    }
+                })
+                .then(() => Permissions.askAsync(Permissions.LOCATION))
+                .then(permissions => {
+                    console.log('Getting permissions');
+                    if (permissions.status !== 'granted') {
+                        throw new Error('Ask for permissions');
+                    }
+                })
+                .then(() => {
+                    console.log('Have permissions');
+                    const subscriber = Location.watchPositionAsync({
+                            enableHighAccuracy: true,
+                            timeInterval: 1000,
+                            distanceInterval: 10,
+                        },
+                        this._updateLocation
+                    );
+                    this.setState({subscriber});
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({
+                        errorMessage: 'Permission to access location was denied',
+                    });
                 });
-            });
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     _updateLocation = (newLocation) => {
-        const { borders, coordinate, routeCoordinates, distanceTravelled } = this.state;
-        const { latitude, longitude } = newLocation.coords;
+        try {
+            const {borders, coordinate, routeCoordinates, distanceTravelled} = this.state;
 
-        const newCoordinate = {
-            latitude,
-            longitude,
-        };
+            const {latitude, longitude} = newLocation.coords;
 
-        if (Platform.OS === 'android') {
-            if (this.marker) {
-                this.marker._component.animateMarkerToCoordinate(
-                    newCoordinate,
-                    500,
-                );
+            const newCoordinate = {
+                latitude,
+                longitude,
+            };
+
+            if (Platform.OS === 'android') {
+                if (this.marker) {
+                    this.marker._component.animateMarkerToCoordinate(
+                        newCoordinate,
+                        500,
+                    );
+                }
             }
-        }
-        else {
-            coordinate.timing(newCoordinate, 500).start();
-        }
-
-        if (borders.length === 0)
-            if (this.props.stepData !== null && this.props.data.location !== null) {
-                const toGoLoc = this.props.stepData.location;
-                const currLoc = this.props.data.location.coords;
-
-                const initialCoords = {
-                    latitude: parseFloat(currLoc.latitude),
-                    longitude: parseFloat(currLoc.longitude)
-                };
-                const coordsToGo = {
-                    latitude: parseFloat(toGoLoc.lat),
-                    longitude: parseFloat(toGoLoc.lon)
-                };
-                this.setState({borders: this.state.borders.concat(initialCoords).concat(coordsToGo), coordinate});
+            else {
+                coordinate.timing(newCoordinate, 500).start();
             }
 
-        this.setState({
-           latitude,
-           longitude,
-           // routeCoordinates: routeCoordinates.concat([newCoordinate]),
-           // distanceTravelled: distanceTravelled + this._calcDistance(newCoordinate),
-           prevLatLng: newCoordinate,
+            if (borders.length === 0)
+                if (this.props.stepData !== null && this.props.data.location !== null) {
+                    const toGoLoc = this.props.stepData.location;
+                    const currLoc = this.props.data.location.coords;
 
-        });
+                    const initialCoords = {
+                        latitude: parseFloat(currLoc.latitude),
+                        longitude: parseFloat(currLoc.longitude)
+                    };
+                    const coordsToGo = {
+                        latitude: parseFloat(toGoLoc.lat),
+                        longitude: parseFloat(toGoLoc.lon)
+                    };
+                    this.setState({borders: this.state.borders.concat(initialCoords).concat(coordsToGo), coordinate});
+                }
+
+            this.setState({
+                latitude,
+                longitude,
+                // routeCoordinates: routeCoordinates.concat([newCoordinate]),
+                // distanceTravelled: distanceTravelled + this._calcDistance(newCoordinate),
+                prevLatLng: newCoordinate,
+
+            });
 
 
-        /* if (this.timestamp === undefined) {
-            this.setState({location:newLocation});
-            this.timestamp = Date.now();
-        } else {
-            const currTime = Date.now();
-            const timeElapsed = currTime - this.timestamp;
-
-            if (timeElapsed > 1000) {
+            /* if (this.timestamp === undefined) {
                 this.setState({location:newLocation});
-                this.timestamp = currTime;
-            }
-        }*/
-        console.log('Location change: ', newLocation);
-        this._validateResult();
+                this.timestamp = Date.now();
+            } else {
+                const currTime = Date.now();
+                const timeElapsed = currTime - this.timestamp;
+
+                if (timeElapsed > 1000) {
+                    this.setState({location:newLocation});
+                    this.timestamp = currTime;
+                }
+            }*/
+            console.log('Location change: ', newLocation);
+            this._validateResult();
+        }
+        catch (e) {
+            console.log(e);
+        }
     };
 
     _calcDistance(currCoordinates){
@@ -165,10 +177,10 @@ class QuestMap extends Component{
         const range = this.props.stepData.range;
         const bonus = this.props.stepData.bonus;
         const result = 'success';
-
+        const stepsAmount = this.props.stepsAmount;
         console.log(this._calcDistance(currPos), ' meters');
         if (this._calcDistance(currPos) <= range)
-            this.props.navigation.navigate('Result', {result, bonus});
+            this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
     }
 
     _zoomIn = () =>{
@@ -229,10 +241,7 @@ class QuestMap extends Component{
                         provider={PROVIDER_GOOGLE}
                         customMapStyle={mapStyle}
                     >
-                        <View style={{ alignItems: 'center'}}>
-                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Reach the target!</Text>
-                        </View>
-                        <Polyline coordinates={this.state.borders} strokeWidth={3} />
+                        <Polyline coordinates={this.state.borders} strokeWidth={2} strokeColor={colors.MAIN}/>
                         <Marker.Animated
                             ref={marker => {
                                 this.marker = marker;
@@ -246,8 +255,13 @@ class QuestMap extends Component{
                         />
 
                     </MapView>
-                    <View style={{position: 'absolute', left: 0, top: 0}}>
+                    <View style={{position: 'absolute', width: width, flexDirection: 'row', left: 0, top: 0}}>
                         <HintIcon onPress={()=>this.refDialog.show()} size={45}/>
+                        <View style={{flex: 1}}>
+                            <MapText color={colors.MAIN} font={fonts.EACH}>
+                                <FormattedMessage message={'ReachTarget'}/>
+                            </MapText>
+                        </View>
                     </View>
                     <View style={{position: 'absolute', left: (width-50), top: height*0.4}}>
 
@@ -261,7 +275,10 @@ class QuestMap extends Component{
                     </View>
                 </View>
         }
-        else{
+        if (this.state.errorMessage){
+            content = <ErrorMessage message={'Location permission is denied'}/>
+        }
+        else {
             content = <ActivityIndicator/>
         }
         return(

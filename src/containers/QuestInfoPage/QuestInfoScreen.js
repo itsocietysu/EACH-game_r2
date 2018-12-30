@@ -27,7 +27,7 @@ import injectReducer from "../../utils/injectReducer";
 import reducer from "../../components/ScenarioPage/reducer";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../components/ScenarioPage/saga";
-import {QuestButtonText, FeedPlainText, QuestTittle, MainTextContainer, MainText, TextContainer, TittleText, StyledButton, SpamHello} from "../styles";
+import {QuestButtonText, FeedPlainText, QuestTittle, Rectangle} from "../styles";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors, fonts} from "../../utils/constants";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
@@ -36,8 +36,8 @@ import getFont from "../../utils/getFont";
 import Rating from './Rating';
 import SpentTime from './SpentTime';
 import ArrowButton from "../../components/ArrowButton";
-import Button from "../../components/Button";
 import tokenInfo from './../../utils/tokenInfo';
+import getUserGameData from "../../utils/getUserGameData";
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -47,28 +47,21 @@ const StatisticsContainer = styled.View`
     paddingBottom: 8
 `;
 
-const DescriptionText = styled.Text`
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 16
-`;
-
 const DescriptionContainer = styled.View`
     paddingLeft: 10
 `;
 
-const ButtonText = styled.Text`
-    alignSelf: center
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 20
-`;
-
 class QuestInfoScreen extends  Component {
+
+    state = {
+        userData: null,
+    };
 
     async componentDidMount(){
         this.props.init();
         await tokenInfo();
+        const data = await getUserGameData();
+        this.setState({userData: data});
     }
 
     render(){
@@ -84,6 +77,23 @@ class QuestInfoScreen extends  Component {
         const error = this.props.error;
         const scenario = this.props.data;
 
+        let button;
+        if (this.state.userData && this.state.userData.username){
+            button =
+                <ArrowButton
+                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario, userData: this.state.userData})}
+                    bgColor={colors.BASE[theme]}
+                    borderColor={colors.MAIN}
+                    width={width*0.55}
+                    height={height*0.075}
+                >
+                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                        <FormattedMessage message={'Play'}/>->
+                    </QuestButtonText>
+                </ArrowButton>
+        }
+        else
+            button = <Text>Auth to play</Text>;
 
         if (loading) {
             return <View><ActivityIndicator/></View>;
@@ -97,34 +107,28 @@ class QuestInfoScreen extends  Component {
             return (
                 <FormattedWrapper locale={this.props.language} messages={messages}>
                     <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
-                        <QuestTittle color={colors.MAIN}
-                                     font={getFont(fontLoaded, fonts.EACH)}
-                        >
-                            {quest.name[locale]}
-                        </QuestTittle>
-                        <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
-                        <StatisticsContainer>
-                            <Rating/>
-                            <SpentTime/>
-                        </StatisticsContainer>
                         <ScrollView style={{flex: 1}}>
-                            <DescriptionContainer>
-                                <FeedPlainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
-                                >
-                                    {quest.desc[locale]}
-                                </FeedPlainText>
-                            </DescriptionContainer>
-                        </ScrollView>
-                        <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
-                            <ArrowButton
-                                onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
-                                bgColor={colors.BASE[theme]}
-                                borderColor={colors.MAIN}
-                                width={width*0.55}
-                                height={height*0.075}
+                            <QuestTittle color={colors.MAIN}
+                                         font={getFont(fontLoaded, fonts.EACH)}
                             >
-                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></QuestButtonText>
-                            </ArrowButton>
+                                {quest.name[locale]}
+                            </QuestTittle>
+                            <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
+                            <StatisticsContainer>
+                                <Rating/>
+                                <SpentTime/>
+                            </StatisticsContainer>
+
+                                <DescriptionContainer>
+                                    <FeedPlainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
+                                    >
+                                        {quest.desc[locale]}
+                                    </FeedPlainText>
+                                </DescriptionContainer>
+                        </ScrollView>
+                        <Rectangle width={width} height={1} backgroundColor={colors.MAIN}/>
+                        <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
+                            {button}
                         </View>
                     </View>
                 </FormattedWrapper>

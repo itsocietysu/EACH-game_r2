@@ -165,8 +165,15 @@ export const SettingsContainer = styled.View`
     alignItems: center
 `;
 
-
-
+/*
+ * Map
+ */
+export const MapText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
+    textAlign: center 
+`;
 
 
 

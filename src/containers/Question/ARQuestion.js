@@ -81,7 +81,8 @@ class ARQuestion extends Component{
         if (res) {
             result = 'success';
         }
-        this.props.navigation.navigate('Result', {result, bonus});
+        const stepsAmount = this.props.stepsAmount;
+        this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
     }
 
     handler(image){

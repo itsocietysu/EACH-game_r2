@@ -65,13 +65,14 @@ class FreeQuestion extends Component{
         }
         let result = 'fail';
         const step = this.props.data;
+        const stepsAmount = this.props.stepsAmount;
         const choices = step.choices;
         let bonus = null;
-        if(choices.includes(this.state.answer.toLowerCase())) {
+        if(choices.includes(this.state.answer.trim().toLowerCase())) {
             result = 'success';
             bonus = step.bonus;
         }
-        this.props.navigation.navigate('Result', {result, bonus});
+        this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
     }
 
     render(){

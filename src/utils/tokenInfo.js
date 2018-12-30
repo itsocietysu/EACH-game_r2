@@ -24,7 +24,7 @@ export default async function tokenInfo(){
         };
         const requestUrl = [requestTokenInfo, buildFormData(requestParams)].join('?');
         const requestResult = await request(requestUrl, options);
-        storeUserData(requestResult);
+        await storeUserData(requestResult);
     }
     catch(e){
         console.log(e);

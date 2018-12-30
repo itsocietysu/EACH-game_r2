@@ -27,6 +27,7 @@ import CustomTabBar from "./components/CustomTabBar";
 import LogoTitle from "./components/CustomHeader";
 import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
 import CustomCamera from "./containers/Question/CustomCamera";
+import QuestFinalScreen from "./containers/QuestFinalPage/QuestFinalScreen";
 
 const FeedStack = createStackNavigator(
     {
@@ -117,9 +118,25 @@ const SettingsStack = createStackNavigator(
     }
 );
 
+const TestStack = createStackNavigator(
+    {
+        Тест: {screen: QuestFinalScreen},
+    },
+    {
+        navigationOptions: ({navigation})=>({
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+            },
+            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
+        }),
+    }
+);
+
 // Bottom tab containing 4 main stacks
 const  AppBottomTab = createBottomTabNavigator(
     {
+        Test: {screen: TestStack},
         Feeds: {screen: FeedStack},
         Maps: {screen: MapStack},
         Museums: {screen: MuseumStack},

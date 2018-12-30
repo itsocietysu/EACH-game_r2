@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, ActivityIndicator } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 import {withNavigation} from "react-navigation";
 
@@ -12,6 +12,7 @@ import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import QuestMap from "./QuestMap";
+import ErrorMessage from "../../components/ErrorMessage";
 
 class LocationQuestion extends Component{
 
@@ -20,7 +21,7 @@ class LocationQuestion extends Component{
         errorMessage: null,
     };
 
-    componentWillMount() {
+    componentDidMount() {
         if (Platform.OS === 'android' && !Constants.isDevice) {
             this.setState({
                 errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
@@ -31,23 +32,33 @@ class LocationQuestion extends Component{
     }
 
     _getLocationAsync = async () => {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-                errorMessage: 'Permission to access location was denied',
-            });
-        }
+        try {
+            const {status} = await Permissions.askAsync(Permissions.LOCATION);
 
-        const location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
+            if (status !== 'granted') {
+                this.setState({
+                    errorMessage: 'Permission to access location was denied',
+                });
+            }
+
+            const location = await Location.getCurrentPositionAsync({});
+            this.setState({location});
+        }
+        catch(e){
+            console.log(e);
+        }
     };
 
     render() {
-        return (
-            <View style={{flex: 1}}>
-                <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme} locale={this.props.language}/>
-            </View>
-        );
+        if (this.state.errorMessage)
+            return <ErrorMessage message={"Location permission denied"}/>;
+        if (this.state.location !== null)
+            return (
+                <View style={{flex: 1}}>
+                    <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme} locale={this.props.language} stepsAmount={this.props.stepsAmount}/>
+                </View>
+            );
+        return <ActivityIndicator/>;
     }
 }
 const mapStateToProps = createStructuredSelector({
