@@ -5,7 +5,7 @@ import {
     createSwitchNavigator,
     createDrawerNavigator,
 } from 'react-navigation';
-
+import {Text} from 'react-native';
 import WelcomeScreen from './containers/WelcomePage/Welcome';
 import FeedScreen from './containers/HomePage/FeedPage';
 import FeedItemScreen from "./containers/HomePage/FeedItem";
@@ -28,6 +28,7 @@ import LogoTitle from "./components/CustomHeader";
 import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
 import CustomCamera from "./containers/Question/CustomCamera";
 import QuestFinalScreen from "./containers/QuestFinalPage/QuestFinalScreen";
+import TabBarLabels from "./components/TabBarLabels";
 
 const FeedStack = createStackNavigator(
     {
@@ -73,6 +74,7 @@ const MuseumStack = createStackNavigator(
         QuestInfo: {screen: QuestInfoScreen},
         QuestPlay: {screen: PlayQuestScreen},
         Result: {screen: ResultScreen},
+        Finish: {screen: QuestFinalScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -82,7 +84,7 @@ const MuseumStack = createStackNavigator(
             if (navigation.state.routeName === 'Museums') {
                 content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
             }
-            else {
+            else if (navigation.state.params){
               const key = navigation.state.params.page;
 
               if (key === 'Maps' || key === 'Museums') {
@@ -118,25 +120,10 @@ const SettingsStack = createStackNavigator(
     }
 );
 
-const TestStack = createStackNavigator(
-    {
-        Тест: {screen: QuestFinalScreen},
-    },
-    {
-        navigationOptions: ({navigation})=>({
-            headerBackground: <LogoTitle/>,
-            headerStyle: {
-                height: HeaderHeight,
-            },
-            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
-        }),
-    }
-);
 
 // Bottom tab containing 4 main stacks
 const  AppBottomTab = createBottomTabNavigator(
     {
-        Test: {screen: TestStack},
         Feeds: {screen: FeedStack},
         Maps: {screen: MapStack},
         Museums: {screen: MuseumStack},
@@ -146,6 +133,8 @@ const  AppBottomTab = createBottomTabNavigator(
         navigationOptions: ({navigation})=>({
             tabBarIcon: ({tintColor,focused})=>(
                 <TabIconContent navigation={navigation} tintColor={tintColor} focused={focused}/>),
+            tabBarLabel: ({tintColor,focused})=>(
+                <TabBarLabels navigation={navigation} tintColor={tintColor} focused={focused}/>),
 
         }),
         tabBarComponent: CustomTabBar,

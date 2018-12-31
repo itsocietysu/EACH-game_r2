@@ -36,6 +36,9 @@ const messages = {
         Terms:              'Terms and conditions',
         Logout:             'Log out',
         ReachTarget:        'Reach the destination point!',
+        Auth:               'Authorize to continue',
+        Process:            'in progress',
+        Passed:             'passed',
     },
 	ru: {
         Powered: 	        'Создано в',
@@ -74,6 +77,9 @@ const messages = {
         Terms:              'Пользовательское соглашение',
         Logout:             'Выйти',
         ReachTarget:        'Достигните точки назначения!',
+        Auth:               'Зарегестрируйтесь чтобы продолжить',
+        Process:            'продолжть',
+        Passed:             'пройдено',
     },
 	es: {
 		Welcome: 	'Bienvenido',
