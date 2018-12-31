@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { ImageBackground, View, TouchableOpacity, Dimensions } from 'react-native'
+import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {withNavigation} from 'react-navigation';
 
 import {createStructuredSelector} from "reselect";
@@ -14,6 +15,7 @@ import getFont from "../../utils/getFont";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
+import messages from "../../Messages";
 
 
 class RenderMuseumItem extends Component{
@@ -26,41 +28,43 @@ class RenderMuseumItem extends Component{
         const theme = this.props.theme;
         const fontLoaded = this.props.font;
         return (
-            <View style={{flex: 1}}>
-                <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item, page: 'Museums'});}}>
-                    <HeaderContainer bgColor={colors.BASE[theme]}>
-                        <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
-                        <TittleContainer>
-                            <FeedTittleText
-                                color={colors.TEXT[theme]}
-                                font={getFont(fontLoaded, fonts.EACH)}
-                            >
-                                {item.name[locale]}
-                            </FeedTittleText>
-                        </TittleContainer>
-                    </HeaderContainer>
-                    <ImageBackground source={{uri: item.image}}
-                                     style={{width: width, height: width}}>
-                        <ImageMask height={width} width={width}/>
-                    </ImageBackground>
+            <FormattedWrapper locale={this.props.locale} messages={messages}>
+                <View style={{flex: 1}}>
+                    <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item, page: 'Museums'});}}>
+                        <HeaderContainer bgColor={colors.BASE[theme]}>
+                            <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
+                            <TittleContainer>
+                                <FeedTittleText
+                                    color={colors.TEXT[theme]}
+                                    font={getFont(fontLoaded, fonts.EACH)}
+                                >
+                                    {item.name[locale]}
+                                </FeedTittleText>
+                            </TittleContainer>
+                        </HeaderContainer>
+                        <ImageBackground source={{uri: item.image}}
+                                         style={{width: width, height: width}}>
+                            <ImageMask height={width} width={width}/>
+                        </ImageBackground>
 
-                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={DESC_BLOCK_HEIGHT}>
-                        <FeedDescriptionText
-                            numberOfLines={3}
-                            color={colors.TEXT[theme]}
-                            font={getFont(fontLoaded, fonts.MURRAY)}
-                        >
-                            {item.desc[locale]}
-                        </FeedDescriptionText>
-                        <FeedMoreText
-                            font={getFont(fontLoaded, fonts.MURRAY)}
-                        >
-                            more...
-                        </FeedMoreText>
-                    </MainTextContainer>
-                    <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
-                </TouchableOpacity>
-            </View>
+                        <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={DESC_BLOCK_HEIGHT}>
+                            <FeedDescriptionText
+                                numberOfLines={3}
+                                color={colors.TEXT[theme]}
+                                font={getFont(fontLoaded, fonts.MURRAY)}
+                            >
+                                {item.desc[locale]}
+                            </FeedDescriptionText>
+                            <FeedMoreText
+                                font={getFont(fontLoaded, fonts.MURRAY)}
+                            >
+                                <FormattedMessage message={'More'}/>
+                            </FeedMoreText>
+                        </MainTextContainer>
+                        <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
+                    </TouchableOpacity>
+                </View>
+            </FormattedWrapper>
         );
     }
 }

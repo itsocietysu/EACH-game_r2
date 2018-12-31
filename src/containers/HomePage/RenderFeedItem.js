@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { ImageBackground, View, Dimensions, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation';
 import PropTypes from "prop-types";
+import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
@@ -14,6 +15,8 @@ import {TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextCo
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
+import messages from "../../Messages";
+
 
 
 class RenderFeedItem extends Component{
@@ -26,41 +29,43 @@ class RenderFeedItem extends Component{
         const theme = this.props.theme;
         const fontLoaded = this.props.font;
         return (
-            <View style={{flex: 1}}>
-                <TouchableOpacity activeOpacity={0.9} onPress={() => { this.props.navigation.navigate('FeedItem', {data: item}); }}>
-                    <HeaderContainer bgColor={colors.BASE[theme]}>
-                        <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
-                        <TittleContainer>
-                            <FeedTittleText
-                                color={colors.TEXT[theme]}
-                                font={getFont(fontLoaded, fonts.EACH)}
-                            >
-                                {item.title[locale]}
-                            </FeedTittleText>
-                        </TittleContainer>
-                    </HeaderContainer>
-                    <ImageBackground source={{uri: item.image}}
-                                     style={{width: width, height: width}}>
-                        <ImageMask height={width} width={width}/>
-                    </ImageBackground>
+            <FormattedWrapper locale={this.props.locale} messages={messages}>
+                <View style={{flex: 1}}>
+                    <TouchableOpacity activeOpacity={0.9} onPress={() => { this.props.navigation.navigate('FeedItem', {data: item}); }}>
+                        <HeaderContainer bgColor={colors.BASE[theme]}>
+                            <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
+                            <TittleContainer>
+                                <FeedTittleText
+                                    color={colors.TEXT[theme]}
+                                    font={getFont(fontLoaded, fonts.EACH)}
+                                >
+                                    {item.title[locale]}
+                                </FeedTittleText>
+                            </TittleContainer>
+                        </HeaderContainer>
+                        <ImageBackground source={{uri: item.image}}
+                                         style={{width: width, height: width}}>
+                            <ImageMask height={width} width={width}/>
+                        </ImageBackground>
 
-                    <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={DESC_BLOCK_HEIGHT}>
-                        <FeedDescriptionText
-                            numberOfLines={3}
-                            color={colors.TEXT[theme]}
-                            font={getFont(fontLoaded, fonts.MURRAY)}
-                        >
-                            {item.desc[locale]}
-                        </FeedDescriptionText>
-                        <FeedMoreText
-                            font={getFont(fontLoaded, fonts.MURRAY)}
-                        >
-                            more...
-                        </FeedMoreText>
-                    </MainTextContainer>
-                    <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
-                </TouchableOpacity>
-            </View>
+                        <MainTextContainer bgColor={colors.BASE[theme]} width={width} height={DESC_BLOCK_HEIGHT}>
+                            <FeedDescriptionText
+                                numberOfLines={3}
+                                color={colors.TEXT[theme]}
+                                font={getFont(fontLoaded, fonts.MURRAY)}
+                            >
+                                {item.desc[locale]}
+                            </FeedDescriptionText>
+                            <FeedMoreText
+                                font={getFont(fontLoaded, fonts.MURRAY)}
+                            >
+                                <FormattedMessage message={'More'}/>
+                            </FeedMoreText>
+                        </MainTextContainer>
+                        <Rectangle width={width} height={1} backgroundColor={colors.SECOND[theme]}/>
+                    </TouchableOpacity>
+                </View>
+            </FormattedWrapper>
         );
     }
 }

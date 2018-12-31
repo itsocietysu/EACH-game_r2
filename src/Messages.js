@@ -39,6 +39,7 @@ const messages = {
         Auth:               'Authorize to continue',
         Process:            'in progress',
         Passed:             'passed',
+        More:               'more...',
     },
 	ru: {
         Powered: 	        'Создано в',
@@ -80,6 +81,7 @@ const messages = {
         Auth:               'Зарегестрируйтесь чтобы продолжить',
         Process:            'продолжть',
         Passed:             'пройдено',
+        More:               'подробнее...',
     },
 	es: {
 		Welcome: 	'Bienvenido',
