@@ -2,17 +2,42 @@ import React, { Component } from 'react';
 import Image from 'react-native-remote-svg';
 import {withNavigation} from "react-navigation";
 
+import  {SecureStore} from 'expo';
 import { Text, View } from "react-native";
 import { createStructuredSelector } from "reselect";
 import connect from "react-redux/es/connect/connect";
 import { compose } from "redux";
 import { colors, fonts } from "../utils/constants";
 import { makeSelectTheme } from "../components/Theme/selectors";
+import { tokenInfo } from '../utils/tokenInfo';
+import { DataList } from '../components/DataList';
+import {PassedQuest} from '../utils/passedQuestComponent'
 
 class ProfileScreen extends Component {
+  state = {gameInfo: { bonus: 0, game_passed: [], game_process: []}, gameTime: ''};
+
+  async _onLoad() {
+    let gameInfo = await SecureStore.getItemAsync('gameInfo');
+    const gameTime = await SecureStore.getItemAsync('time_in_game');
+    gameInfo = JSON.parse(gameInfo);
+    this.setState({ gameInfo, gameTime });
+  }
+
   render() {
     const userData = this.props.navigation.state.params;
     const theme = this.props.theme;
+    const { gameInfo, gameTime } = this.state;
+
+    tokenInfo().then(() => this._onLoad());
+
+    const loading = "";
+    const error = "";
+    const dataListProps = {
+      loading,
+      error,
+      data: JSON.stringify(gameInfo.games_passed),
+      Component: PassedQuest,
+    };
 
     return (
       <View
@@ -36,10 +61,10 @@ class ProfileScreen extends Component {
           {userData.name}
         </Text>
         <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 20}}>
-          Hовичок  Баллы: 0
+          Hовичок  Баллы: {gameInfo.bonus}
         </Text>
         <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 10}}>
-          Время в игре:  5 часов
+          Время в игре:  {gameTime}
         </Text>
           <Text style={{color: colors.MAIN,
             borderTopWidth: 0.5,
@@ -51,6 +76,7 @@ class ProfileScreen extends Component {
           }}>
             Cыгранные квесты
           </Text>
+        <DataList {...dataListProps} />
       </View>
     );
   }

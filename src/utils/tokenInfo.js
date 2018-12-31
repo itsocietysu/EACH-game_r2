@@ -3,10 +3,10 @@ import request from "./request";
 import buildFormData from "./buildFormData";
 import storeUserData from "./storeUserData";
 
-export default async function tokenInfo(){
+export async function tokenInfo(){
     try{
         const token = await SecureStore.getItemAsync('token');
-        const authType = await SecureStore.getItemAsync('App');
+        const authType = await SecureStore.getItemAsync('app');
         const options = {
             method: 'GET',
             headers: {
@@ -16,7 +16,6 @@ export default async function tokenInfo(){
             },
         };
         const requestTokenInfo = 'http://each.itsociety.su:4201/each/token/info';
-
         const requestParams = {
             access_token: token,
             type: authType,
@@ -24,9 +23,12 @@ export default async function tokenInfo(){
         };
         const requestUrl = [requestTokenInfo, buildFormData(requestParams)].join('?');
         const requestResult = await request(requestUrl, options);
+
         storeUserData(requestResult);
+        // return requestResult;
     }
     catch(e){
         console.log(e);
+        // return {error: true};
     }
 }
