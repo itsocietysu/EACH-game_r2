@@ -57,6 +57,18 @@ export const MuseumItemPanelText = styled.Text`
     fontSize: ${0.28/10.5*height}
 `;
 
+export const MarkText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.28/10.5*height}
+`;
+
+export const GameTitleText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
+`;
 /*
  * Quests
  */

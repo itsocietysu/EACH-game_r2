@@ -29,15 +29,13 @@ class PlayQuestScreen extends Component{
 
         const gameId = scenario[0].scenario.game_id;
         let step = 0;
-        if (userData && userData.gameData){
-            for(const it in userData.gameData.games_process){
-                if (it.game.id === gameId) {
-                    step = it.game.step_passed;
-                    break;
-                }
-            }
-            this.context.store.dispatch(updateCurrentStep(step));
+        if (userData && userData.gameData && userData.gameData.games_process){
+            step = userData.gameData.games_process.forEach( item => {
+                if(item.game.eid === gameId)
+                    return item.game.step_passed;
+            });
         }
+        this.context.store.dispatch(updateCurrentStep(step));
     }
 
     render() {

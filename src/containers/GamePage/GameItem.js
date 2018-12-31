@@ -19,22 +19,33 @@ import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import {loadGames} from "../GamePage/actions";
 import DataList from "../../components/DataList";
-
+import getUserGameData from "../../utils/getUserGameData";
+import {markDataStatus} from "../../utils/markDataStatus";
 
 const ContainerView = styled.View`
   flex: 1;
 `;
 
 class GameItem extends Component{
+    state={
+        userData: null,
+    };
 
-    componentDidMount(){
+    async componentDidMount(){
+        const data = await getUserGameData();
+        this.setState({userData: data});
         this.props.init();
     }
 
     render(){
-        const loading = this.props.loading;
+        let loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
+        if (this.state.userData && data){
+            markDataStatus(data, this.state.userData.gameData);
+        }
+        else
+            loading = true;
 
         const dataListProps = {
             loading,

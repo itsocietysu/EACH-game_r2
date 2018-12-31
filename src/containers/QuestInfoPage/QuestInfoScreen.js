@@ -93,7 +93,18 @@ class QuestInfoScreen extends  Component {
                 </ArrowButton>
         }
         else
-            button = <Text>Auth to play</Text>;
+            button =
+                <ArrowButton
+                    onPress={()=>this.props.navigation.navigate('Login')}
+                    bgColor={colors.BASE[theme]}
+                    borderColor={colors.MAIN}
+                    width={width*0.55}
+                    height={height*0.075}
+                >
+                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                        <FormattedMessage message={'Auth'}/>->
+                    </QuestButtonText>
+                </ArrowButton>
 
         if (loading) {
             return <View><ActivityIndicator/></View>;

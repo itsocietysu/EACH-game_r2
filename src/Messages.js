@@ -37,7 +37,7 @@ const messages = {
         Logout:             'Log out',
         ReachTarget:        'Reach the destination point!',
         Auth:               'Authorize to continue',
-        Process:            'in progress',
+        Process:            'playing',
         Passed:             'passed',
         More:               'more...',
     },

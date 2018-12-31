@@ -79,7 +79,9 @@ class TextQuestion extends Component{
             result = 'success';
             bonus = step.bonus;
         }
+
         this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
+        this.setState({pickerSelection: -1});
     }
 
     render(){

@@ -36,10 +36,16 @@ const ButtonText = styled.Text`
 `;
 
 class Bonus extends React.Component{
+    state = {
+        finish: false,
+    };
 
-    componentDidMount(){
-        this.props.incrementStep(this.props.currentStep + 1);
-    }
+    /* componentDidMount(){
+        if(this.props.currentStep === this.props.stepsAmount)
+            this.setState({finish: true});
+        else
+            this.props.incrementStep(this.props.currentStep + 1);
+    }*/
 
     render() {
         const {width, height} = Dimensions.get('window');
@@ -88,10 +94,14 @@ class Bonus extends React.Component{
                     <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 15}}>
                         <ArrowButton
                             onPress={()=>{
-                                if(stepsAmount+1 === this.props.currentStep)
-                                    this.props.navigation.navigate('Test');
+                                if(this.props.currentStep === this.props.stepsAmount)
+                                    this.props.navigation.navigate('Finish');
                                 else
+                                {
+                                    this.props.incrementStep(this.props.currentStep + 1);
                                     this.props.navigation.navigate('QuestPlay')
+                                }
+
                             }}
                             bgColor={colors.BASE[theme]}
                             borderColor={colors.MAIN}
