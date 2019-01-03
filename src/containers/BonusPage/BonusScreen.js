@@ -16,6 +16,8 @@ import ArrowButton from "../../components/ArrowButton";
 import styled from "styled-components/native";
 import {updateCurrentStep} from "../../components/GameStep/actions";
 import {makeSelectGameStep} from "../../components/GameStep/selectors";
+import {BonusText} from "../styles";
+import {updateStatistics} from "../../utils/updateStatistics";
 
 const PHOTO_BONUS = "photo";
 const TEXT_BONUS = "text";
@@ -40,19 +42,22 @@ class Bonus extends React.Component{
         finish: false,
     };
 
-    /* componentDidMount(){
-        if(this.props.currentStep === this.props.stepsAmount)
-            this.setState({finish: true});
+    _onPress(){
+        if(this.props.currentStep === this.props.stepsAmount - 1)
+            this.props.navigation.navigate('Finish');
         else
+        {
+            // updateStatistics();
             this.props.incrementStep(this.props.currentStep + 1);
-    }*/
+            this.props.navigation.navigate('QuestPlay')
+        }
+    }
 
     render() {
         const {width, height} = Dimensions.get('window');
         const bonus = this.props.bonus;
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
-        const stepsAmount = this.props.stepsAmount;
         let content = <View/>;
 
         switch (bonus.type) {
@@ -66,7 +71,7 @@ class Bonus extends React.Component{
             case TEXT_BONUS:
                 content =
                     <ScrollView style={{flex: 1}}>
-                        <Text>{bonus.desc.text}</Text>
+                        <BonusText color={colors.TEXT[theme]} font={fonts.MURRAY}>{bonus.desc.text}</BonusText>
                     </ScrollView>;
                 break;
             case VIDEO_BONUS:
@@ -93,22 +98,15 @@ class Bonus extends React.Component{
                     {content}
                     <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 15}}>
                         <ArrowButton
-                            onPress={()=>{
-                                if(this.props.currentStep === this.props.stepsAmount)
-                                    this.props.navigation.navigate('Finish');
-                                else
-                                {
-                                    this.props.incrementStep(this.props.currentStep + 1);
-                                    this.props.navigation.navigate('QuestPlay')
-                                }
-
-                            }}
+                            onPress={()=>this._onPress()}
                             bgColor={colors.BASE[theme]}
                             borderColor={colors.MAIN}
                             width={width*0.55}
                             height={height*0.075}
                         >
-                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Continue'}/>-></ButtonText>
+                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                                <FormattedMessage message={'Continue'}/>->
+                            </ButtonText>
                         </ArrowButton>
                     </View>
                 </View>

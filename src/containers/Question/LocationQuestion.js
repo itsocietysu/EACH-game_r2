@@ -16,10 +16,14 @@ import ErrorMessage from "../../components/ErrorMessage";
 
 class LocationQuestion extends Component{
 
-    state = {
-        location: null,
-        errorMessage: null,
-    };
+    constructor(){
+        super();
+        this.state = {
+            location: null,
+            errorMessage: null,
+        };
+        this._throwErrorMessage = this._throwErrorMessage.bind(this);
+    }
 
     componentDidMount() {
         if (Platform.OS === 'android' && !Constants.isDevice) {
@@ -39,8 +43,8 @@ class LocationQuestion extends Component{
                 this.setState({
                     errorMessage: 'Permission to access location was denied',
                 });
+                return;
             }
-
             const location = await Location.getCurrentPositionAsync({});
             this.setState({location});
         }
@@ -49,13 +53,24 @@ class LocationQuestion extends Component{
         }
     };
 
+    _throwErrorMessage(e){
+        this.setState({errorMessage: e});
+    }
+
     render() {
         if (this.state.errorMessage)
-            return <ErrorMessage message={"Location permission denied"}/>;
+            return <ErrorMessage message={this.state.errorMessage}/>;
         if (this.state.location !== null)
             return (
                 <View style={{flex: 1}}>
-                    <QuestMap data={this.state} stepData={this.props.data} theme={this.props.theme} locale={this.props.language} stepsAmount={this.props.stepsAmount}/>
+                    <QuestMap
+                        initialLocation={this.state.location}
+                        stepData={this.props.data}
+                        theme={this.props.theme}
+                        locale={this.props.language}
+                        processResult={this.props.processResult}
+                        throwError={this._throwErrorMessage}
+                    />
                 </View>
             );
         return <ActivityIndicator/>;

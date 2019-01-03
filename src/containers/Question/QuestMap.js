@@ -20,7 +20,6 @@ import showDialog from "../../components/CustomPopUpDialog";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import messages from "../../Messages";
 import {MapText} from "../styles";
-import ErrorMessage from "../../components/ErrorMessage";
 
 class QuestMap extends Component{
 
@@ -29,68 +28,71 @@ class QuestMap extends Component{
         this.state = {
             latitude: null,
             longitude: null,
-            // routeCoordinates: [],
-            // distanceTravelled: 0,
             prevLatLng: {},
-            coordinate: new AnimatedRegion({
+            markerRegion: new AnimatedRegion({
                 latitude: 0,
                 longitude: 0,
             }),
             borders: [],
-            showDialog: false
+            showDialog: false,
+            subscriber: null,
         };
     }
 
-    componentDidMount() {
-        // this._buildTargetMarker();
+    async componentDidMount() {
+        // Get permissions and init position watcher
         try {
-            Location.getProviderStatusAsync()
-                .then(status => {
-                    console.log('Getting status');
-                    if (!status.locationServicesEnabled) {
-                        throw new Error('Location services disabled');
-                    }
-                })
-                .then(() => Permissions.askAsync(Permissions.LOCATION))
-                .then(permissions => {
-                    console.log('Getting permissions');
-                    if (permissions.status !== 'granted') {
-                        throw new Error('Ask for permissions');
-                    }
-                })
-                .then(() => {
-                    console.log('Have permissions');
-                    const subscriber = Location.watchPositionAsync({
-                            enableHighAccuracy: true,
-                            timeInterval: 1000,
-                            distanceInterval: 10,
-                        },
-                        this._updateLocation
-                    );
-                    this.setState({subscriber});
-                })
-                .catch(error => {
-                    console.log(error);
-                    this.setState({
-                        errorMessage: 'Permission to access location was denied',
-                    });
-                });
+            /* const serviceStatus = Location.getProviderStatusAsync();
+
+            if (!serviceStatus.locationServicesEnabled) {
+                this.props.throwError('Location services disabled');
+                return;
+            }*/
+            const {status} = await Permissions.askAsync(Permissions.LOCATION);
+            if (status !== 'granted') {
+                this.props.throwError('Ask for permissions');
+                return;
+            }
+            const watcherSettings = {
+                enableHighAccuracy: true,
+                timeInterval: 1000,
+                distanceInterval: 10,
+            };
+            const subscriber = await Location.watchPositionAsync(watcherSettings, this._updateLocation);
+            if (!subscriber) {
+                this.props.throwError('Watcher position error');
+                return;
+            }
+            this.setState({subscriber});
+            this._initBorders();
         }
         catch (e) {
             console.log(e);
         }
     }
 
+    _initBorders(){
+        if (this.props.stepData !== null && this.props.initialLocation !== null) {
+            const toGoLoc = this.props.stepData.location;
+            const currLoc = this.props.initialLocation.coords;
+
+            const initialCoords = {
+                latitude: parseFloat(currLoc.latitude),
+                longitude: parseFloat(currLoc.longitude)
+            };
+            const coordsToGo = {
+                latitude: parseFloat(toGoLoc.lat),
+                longitude: parseFloat(toGoLoc.lon)
+            };
+            this.setState({borders: this.state.borders.concat(initialCoords).concat(coordsToGo)});
+        }
+    }
+
     _updateLocation = (newLocation) => {
         try {
-            const {borders, coordinate, routeCoordinates, distanceTravelled} = this.state;
-
+            const {markerRegion} = this.state;
             const {latitude, longitude} = newLocation.coords;
-
-            const newCoordinate = {
-                latitude,
-                longitude,
-            };
+            const newCoordinate = {latitude, longitude};
 
             if (Platform.OS === 'android') {
                 if (this.marker) {
@@ -101,35 +103,16 @@ class QuestMap extends Component{
                 }
             }
             else {
-                coordinate.timing(newCoordinate, 500).start();
+                markerRegion.timing(newCoordinate, 500).start();
             }
-
-            if (borders.length === 0)
-                if (this.props.stepData !== null && this.props.data.location !== null) {
-                    const toGoLoc = this.props.stepData.location;
-                    const currLoc = this.props.data.location.coords;
-
-                    const initialCoords = {
-                        latitude: parseFloat(currLoc.latitude),
-                        longitude: parseFloat(currLoc.longitude)
-                    };
-                    const coordsToGo = {
-                        latitude: parseFloat(toGoLoc.lat),
-                        longitude: parseFloat(toGoLoc.lon)
-                    };
-                    this.setState({borders: this.state.borders.concat(initialCoords).concat(coordsToGo), coordinate});
-                }
-
             this.setState({
+                markerRegion,
                 latitude,
                 longitude,
                 // routeCoordinates: routeCoordinates.concat([newCoordinate]),
                 // distanceTravelled: distanceTravelled + this._calcDistance(newCoordinate),
                 prevLatLng: newCoordinate,
-
             });
-
-
             /* if (this.timestamp === undefined) {
                 this.setState({location:newLocation});
                 this.timestamp = Date.now();
@@ -150,12 +133,29 @@ class QuestMap extends Component{
         }
     };
 
+    _validateResult(){
+        const currPos = {
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+        };
+        const range = 8000000000;//this.props.stepData.range;
+        const result = true;
+        // console.log(this._calcDistance(currPos), ' meters');
+        if (this._calcDistance(currPos) <= range) {
+            this.state.subscriber.remove();
+            this.props.processResult(result);
+        }
+    }
+
     _calcDistance(currCoordinates){
         const finnish = this.state.borders[1];
         const haversine = require('haversine');
         return haversine(finnish, currCoordinates, {unit: 'meter'}) || 0;
     }
 
+    /*
+     * Map interface functions
+     */
     _getMapRegion = () => ({
         latitude: this.state.latitude,
         longitude: this.state.longitude,
@@ -166,22 +166,6 @@ class QuestMap extends Component{
     _fitToElements = () => {
         this.mapRef.fitToCoordinates(this.state.borders, { edgePadding: { top: 70, right: 50, bottom: 50, left: 50 }, animated: true })
     };
-
-    _validateResult(){
-        const currPos = {
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-            //  latitude: this.props.stepData.location.lat,
-            //  longitude: this.props.stepData.location.lon,
-        };
-        const range = this.props.stepData.range;
-        const bonus = this.props.stepData.bonus;
-        const result = 'success';
-        const stepsAmount = this.props.stepsAmount;
-        console.log(this._calcDistance(currPos), ' meters');
-        if (this._calcDistance(currPos) <= range)
-            this.props.navigation.navigate('Result', {result, bonus, stepsAmount});
-    }
 
     _zoomIn = () =>{
         const region = this.mapRef.__lastRegion;
@@ -247,7 +231,7 @@ class QuestMap extends Component{
                                 this.marker = marker;
                             }}
 
-                            coordinate={this.state.coordinate}
+                            coordinate={this.state.markerRegion}
                         />
                         <Marker
                             coordinate={coordsToGo}
@@ -274,9 +258,6 @@ class QuestMap extends Component{
                         </View>
                     </View>
                 </View>
-        }
-        if (this.state.errorMessage){
-            content = <ErrorMessage message={'Location permission is denied'}/>
         }
         else {
             content = <ActivityIndicator/>

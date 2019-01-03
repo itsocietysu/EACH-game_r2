@@ -96,20 +96,17 @@ class CustomCamera extends React.Component {
     };
 
     async _takePhoto(){
-        const m = 3;
         try {
-            // const status =  await Permissions.askAsync(Permissions.CAMERA);
-            const n = 3;
-            /*if (status.status !== 'granted') {
+            const status =  await Permissions.askAsync(Permissions.CAMERA);
+            if (status.status !== 'granted') {
                 alert('To continue camera should be enabled');
                 return;
-            }*/
+            }
             const image = await this.cameraRef.takePictureAsync();
             if (image === undefined){
                 alert('Ooops! Something went wrong');
                 return;
             }
-            const k = 5;
             const processedImage = await this._cropAndResize(image);
             const _validateImage = this.props.navigation.getParam('handler', '');
             _validateImage(processedImage);
@@ -125,8 +122,7 @@ class CustomCamera extends React.Component {
 
     async _process(){
         if(this.state._isMounted && !this.state.loading)
-            // this.setState({loading: true}, this._takePhoto );
-            await this._takePhoto();
+            this.setState({loading: true}, this._takePhoto );
     }
     render() {
         const { width, height} = Dimensions.get('window');
