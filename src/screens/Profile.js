@@ -10,8 +10,8 @@ import { compose } from "redux";
 import { colors, fonts } from "../utils/constants";
 import { makeSelectTheme } from "../components/Theme/selectors";
 import { tokenInfo } from '../utils/tokenInfo';
-import { DataList } from '../components/DataList';
-import {PassedQuest} from '../utils/RenderQuestItem'
+import DataList from '../components/DataList';
+import RenderFeedItem from '../utils/RenderQuestItem'
 
 class ProfileScreen extends Component {
   state = {gameInfo: { bonus: 0, game_passed: [], game_process: []}, gameTime: ''};
@@ -35,8 +35,8 @@ class ProfileScreen extends Component {
     const dataListProps = {
       loading,
       error,
-      data: JSON.stringify(gameInfo.game_passed),
-      Component: PassedQuest,
+      data: gameInfo.game_passed,
+      Component: RenderFeedItem,
     };
 
     return (

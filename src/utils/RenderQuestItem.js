@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { ImageBackground, View, Dimensions, TouchableOpacity } from 'react-native'
+import { Text, View} from 'react-native'
 import { withNavigation } from 'react-navigation';
 import PropTypes from "prop-types";
 
@@ -7,14 +7,12 @@ import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 
-import getFont from '../../utils/getFont';
-import {colors, DESC_BLOCK_HEIGHT, fonts} from "../../utils/constants";
-import {TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextContainer, FeedDescriptionText, FeedMoreText, ImageMask, Rectangle} from "../styles";
+import {makeSelectTheme} from "../components/Theme/selectors";
+import {makeSelectFonts} from "../components/Fonts/selectors";
+import {makeSelectLanguage} from "../components/Locales/selectors";
 
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-
+// import getFont from '../utils/getFont';
+// import {colors, DESC_BLOCK_HEIGHT, fonts} from "../utils/constants";
 
 class RenderFeedItem extends Component{
 
@@ -24,7 +22,7 @@ class RenderFeedItem extends Component{
     // const theme = this.props.theme;
     // const fontLoaded = this.props.font;
     return (
-      <View style={{flexDurection: "row"}}>
+      <View style={{flexDirection: "row"}}>
         <Text> Hello </Text>
         <Text> world! </Text>
       </View>
@@ -52,4 +50,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   withNavigation
-)(PassedQuest);
+)(RenderFeedItem);
