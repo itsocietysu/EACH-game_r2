@@ -19,6 +19,8 @@ import VkontakteIcon from "../components/icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "../containers/AuthPage/constants";
 import request from './../utils/request';
 
+import {revokeToken} from "../utils/revokeToken";
+
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +38,7 @@ class LoginScreen extends Component {
   }
 
   componentDidMount() {
+    revokeToken();
     this._fetchUserData().then((data) => {
       if (data !== undefined) {
         // check token with tokeninfo is here
