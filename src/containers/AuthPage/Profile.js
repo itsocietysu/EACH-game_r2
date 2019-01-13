@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import Image from 'react-native-remote-svg';
 import {withNavigation} from "react-navigation";
+import PropTypes from "prop-types";
 
 import  {SecureStore} from 'expo';
 import { Text, View } from "react-native";
 import { createStructuredSelector } from "reselect";
 import connect from "react-redux/es/connect/connect";
 import { compose } from "redux";
-import { colors, fonts } from "../utils/constants";
-import { makeSelectTheme } from "../components/Theme/selectors";
-import { tokenInfo } from '../utils/tokenInfo';
-import DataList from '../components/DataList';
-import RenderFeedItem from '../utils/RenderQuestItem'
+import { colors, fonts } from "../../utils/constants";
+import { makeSelectTheme } from "../../components/Theme/selectors";
+import { tokenInfo } from '../../utils/tokenInfo';
+import DataList from '../../components/DataList';
+import RenderFeedItem from '../../utils/RenderQuestItem'
+import { loadFeeds } from "../HomePage/actions";
 
 class ProfileScreen extends Component {
   state = {gameInfo: { bonus: 0, game_passed: [], game_process: []}, gameTime: ''};
@@ -83,12 +85,25 @@ class ProfileScreen extends Component {
 }
 
 export function mapDispatchToProps(dispatch) {
-  return {}
+  return {
+    init: evt => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(loadFeeds());
+    },
+  };
 }
 
 const mapStateToProps = createStructuredSelector({
   theme: makeSelectTheme(),
 });
+
+ProfileScreen.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  data: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  theme: PropTypes.string,
+  init: PropTypes.func,
+};
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

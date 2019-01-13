@@ -15,9 +15,8 @@ import SettingsScreen from './containers/SettingsPage/Settings';
 import QuestInfoScreen from "./containers/QuestInfoPage/QuestInfoScreen";
 import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
 import ResultScreen from "./containers/ResultPage/ResultScreen";
-import LoginScreen from "./screens/Login";
-import AuthPage from "./containers/AuthPage/AuthPage";
-import ProfileScreen from "./screens/Profile"
+import LoginScreen from "./containers/AuthPage/Login";
+import ProfileScreen from "./containers/AuthPage/Profile"
 
 import { BackIcon, SettingsIcon} from './components/icons';
 
@@ -99,7 +98,6 @@ const ProfileStack = createStackNavigator(
   {
     Login: {screen: LoginScreen},
     Profile: {screen: ProfileScreen},
-    Auth: {screen: AuthPage},
     Settings: {screen: SettingsScreen}
   },
   {

@@ -9,17 +9,15 @@ import { AuthSession, SecureStore } from 'expo';
 import connect from "react-redux/es/connect/connect";
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import {makeSelectTheme} from "../components/Theme/selectors";
-import {colors, fonts} from "../utils/constants";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {colors, fonts} from "../../utils/constants";
 
-import buildFormData from './../utils/buildFormData'
-import EachIcon from "../components/icons/EachIcon";
-import GoogleIcon from "../components/icons/GoogleIcon";
-import VkontakteIcon from "../components/icons/VkontakteIcon";
-import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "../containers/AuthPage/constants";
-import request from './../utils/request';
-
-import {revokeToken} from "../utils/revokeToken";
+import buildFormData from '../../utils/buildFormData'
+import EachIcon from "../../components/icons/EachIcon";
+import GoogleIcon from "../../components/icons/GoogleIcon";
+import VkontakteIcon from "../../components/icons/VkontakteIcon";
+import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "./constants";
+import request from '../../utils/request';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -38,7 +36,6 @@ class LoginScreen extends Component {
   }
 
   componentDidMount() {
-    // revokeToken();
     this._fetchUserData().then((data) => {
       if (data !== undefined) {
         // check token with tokeninfo is here
