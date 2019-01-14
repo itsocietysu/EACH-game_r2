@@ -37,10 +37,9 @@ export async function revokeToken(){
     const result = await request(requestUrlRevoke, options);
     if (result) {
       deleteUserData().then(console.log("user data successfully deleted"));
-
       return result;
     }
   } catch(e) {
-    return { error: true };
+    return { error: e };
   }
 }

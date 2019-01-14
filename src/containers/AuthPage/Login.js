@@ -39,6 +39,7 @@ class LoginScreen extends Component {
     this._fetchUserData().then((data) => {
       if (data !== undefined) {
         // check token with tokeninfo is here
+        console.log(data);
         this.props.navigation.navigate('Profile', { name: data.username, avatar: data.image });
       }
     });
