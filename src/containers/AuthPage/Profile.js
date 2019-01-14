@@ -12,8 +12,7 @@ import { colors, fonts } from "../../utils/constants";
 import { makeSelectTheme } from "../../components/Theme/selectors";
 import { tokenInfo } from '../../utils/tokenInfo';
 import DataList from '../../components/DataList';
-import RenderFeedItem from '../../utils/RenderQuestItem'
-import { loadFeeds } from "../HomePage/actions";
+import RenderQuestItem from './RenderQuestItem';
 
 class ProfileScreen extends Component {
   state = {gameInfo: { bonus: 0, game_passed: [], game_process: []}, gameTime: ''};
@@ -29,16 +28,16 @@ class ProfileScreen extends Component {
     const userData = this.props.navigation.state.params;
     const theme = this.props.theme;
     const { gameInfo, gameTime } = this.state;
+    const loading = false;
+    const error = false;
 
     tokenInfo().then(() => this._onLoad());
 
-    const loading = "";
-    const error = "";
     const dataListProps = {
-      loading,
-      error,
+      loading,                    // used in redux only
+      error,                      // used in redux only
       data: gameInfo.game_passed,
-      Component: RenderFeedItem,
+      Component: RenderQuestItem,
     };
 
     return (

@@ -7,9 +7,9 @@ import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 
-import {makeSelectTheme} from "../components/Theme/selectors";
-import {makeSelectFonts} from "../components/Fonts/selectors";
-import {makeSelectLanguage} from "../components/Locales/selectors";
+import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectFonts} from "../../components/Fonts/selectors";
+import {makeSelectLanguage} from "../../components/Locales/selectors";
 
 // import getFont from '../utils/getFont';
 // import {colors, DESC_BLOCK_HEIGHT, fonts} from "../utils/constants";
