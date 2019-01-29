@@ -57,7 +57,7 @@ class ProfileScreen extends Component {
     const dataListProps = {
       loading,                    // used in redux only
       error,                      // used in redux only
-      data: gameInfo.game_passed,
+      data: gameInfo,
       Component: RenderQuestItem,
     };
 
