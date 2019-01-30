@@ -1,18 +1,18 @@
 import React from 'react';
 import {View} from 'react-native';
-import { MaterialCommunityIcons, Foundation, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
 const TabIconContent = ({ navigation, tintColor }) => {
     const {routeName} = navigation.state;
     switch (routeName) {
         case 'Feeds':
-            return <MaterialCommunityIcons name={'newspaper'} size={25} color={tintColor}/>;
+            return <FontAwesome name={'send'} size={25} color={tintColor}/>;
         case 'Maps':
-            return <Foundation name={'map'} size={25} color={tintColor}/>;
+            return <AntDesign name={'enviroment'} size={25} color={tintColor}/>;
         case 'Museums':
-            return <FontAwesome name={'empire'} size={25} color={tintColor}/>;
+            return <FontAwesome name={'university'} size={25} color={tintColor}/>;
         case 'Settings':
-            return <MaterialCommunityIcons name={'settings'} size={25} color={tintColor}/>;
+            return <AntDesign name={'setting'} size={25} color={tintColor}/>;
         default:
             return <View/>;
     }
