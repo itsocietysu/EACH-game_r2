@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components/native';
-import { Entypo } from '@expo/vector-icons';
+import Image from 'react-native-remote-svg';
+import styled from "styled-components/native";
 
 const IconLeftContainer = styled.TouchableOpacity`
   height: 100%;
@@ -8,10 +8,14 @@ const IconLeftContainer = styled.TouchableOpacity`
   justifyContent: center;
 `;
 
-const VkontakteIcon = ({ onPress, size=25 }) => (
-    <IconLeftContainer onPress={onPress}>
-        <Entypo name="vk-alternitive" size={size} color={'rgb(75,116,165)'} />
-    </IconLeftContainer>
+const VkontakteIcon = ({onPress, size}) => (
+  <IconLeftContainer onPress={onPress}>
+    <Image
+      source={require('../../../assets/icons/logo-vk.svg')}
+      fadeDuration={0}
+      style={{width: size, height: size}}
+    />
+  </IconLeftContainer>
 );
 
 export default VkontakteIcon;

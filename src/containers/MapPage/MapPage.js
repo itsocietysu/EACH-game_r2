@@ -63,7 +63,7 @@ class MapsScreen extends Component {
               latitude: parseFloat(location.latitude),
               longitude: parseFloat(location.longitude),
             }}
-            image={require('../../../assets/icons/map_icon_128.png')}
+            image={require('../../../assets/icons/map_logo_128.png')}
             onPress={() => {
                 this.ShowDialog(museum, location.name);
             }}
