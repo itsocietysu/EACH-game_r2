@@ -13,19 +13,9 @@ import { makeSelectTheme } from "../../components/Theme/selectors";
 import { SectionListQuests } from './SectionListQuests';
 import { makeSelectLanguage } from "../../components/Locales/selectors";
 import messages from '../../Messages';
+import ChooseStatus from '../../utils/ChooseStatus'
 
 class ProfileScreen extends Component {
-   _ChoseStatus(Score) {
-    let res;
-
-    if (Score >= 0 && Score < 1000) res = "Beginner";
-    else if (Score >= 1000 && Score < 2000) res =  "Student";
-    else if (Score >= 2000 && Score < 3000) res = "Expert";
-    else if (Score >= 3000 && Score < 4000) res = "Profi";
-    else res = "Master";
-
-    return res;
-  }
 
   render() {
     const userData = this.props.navigation.state.params.userData;
@@ -33,7 +23,7 @@ class ProfileScreen extends Component {
     const lang = this.props.language;
     const gameInfo = JSON.parse(userData.gameInfo);
     const bonus = gameInfo.bonus;
-    const range = this._ChoseStatus(bonus);
+    const range = ChooseStatus(bonus);
 
     const SectionListProps = {
       game_passed: gameInfo.game_passed ,
