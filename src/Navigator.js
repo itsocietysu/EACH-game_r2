@@ -3,7 +3,6 @@ import {
     createBottomTabNavigator,
     createStackNavigator,
     createSwitchNavigator,
-    createDrawerNavigator,
 } from 'react-navigation';
 import {Text} from 'react-native';
 import WelcomeScreen from './containers/WelcomePage/Welcome';
@@ -16,12 +15,11 @@ import SettingsScreen from './containers/SettingsPage/Settings';
 import QuestInfoScreen from "./containers/QuestInfoPage/QuestInfoScreen";
 import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
 import ResultScreen from "./containers/ResultPage/ResultScreen";
-import LoginScreen from "./screens/Login";
-import AuthPage from "./containers/AuthPage/AuthPage";
+import LoginScreen from "./containers/AuthPage/Login";
+import ProfileScreen from "./containers/AuthPage/Profile"
 
-import { HamburgerIcon, BackIcon } from './components/icons';
+import { BackIcon, SettingsIcon} from './components/icons';
 
-import DrawerContent from './components/DrawerContent';
 import TabIconContent from "./components/TabIconContent";
 import CustomTabBar from "./components/CustomTabBar";
 import LogoTitle from "./components/CustomHeader";
@@ -37,9 +35,10 @@ const FeedStack = createStackNavigator(
     },
     {
         navigationOptions: ({navigation})=> {
-            let content = <BackIcon onPress={() => navigation.goBack(null)}/>;
-            if (navigation.state.routeName === 'Feeds') {
-                content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
+            let content;
+
+            if (navigation.state.routeName !== 'Feeds') {
+              content = <BackIcon onPress={() => navigation.goBack(null)}/>;
             }
             return ({
                 headerBackground: <LogoTitle/>,
@@ -57,12 +56,11 @@ const MapStack = createStackNavigator(
         Maps: {screen: MapScreen},
     },
     {
-        navigationOptions: ({navigation})=>({
+        navigationOptions: ()=>({
             headerBackground: <LogoTitle/>,
             headerStyle: {
                 height: HeaderHeight,
-            },
-            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()} color={colors.MAIN}/>
+            }
         }),
     }
 );
@@ -78,19 +76,13 @@ const MuseumStack = createStackNavigator(
     },
     {
         navigationOptions: ({navigation})=> {
-
-            let content;
-
-            if (navigation.state.routeName === 'Museums') {
-                content = <HamburgerIcon onPress={() => navigation.openDrawer()}/>;
-            }
-            else if (navigation.state.params){
+            let content = null;
+            if (navigation.state.routeName !== 'Museums') {
               const key = navigation.state.params.page;
 
               if (key === 'Maps' || key === 'Museums') {
                 content = <BackIcon onPress={() => navigation.navigate(key)}/>;
-              }
-                else {
+              } else {
                 content = <BackIcon onPress={() => navigation.goBack(null)}/>;
               }
             }
@@ -105,19 +97,33 @@ const MuseumStack = createStackNavigator(
     }
 );
 
-const SettingsStack = createStackNavigator(
-    {
-        Settings: {screen: SettingsScreen},
-    },
-    {
-        navigationOptions: ({navigation})=>({
-            headerBackground: <LogoTitle/>,
-            headerStyle: {
-                height: HeaderHeight,
-            },
-            headerLeft: <HamburgerIcon onPress={()=>navigation.openDrawer()}/>
-        }),
+const ProfileStack = createStackNavigator(
+  {
+    Login: {screen: LoginScreen},
+    Profile: {screen: ProfileScreen},
+    Settings: {screen: SettingsScreen}
+  },
+  {
+    navigationOptions: ({navigation})=> {
+      let content = null;
+      let rightContent = null;
+
+      if(navigation.state.routeName === 'Profile') {
+        rightContent =  <SettingsIcon onPress={() => navigation.navigate('Settings')}/>
+      }
+      if (navigation.state.routeName !== 'Login' && navigation.state.routeName !== 'Profile' ) {
+        content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+      }
+      return ({
+        headerBackground: <LogoTitle/>,
+        headerStyle: {
+          height: HeaderHeight,
+        },
+        headerLeft: content,
+        headerRight: rightContent,
+      });
     }
+  }
 );
 
 
@@ -127,7 +133,7 @@ const  AppBottomTab = createBottomTabNavigator(
         Feeds: {screen: FeedStack},
         Maps: {screen: MapStack},
         Museums: {screen: MuseumStack},
-        Settings: {screen: SettingsStack},
+        Profile: {screen: ProfileStack},
     },
     {
         navigationOptions: ({navigation})=>({
@@ -144,36 +150,10 @@ const  AppBottomTab = createBottomTabNavigator(
     }
 );
 
-// Drawer navigation styled by CustomDrawerComponent
-const Drawer = createDrawerNavigator(
-    {
-        Home: {screen: AppBottomTab}
-    },
-    {
-        contentComponent: props =>
-            (<DrawerContent
-                {...props}
-            />),
-    }
-);
-
-const AuthStack = createStackNavigator(
-    {
-        Login: {screen: LoginScreen},
-        Auth: {screen: AuthPage},
-    },
-    {
-        navigationOptions:{
-            header: null,
-        }
-    }
-);
-
 // separated Auth stack + application tabs
 const MainAppStack = createStackNavigator(
     {
-        Home: {screen: Drawer},
-        Auth: {screen: AuthStack},
+        Home: {screen: AppBottomTab},
         Camera: {screen: CustomCamera},
     },
     {

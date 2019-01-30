@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ActivityIndicator, View, Text, FlatList, ScrollView} from 'react-native';
 
-
 function DataList({ loading, error, data, Component }) {
     if (loading) {
         return <View><ActivityIndicator/></View>;

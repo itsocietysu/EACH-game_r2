@@ -22,6 +22,7 @@ import {colors, fonts, languages} from "../../utils/constants";
 import {SettingsText, SettingsTitleText, SettingsAddText, SettingsContainer} from "../styles";
 import {renderRow, getKeyByValue} from "../../utils/renderPopUpRow";
 import tupleToArray from "../../utils/tupleToArray";
+import { revokeToken } from "../../utils/revokeToken"
 
 const ContainerView = styled.View`
       flex: 1
@@ -31,7 +32,6 @@ const ContainerView = styled.View`
 `;
 
 class SettingsScreen extends Component {
-
     state = {
         nightValue: false,
         compressValue: false,
@@ -150,12 +150,16 @@ class SettingsScreen extends Component {
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
-                            onPress={()=>alert('Выходим из аккаунта пользователя')}
+                            onPress={()=>{revokeToken().then(res => {
+                                console.log(res);
+                                this.props.navigation.navigate('Login');
+                            })}}
                         >
                             <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
                                 <FormattedMessage message={'Logout'}/>
                             </SettingsAddText>
                         </TouchableOpacity>
+
                     </View>
                 </ContainerView>
 			</FormattedWrapper>

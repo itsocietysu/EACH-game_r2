@@ -11,8 +11,8 @@ const TabIconContent = ({ navigation, tintColor }) => {
             return <AntDesign name={'enviroment'} size={25} color={tintColor}/>;
         case 'Museums':
             return <FontAwesome name={'university'} size={25} color={tintColor}/>;
-        case 'Settings':
-            return <AntDesign name={'setting'} size={25} color={tintColor}/>;
+        case 'Profile':
+            return <FontAwesome name={'user'} size={25} color={tintColor}/>;
         default:
             return <View/>;
     }
