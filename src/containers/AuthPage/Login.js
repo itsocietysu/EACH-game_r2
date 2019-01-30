@@ -28,6 +28,8 @@ class LoginScreen extends Component {
       image: '',
       app: '',
       token: '',
+      gameInfo: '',
+      gameTime: '',
     };
 
     this._storeUserData =this._storeUserData.bind(this);
@@ -38,9 +40,7 @@ class LoginScreen extends Component {
   componentDidMount() {
     this._fetchUserData().then((data) => {
       if (data !== undefined) {
-        // check token with tokeninfo is here
-        console.log(data);
-        this.props.navigation.navigate('Profile', { name: data.username, avatar: data.image });
+        this.props.navigation.navigate('Profile', { userData: data });
       }
     });
   }
@@ -59,12 +59,13 @@ class LoginScreen extends Component {
       },
     };
 
-    const requestURL = [requestUrlGet, buildFormData(form)].join('?');
+    const requestURL = [requestUrlGet, buildFormData(form)].join('&');
     try {
       const result = await request(requestURL, options);
+      console.log(result);
       if (result) {
-        this.setState({username: result.name, image: result.image, token: result.access_token, app: App});
-        this._storeUserData().then(this.props.navigation.navigate('Profile', { name: result.username, avatar: result.image }));
+        this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameTime: result.time_in_game, gameInfo: result.run});
+        this._storeUserData().then(this.props.navigation.navigate('Profile', { userData: result }));
         return result;
       }
     } catch(e) {
@@ -94,6 +95,8 @@ class LoginScreen extends Component {
       SecureStore.setItemAsync('image', this.state.image);
       SecureStore.setItemAsync('app', this.state.app);
       SecureStore.setItemAsync('token', this.state.token);
+      SecureStore.setItemAsync('gameInfo', JSON.stringify(this.state.gameInfo));
+      SecureStore.setItemAsync('gameTime', this.state.gameTime);
 
     } catch (e) {
       return { error: true };
@@ -107,10 +110,12 @@ class LoginScreen extends Component {
       const image1 = await SecureStore.getItemAsync('image');
       const app1 = await SecureStore.getItemAsync('app');
       const token1 = await SecureStore.getItemAsync('token');
+      const gameInfo1 = await SecureStore.getItemAsync('gameInfo');
+      const gameTime1 = await SecureStore.getItemAsync('gameTime');
 
-      if (email1 !== null && username1 !== null && image1 !== null && app1 !== null && token1 !== null) {
-        this.setState({username: username1, email: email1, image: image1, app: app1, token: token1});
-        return {username: username1, image: image1, app: app1, token: token1};
+      if (email1 !== null && username1 !== null && image1 !== null && app1 !== null && token1 !== null && gameInfo1 !== null && gameTime1 !== null) {
+        this.setState({username: username1, email: email1, image: image1, app: app1, token: token1, gameInfo: gameInfo1, gameTime: gameTime1});
+        return {username: username1, image: image1, app: app1, token: token1, gameInfo: gameInfo1, gameTime: gameTime1};
       }
     } catch (error) {
       return { error: true };

@@ -5,7 +5,7 @@ const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
 const vkontakteClientId = '6682398';
 
 export const redirectUrl = AuthSession.getRedirectUrl();
-export const requestUrlGet = `http://each.itsociety.su:4201/each/token/get`;
+export const requestUrlGet = `http://each.itsociety.su:4201/each/token/get?expansion=true`;
 export const requestUrlRevoke = `http://each.itsociety.su:4201/each/token/revoke`;
 
 export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
