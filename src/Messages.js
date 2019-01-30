@@ -1,5 +1,7 @@
 const messages = {
     en: {
+        AuthMsg:         'CHOOSE SERVICE TO LOGIN OR REGISTRATION',
+        Enter:           'ENTER',
         Beginner:        'Beginner',
         Student:         'Student',
         Expert:          'Expert',
@@ -46,6 +48,8 @@ const messages = {
         Logout:             'Log out',
     },
 	ru: {
+        AuthMsg:         'ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ',
+        Enter:           'ВХОД',
         Beginner:        'Новичок',
         Student:         'Ученик',
         Expert:          'Знаток',

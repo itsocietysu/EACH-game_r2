@@ -18,6 +18,8 @@ import GoogleIcon from "../../components/icons/GoogleIcon";
 import VkontakteIcon from "../../components/icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "./constants";
 import request from '../../utils/request';
+import messages from '../../Messages';
+import { makeSelectLanguage } from "../../components/Locales/selectors";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -124,14 +126,15 @@ class LoginScreen extends Component {
 
   render() {
     const theme = this.props.theme;
+    const lang = this.props.language;
 
       return (
         <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
           <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 80, fontFamily: fonts.MURRAY, marginTop: 20}}>
-            ВХОД
+            {messages[lang].Enter}
           </Text>
           <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 80}}>
-            ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ
+            {messages[lang].AuthMsg}
           </Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <EachIcon size={65}
@@ -152,6 +155,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   theme: makeSelectTheme(),
+  language: makeSelectLanguage(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
