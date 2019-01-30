@@ -74,14 +74,9 @@ class ARQuestion extends Component{
             this._validateResult(nextProps.result[0].result);
         }
     }
-    // TODO: debug version => release version
-    _validateResult(res){
-        const bonus = this.props.data.bonus;
-        let result = 'fail';
-        if (res) {
-            result = 'success';
-        }
-        this.props.navigation.navigate('Result', {result, bonus});
+
+    _validateResult(result){
+        this.props.processResult(result);
     }
 
     handler(image){
@@ -90,8 +85,6 @@ class ARQuestion extends Component{
             stepid: this.props.stepID,
             image: image.base64,
         };
-        // this.props.checkImage(body);
-
         this.setState({selectedImage: image, loading: true}, ()=>this.props.checkImage(body));
     }
 

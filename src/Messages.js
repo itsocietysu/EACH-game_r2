@@ -46,6 +46,11 @@ const messages = {
         CompressImg:        'Compress images:',
         Terms:              'Terms and conditions',
         Logout:             'Log out',
+        ReachTarget:        'Reach the destination point!',
+        Auth:               'Authorize to continue',
+        Process:            'playing',
+        Passed:             'passed',
+        More:               'more...',
     },
 	ru: {
         AuthMsg:         'ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ',
@@ -94,6 +99,11 @@ const messages = {
         CompressImg:        'Сжимать картинки:',
         Terms:              'Пользовательское соглашение',
         Logout:             'Выйти',
+        ReachTarget:        'Достигните точки назначения!',
+        Auth:               'Зарегестрируйтесь чтобы продолжить',
+        Process:            'продолжть',
+        Passed:             'пройдено',
+        More:               'подробнее...',
     },
 	es: {
 		Welcome: 	'Bienvenido',

@@ -1,28 +1,22 @@
 import React, {Component} from 'react';
-import {View, Alert, Image, Text, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
+import {View, Alert, Image, FlatList, Dimensions, ScrollView} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import {TEXT_QUESTION, AR_PAINT_QUESTION, LOCATION_QUESTION} from "./constants";
-import CustomList from "../../components/CustomList";
 import PickerItem from "../../components/Picker";
 import styled from "styled-components/native";
-import {QuestButtonText, Rectangle, SpamHello, CentroidFigure, StyledButton} from "../styles";
+import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
 import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
 import {createStructuredSelector} from "reselect";
-import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../components/ValidateImage/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 import connect from "react-redux/es/connect/connect";
-import {mapDispatchToProps} from "./ARQuestion";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {compose} from "redux";
 import getFont from "../../utils/getFont";
 import ArrowButton from "../../components/ArrowButton";
 import HintIcon from "../../components/icons/HintIcon";
-import Back from "../../components/icons/Back";
-import {Dialog, DialogTitle} from "react-native-popup-dialog";
 import showDialog from '../../components/CustomPopUpDialog';
 
 const QuestionText = styled.Text`
@@ -41,16 +35,8 @@ const DescText = styled.Text`
     paddingTop: 20
 `;
 
-const ButtonText = styled.Text`
-    alignSelf: center
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 20
-`;
 
 class TextQuestion extends Component{
-
-
 
     constructor(){
         super();
@@ -60,9 +46,9 @@ class TextQuestion extends Component{
         this._changeSelection = this._changeSelection.bind(this);
     }
 
-    _changeSelection(e){
+    _changeSelection(value){
         this.setState({
-            pickerSelection: e
+            pickerSelection: value
         })
     }
 
@@ -71,20 +57,19 @@ class TextQuestion extends Component{
             Alert.alert('Not selected!');
             return;
         }
-        let result = 'fail';
+        let result = false;
         const step = this.props.data;
-        let bonus = null;
+
         if(this.state.pickerSelection === step.correct) {
-            result = 'success';
-            bonus = step.bonus;
+            result = true;
         }
-        this.props.navigation.navigate('Result', {result, bonus});
+        this.props.processResult(result);
+        this.setState({pickerSelection: -1});
     }
 
     render(){
         const step = this.props.data;
         const theme = this.props.theme;
-        const locale = this.props.locale.toUpperCase();
         const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
         return(

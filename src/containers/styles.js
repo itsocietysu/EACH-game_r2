@@ -6,6 +6,13 @@ import {colors, SCREEN_HEIGHT} from "../utils/constants";
 
 const {width, height} = Dimensions.get('window');
 
+export const TabBarLabelText = styled.Text`
+    textAlign: center
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.25/10.5*height}
+`;
+
 /*
  * News and Museums Feed
  */
@@ -51,6 +58,18 @@ export const MuseumItemPanelText = styled.Text`
     fontSize: ${0.28/10.5*height}
 `;
 
+export const MarkText = styled.Text`
+    alignSelf: center
+    color: ${props => props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.28/10.5*height}
+`;
+
+export const GameTitleText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
+`;
 /*
  * Quests
  */
@@ -164,6 +183,27 @@ export const SettingsContainer = styled.View`
     flexDirection: row
     alignItems: center
 `;
+
+/*
+ * Map
+ */
+export const MapText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
+    textAlign: center 
+`;
+
+/*
+ * Bonus
+ */
+export const BonusText = styled.Text`
+    color: ${props=> props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${0.3/10.5*height}
+    textAlign: center 
+`;
+
 
 
 

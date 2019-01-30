@@ -4,7 +4,7 @@ import {
     createStackNavigator,
     createSwitchNavigator,
 } from 'react-navigation';
-
+import {Text} from 'react-native';
 import WelcomeScreen from './containers/WelcomePage/Welcome';
 import FeedScreen from './containers/HomePage/FeedPage';
 import FeedItemScreen from "./containers/HomePage/FeedItem";
@@ -25,6 +25,8 @@ import CustomTabBar from "./components/CustomTabBar";
 import LogoTitle from "./components/CustomHeader";
 import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
 import CustomCamera from "./containers/Question/CustomCamera";
+import QuestFinalScreen from "./containers/QuestFinalPage/QuestFinalScreen";
+import TabBarLabels from "./components/TabBarLabels";
 
 const FeedStack = createStackNavigator(
     {
@@ -70,6 +72,7 @@ const MuseumStack = createStackNavigator(
         QuestInfo: {screen: QuestInfoScreen},
         QuestPlay: {screen: PlayQuestScreen},
         Result: {screen: ResultScreen},
+        Finish: {screen: QuestFinalScreen},
     },
     {
         navigationOptions: ({navigation})=> {
@@ -123,6 +126,7 @@ const ProfileStack = createStackNavigator(
   }
 );
 
+
 // Bottom tab containing 4 main stacks
 const  AppBottomTab = createBottomTabNavigator(
     {
@@ -135,6 +139,8 @@ const  AppBottomTab = createBottomTabNavigator(
         navigationOptions: ({navigation})=>({
             tabBarIcon: ({tintColor,focused})=>(
                 <TabIconContent navigation={navigation} tintColor={tintColor} focused={focused}/>),
+            tabBarLabel: ({tintColor,focused})=>(
+                <TabBarLabels navigation={navigation} tintColor={tintColor} focused={focused}/>),
 
         }),
         tabBarComponent: CustomTabBar,

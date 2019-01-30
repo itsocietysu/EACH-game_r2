@@ -91,7 +91,7 @@ class QuestFinalScreen extends Component{
                             {this.renderComment()}
                             <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
                                 <ArrowButton
-                                    onPress={() => this._validateResult()}
+                                    onPress={() => this.props.navigation.navigate('Museums')}
                                     bgColor={colors.BASE[theme]}
                                     borderColor={colors.MAIN}
                                     width={width*0.55}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Text} from 'react-native';
 import {BottomTabBar, withNavigation} from 'react-navigation';
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
@@ -34,7 +34,7 @@ CustomTabBar.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-    language: makeSelectLanguage(),
+    locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
 });
 

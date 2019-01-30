@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, ActivityIndicator, PixelRatio } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { ImageManipulator, Permissions, Camera} from 'expo';
 import {MaterialIcons} from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import Back from "../../components/icons/Back";
 class CustomCamera extends React.Component {
     state = {
         imageLoaded: false,
-        permissionGranted: null,
+        permissionGranted: false,
         targetHeight: null,
         targetWidth: null,
         loading: false,
@@ -96,14 +96,17 @@ class CustomCamera extends React.Component {
     };
 
     async _takePhoto(){
-
         try {
+            const status =  await Permissions.askAsync(Permissions.CAMERA);
+            if (status.status !== 'granted') {
+                alert('To continue camera should be enabled');
+                return;
+            }
             const image = await this.cameraRef.takePictureAsync();
             if (image === undefined){
                 alert('Ooops! Something went wrong');
                 return;
             }
-
             const processedImage = await this._cropAndResize(image);
             const _validateImage = this.props.navigation.getParam('handler', '');
             _validateImage(processedImage);
@@ -117,7 +120,7 @@ class CustomCamera extends React.Component {
         this.props.navigation.goBack();
     }
 
-    _process(){
+    async _process(){
         if(this.state._isMounted && !this.state.loading)
             this.setState({loading: true}, this._takePhoto );
     }
@@ -125,7 +128,7 @@ class CustomCamera extends React.Component {
         const { width, height} = Dimensions.get('window');
         const iconSize = 60;
 
-        if (this.state.permissionGranted == null) {
+        if (!this.state.permissionGranted) {
             return <ActivityIndicator/>;
         }
         if (this.state.permissionGranted) {
@@ -156,12 +159,13 @@ class CustomCamera extends React.Component {
                         <View style={{position: 'absolute', top: 15}}>
                             <Back onPress={ ()=>this.props.navigation.goBack() }/>
                         </View>
-                        <View style={{position: 'absolute', left: (width-iconSize)/2, top: height *0.85}}>
-                            <MaterialIcons name="photo-camera" size={iconSize} color={colors.SECOND.light}
-                                        onPress={ ()=> this._process()}/>
-                        </View>
+
 
                     </Camera>
+                    <View style={{position: 'absolute', left: (width-iconSize)/2, top: height *0.85}}>
+                        <MaterialIcons name="photo-camera" size={iconSize} color={colors.SECOND.light}
+                                       onPress={ ()=> this._process()}/>
+                    </View>
                 </View>
             );
         }

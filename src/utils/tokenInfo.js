@@ -24,11 +24,12 @@ export async function tokenInfo(){
         const requestUrl = [requestTokenInfo, buildFormData(requestParams)].join('?');
         const requestResult = await request(requestUrl, options);
 
-        storeUserData(requestResult);
-        // return requestResult;
+        await storeUserData(requestResult);
+        alert(token);
+        alert(requestResult.name);
     }
     catch(e){
         console.log(e);
-        // return {error: true};
+        alert(e);
     }
 }

@@ -14,6 +14,10 @@ import getFont from "../../utils/getFont";
 import messages from "../../Messages";
 import ArrowButton from "../../components/ArrowButton";
 import styled from "styled-components/native";
+import {updateCurrentStep} from "../../components/GameStep/actions";
+import {makeSelectGameStep} from "../../components/GameStep/selectors";
+import {BonusText} from "../styles";
+import {updateStatistics} from "../../utils/updateStatistics";
 
 const PHOTO_BONUS = "photo";
 const TEXT_BONUS = "text";
@@ -34,13 +38,26 @@ const ButtonText = styled.Text`
 `;
 
 class Bonus extends React.Component{
+    state = {
+        finish: false,
+    };
+
+    async _onPress(){
+        const success = await updateStatistics(this.props.gameID, this.props.currentStep+1);
+        if(this.props.currentStep === this.props.stepsAmount - 1)
+            this.props.navigation.navigate('Finish');
+        else
+        {
+            this.props.incrementStep(this.props.currentStep + 1);
+            this.props.navigation.navigate('QuestPlay')
+        }
+    }
+
     render() {
         const {width, height} = Dimensions.get('window');
         const bonus = this.props.bonus;
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
-        // TODO: remove this field
-        const next = 'next';
         let content = <View/>;
 
         switch (bonus.type) {
@@ -54,7 +71,7 @@ class Bonus extends React.Component{
             case TEXT_BONUS:
                 content =
                     <ScrollView style={{flex: 1}}>
-                        <Text>{bonus.desc.text}</Text>
+                        <BonusText color={colors.TEXT[theme]} font={fonts.MURRAY}>{bonus.desc.text}</BonusText>
                     </ScrollView>;
                 break;
             case VIDEO_BONUS:
@@ -81,13 +98,15 @@ class Bonus extends React.Component{
                     {content}
                     <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 15}}>
                         <ArrowButton
-                            onPress={()=>this.props.navigation.navigate('QuestPlay', {next})}
+                            onPress={()=>this._onPress()}
                             bgColor={colors.BASE[theme]}
                             borderColor={colors.MAIN}
                             width={width*0.55}
                             height={height*0.075}
                         >
-                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Continue'}/>-></ButtonText>
+                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                                <FormattedMessage message={'Continue'}/>->
+                            </ButtonText>
                         </ArrowButton>
                     </View>
                 </View>
@@ -100,11 +119,20 @@ const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
     font: makeSelectFonts(),
+    currentStep: makeSelectGameStep(),
 });
 
+export function mapDispatchToProps(dispatch){
+    return{
+        incrementStep: (evt) => {
+            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+            dispatch(updateCurrentStep(evt))
+        }
+    }
+}
 const withConnect = connect(
     mapStateToProps,
-    {},
+    mapDispatchToProps,
 );
 export default compose(
     withNavigation,
