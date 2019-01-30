@@ -7,6 +7,7 @@ import {colors, SCREEN_HEIGHT} from "../utils/constants";
 const {width, height} = Dimensions.get('window');
 
 export const TabBarLabelText = styled.Text`
+    textAlign: center
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
     fontSize: ${0.25/10.5*height}

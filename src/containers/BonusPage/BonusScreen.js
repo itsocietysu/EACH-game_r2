@@ -42,12 +42,12 @@ class Bonus extends React.Component{
         finish: false,
     };
 
-    _onPress(){
+    async _onPress(){
+        const success = await updateStatistics(this.props.gameID, this.props.currentStep+1);
         if(this.props.currentStep === this.props.stepsAmount - 1)
             this.props.navigation.navigate('Finish');
         else
         {
-            // updateStatistics();
             this.props.incrementStep(this.props.currentStep + 1);
             this.props.navigation.navigate('QuestPlay')
         }

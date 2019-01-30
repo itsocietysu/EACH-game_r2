@@ -49,6 +49,7 @@ const StatisticsContainer = styled.View`
 
 const DescriptionContainer = styled.View`
     paddingLeft: 10
+    paddingRight: 10
 `;
 
 class QuestInfoScreen extends  Component {

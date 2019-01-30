@@ -44,6 +44,7 @@
     "utils": "^0.3.1"
   },
   "devDependencies": {
+    "@expo/vector-icons": "^9.0.0",
     "eslint": "4.3.0",
     "eslint-config-equimper": "2.2.1",
     "eslint-config-prettier": "2.3.0",

@@ -10,10 +10,11 @@ class ResultScreen extends Component{
         const result = this.props.navigation.getParam('result','');
         const bonus = this.props.navigation.getParam('bonus','');
         const stepsAmount = this.props.navigation.getParam('stepsAmount','');
+        const gameID = this.props.navigation.getParam('gameID','');
         let answer;
 
         if (result)
-            answer = <Bonus bonus={bonus} stepsAmount={stepsAmount}/>;
+            answer = <Bonus bonus={bonus} stepsAmount={stepsAmount} gameID={gameID}/>;
         else
             answer = <FailureScreen/>;
         return (
