@@ -64,10 +64,13 @@ class LoginScreen extends Component {
     const requestURL = [requestUrlGet, buildFormData(form)].join('&');
     try {
       const result = await request(requestURL, options);
-      console.log(result);
       if (result) {
         this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameInfo: result.run, gameTime: result.time_in_game,});
-        this._storeUserData().then(this.props.navigation.navigate('Profile', { userData: result }));
+        this._fetchUserData().then((data) => {
+          if (data !== undefined) {
+            this.props.navigation.navigate('Profile', { userData: data });
+          }
+        });
         return result;
       }
     } catch(e) {

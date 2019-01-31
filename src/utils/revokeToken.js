@@ -8,6 +8,8 @@ const deleteUserData = async() => {
   SecureStore.deleteItemAsync('image');
   SecureStore.deleteItemAsync('app');
   SecureStore.deleteItemAsync('token');
+  SecureStore.deleteItemAsync('gameInfo');
+  SecureStore.deleteItemAsync('gameTime');
 };
 
 export async function revokeToken(){
