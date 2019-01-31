@@ -3,6 +3,8 @@ const messages = {
         AuthMsg:         'CHOOSE SERVICE TO LOGIN OR REGISTRATION',
         Enter:           'ENTER',
         Beginner:        'Beginner',
+        ProcTitle:       'Active',
+        PassTitle:       'Passed',
         Student:         'Student',
         Expert:          'Expert',
         Profi:           'Profi',
@@ -53,6 +55,8 @@ const messages = {
         More:               'more...',
     },
 	ru: {
+        ProcTitle:       'Активные',
+        PassTitle:       'Завершенные',
         AuthMsg:         'ВЫБЕРИТЕ СИСТЕМУ ДЛЯ ВХОДА ИЛИ РЕГИСТРАЦИИ',
         Enter:           'ВХОД',
         Beginner:        'Новичок',
