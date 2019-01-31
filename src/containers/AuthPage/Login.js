@@ -66,7 +66,7 @@ class LoginScreen extends Component {
       const result = await request(requestURL, options);
       console.log(result);
       if (result) {
-        this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameTime: result.time_in_game, gameInfo: result.run});
+        this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameInfo: result.run, gameTime: result.time_in_game,});
         this._storeUserData().then(this.props.navigation.navigate('Profile', { userData: result }));
         return result;
       }

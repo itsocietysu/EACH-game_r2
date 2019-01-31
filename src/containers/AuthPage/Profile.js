@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
     const userData = this.props.navigation.state.params.userData;
     const theme = this.props.theme;
     const lang = this.props.language;
-    const gameInfo = JSON.parse(userData.gameInfo);
+    const gameInfo = userData ? JSON.parse(userData.gameInfo) : '';
     const bonus = gameInfo.bonus;
     const range = ChooseStatus(bonus);
 
@@ -49,7 +49,7 @@ class ProfileScreen extends Component {
           }}
         />
         <Text style={{color: colors.MAIN, textAlign: 'center', fontSize: 60, fontFamily: fonts.EACH, marginTop: 10}}>
-          {userData.name}
+          {userData.username}
         </Text>
         <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 20}}>
           {messages[lang][range]}  {messages[lang].Score}: {bonus}

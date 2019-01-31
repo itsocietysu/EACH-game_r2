@@ -99,7 +99,6 @@ const MuseumStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
-    Login: {screen: LoginScreen},
     Profile: {screen: ProfileScreen},
     Settings: {screen: SettingsScreen}
   },
@@ -111,7 +110,7 @@ const ProfileStack = createStackNavigator(
       if(navigation.state.routeName === 'Profile') {
         rightContent =  <SettingsIcon onPress={() => navigation.navigate('Settings')}/>
       }
-      if (navigation.state.routeName !== 'Login' && navigation.state.routeName !== 'Profile' ) {
+      else {
         content = <BackIcon onPress={() => navigation.goBack(null)}/>;
       }
       return ({
@@ -126,6 +125,30 @@ const ProfileStack = createStackNavigator(
   }
 );
 
+const LoginStack = createStackNavigator(
+  {LoginScreen: {screen: LoginScreen}},
+  {
+    navigationOptions: ({navigation})=> {
+      const content = null;
+      const rightContent = null;
+
+      return ({
+        headerBackground: <LogoTitle/>,
+        headerStyle: {
+          height: HeaderHeight,
+        },
+        headerLeft: content,
+        headerRight: rightContent,
+      });
+    }
+  }
+  );
+const AuthStack = createSwitchNavigator(
+  {
+    Login: {screen: LoginStack},
+    ProfileStack: {screen: ProfileStack},
+  }
+);
 
 // Bottom tab containing 4 main stacks
 const  AppBottomTab = createBottomTabNavigator(
@@ -133,7 +156,7 @@ const  AppBottomTab = createBottomTabNavigator(
         Feeds: {screen: FeedStack},
         Maps: {screen: MapStack},
         Museums: {screen: MuseumStack},
-        Profile: {screen: ProfileStack},
+        Profile: {screen: AuthStack},
     },
     {
         navigationOptions: ({navigation})=>({

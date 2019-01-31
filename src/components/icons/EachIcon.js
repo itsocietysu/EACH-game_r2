@@ -9,13 +9,12 @@ const IconLeftContainer = styled.TouchableOpacity`
 `;
 
 const EachIcon = ({onPress, size}) => (
-    <IconLeftContainer onPress={onPress}>
-        <Image
-            source={require('../../../assets/icons/logo.svg')}
-            fadeDuration={0}
-            style={{width: size, height: size}}
-        />
-    </IconLeftContainer>
+  <IconLeftContainer onPress={onPress}>
+    <Image
+      source={require('../../../assets/icons/logo.svg')}
+      style={{width: size, height: size}}
+    />
+  </IconLeftContainer>
 );
 
 export default EachIcon;
