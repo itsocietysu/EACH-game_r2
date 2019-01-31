@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
     const userData = this.props.navigation.state.params.userData;
     const theme = this.props.theme;
     const lang = this.props.language;
-    const gameInfo = userData ? JSON.parse(userData.gameInfo) : '';
+    const gameInfo = JSON.parse(userData.gameInfo);
     const bonus = gameInfo.bonus;
     const range = ChooseStatus(bonus);
 
