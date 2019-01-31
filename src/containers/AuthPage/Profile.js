@@ -19,6 +19,7 @@ class ProfileScreen extends Component {
 
   render() {
     const userData = this.props.navigation.state.params.userData;
+    console.log(userData);
     const theme = this.props.theme;
     const lang = this.props.language;
     const gameInfo = JSON.parse(userData.gameInfo);
@@ -75,10 +76,6 @@ class ProfileScreen extends Component {
   }
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {};
-}
-
 const mapStateToProps = createStructuredSelector({
   theme: makeSelectTheme(),
   language: makeSelectLanguage(),
@@ -88,6 +85,6 @@ ProfileScreen.propTypes = {
   theme: PropTypes.string,
 };
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps);
 
 export default compose(withConnect, withNavigation)(ProfileScreen);
