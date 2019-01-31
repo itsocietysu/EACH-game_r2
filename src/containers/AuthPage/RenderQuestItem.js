@@ -15,22 +15,24 @@ import {makeSelectLanguage} from "../../components/Locales/selectors";
 
 class RenderQuestItem extends Component{
   render(){
-    const item = this.state.item;
+    const item = this.props.item;
     const locale = this.props.locale.toUpperCase();
     const theme = this.props.theme;
     const fontLoaded = this.props.font;
+    console.log(item);
+    const image = item.item.image[0].url;
 
     return(
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('QuestInfo', {quest: item})}>
         <View style={{flex:1, flexDirection: 'row', paddingTop: 5, paddingLeft: 5}}>
-          <Image source={{uri : item.image}}
+          <Image source={{uri : `http://${image}`}}
                  style={{width: 40, height: 40, borderRadius: 40/2}} />
           <View style={{flex:1, paddingLeft: 10, justifyContent: 'center'}}>
-            <MainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>{item.name[locale]}</MainText>
+            <MainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>{item.item.name[locale]}</MainText>
           </View>
-
+          <View style={{flex:1, paddingLeft: 10, justifyContent: 'center'}}>
+            <MainText color={colors.MAIN} font={getFont(fontLoaded, fonts.EACH)}>{item.item.rating}/5</MainText>
+          </View>
         </View>
-      </TouchableOpacity>
     );
   };
 }

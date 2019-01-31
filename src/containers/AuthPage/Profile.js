@@ -3,33 +3,27 @@ import Image from 'react-native-remote-svg';
 import {withNavigation} from "react-navigation";
 import PropTypes from "prop-types";
 
-import { Text, View,  } from "react-native";
+import { Text, View, ScrollView, SectionList, Dimensions } from "react-native";
 import { createStructuredSelector } from "reselect";
 import connect from "react-redux/es/connect/connect";
 import { compose } from "redux";
 
 import { colors, fonts } from "../../utils/constants";
 import { makeSelectTheme } from "../../components/Theme/selectors";
-import { SectionListQuests } from './SectionListQuests';
 import { makeSelectLanguage } from "../../components/Locales/selectors";
-import messages from '../../Messages';
 import ChooseStatus from '../../utils/ChooseStatus'
+import RenderQuestItem from "./RenderQuestItem";
+import messages from '../../Messages';
 
 class ProfileScreen extends Component {
 
   render() {
     const userData = this.props.navigation.state.params.userData;
-    console.log(userData);
     const theme = this.props.theme;
     const lang = this.props.language;
     const gameInfo = JSON.parse(userData.gameInfo);
     const bonus = gameInfo.bonus;
     const range = ChooseStatus(bonus);
-
-    const SectionListProps = {
-      game_passed: gameInfo.game_passed ,
-      game_process: gameInfo.game_process,
-    };
 
     return (
       <View
@@ -52,12 +46,13 @@ class ProfileScreen extends Component {
         <Text style={{color: colors.MAIN, textAlign: 'center', fontSize: 60, fontFamily: fonts.EACH, marginTop: 10}}>
           {userData.username}
         </Text>
-        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 20}}>
+        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 10}}>
           {messages[lang][range]}  {messages[lang].Score}: {bonus}
         </Text>
         <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 10}}>
           {messages[lang].TimeInGame}:  {userData.gameTime}
         </Text>
+        <ScrollView style={{width: Dimensions.get('window').width - 20, height: Dimensions.get('window').height/5 + 10}}>
           <Text style={{color: colors.MAIN,
             borderTopWidth: 0.5,
             borderBottomWidth: 0.5,
@@ -68,10 +63,19 @@ class ProfileScreen extends Component {
           }}>
             {messages[lang].PlayedQuests}
           </Text>
-        <View>
-          <SectionListQuests {...SectionListProps} />
+          <SectionList
+            renderItem={item => <RenderQuestItem item={item} />}
+            renderSectionHeader={({section: {title}}) => (
+              <Text style={{fontFamily: fonts.EACH, color: colors.TEXT[theme]}}>{title}</Text>
+            )}
+            sections={[
+              {title: messages[lang].ProcTitle, data: gameInfo.game_process},
+              {title: messages[lang].PassTitle, data: gameInfo.game_passed},
+            ]}
+            keyExtractor={(item, index) => item + index}
+          />
+        </ScrollView>
         </View>
-      </View>
     );
   }
 }
