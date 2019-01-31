@@ -66,6 +66,7 @@ class LoginScreen extends Component {
       const result = await request(requestURL, options);
       if (result) {
         this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameInfo: result.run, gameTime: result.time_in_game,});
+        this._storeUserData().then(console.log("user data saved successfully"));
         this._fetchUserData().then((data) => {
           if (data !== undefined) {
             this.props.navigation.navigate('Profile', { userData: data });
@@ -152,16 +153,12 @@ class LoginScreen extends Component {
   }
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {}
-}
-
 const mapStateToProps = createStructuredSelector({
   theme: makeSelectTheme(),
   language: makeSelectLanguage(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps);
 
 export default compose(withConnect)(LoginScreen);
 

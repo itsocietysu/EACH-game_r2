@@ -6,6 +6,7 @@
   "private": true,
   "main": "main.js",
   "scripts": {
+    "debug" : "exp start",
     "start": "expo start",
     "start with expo-cli": "expo-cli start"
   },
