@@ -27,13 +27,15 @@ class MapsScreen extends Component {
   constructor(props) {
     super(props);
 
+    this.state.dialogTheme = this.props.theme;
     this.BuildMarkers = this.BuildMarkers.bind(this);
     this.ShowDialog = this.ShowDialog.bind(this);
   }
 
   state = {
     markers: [],
-    dialog: false
+    dialog: false,
+    dialogTheme: '',
   };
 
   componentDidMount() {
@@ -42,11 +44,14 @@ class MapsScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.data && prevProps.loading)
+      this.BuildMarkers();
     if (this.state.dialog !== prevState.dialog) {
       this.refDialog.show();
     }
-    if (this.props.data && prevProps.loading)
-      this.BuildMarkers();
+    if (this.props.theme !== prevState.dialogTheme) {
+      this.refDialog.dismiss();
+    }
   }
 
   BuildMarkers() {
@@ -79,6 +84,7 @@ class MapsScreen extends Component {
     const theme = this.props.theme;
 
     this.setState({
+      dialogTheme: theme,
       showDialog : true,
       dialog: (
       <PopupDialog
@@ -105,8 +111,8 @@ class MapsScreen extends Component {
             key = {id++}
             text="More"
             onPress={()=>{
-              this.props.navigation.navigate('MuseumItem', {data: museum, page: "Maps"});
               this.refDialog.dismiss();
+              this.props.navigation.navigate('MuseumItem', {data: museum, page: "Maps"});
             }}
           />
         ]}
@@ -123,7 +129,6 @@ class MapsScreen extends Component {
       </PopupDialog>
     )});
   }
-
 
   render() {
     const mapStyle = (this.props.theme === LIGHT_THEME)? LightMapStyle : NightMapStyle;
