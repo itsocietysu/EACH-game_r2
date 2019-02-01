@@ -3,24 +3,23 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, Text, Image } from "react-native";
-import PopupDialog, { DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
+import PopupDialog, { DialogButton, SlideAnimation } from 'react-native-popup-dialog';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+
 import { loadMuseums } from "../MuseumPage/actions";
 import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPage/selectors";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../MuseumPage/saga";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
+
 import {LIGHT_THEME} from "../../components/Theme/constants";
 import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
 import {colors, fonts} from "../../utils/constants";
+import {LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA} from "./constants";
 
-const LATITUDE = 60.0074;
-const LONGITUDE = 30.3729;
-const LATITUDE_DELTA = 0.005;
-const LONGITUDE_DELTA = LATITUDE_DELTA;
 let id = 0;
 
 class MapsScreen extends Component {
@@ -102,7 +101,7 @@ class MapsScreen extends Component {
         })}
         actions={[
           <DialogButton
-            textStyle = {{color: colors.MAIN, borderColor: colors.MAIN, fontSize: 30, fontFamily: fonts.MURRAY}}
+            textStyle = {styles.dialogButton}
             key = {id++}
             text="More"
             onPress={()=>{
@@ -183,7 +182,13 @@ const styles = StyleSheet.create({
   },
   map:{
     flex: 1,
-  }
+  },
+  dialogButton: {
+    color: colors.MAIN,
+    borderColor: colors.MAIN,
+    fontSize: 30,
+    fontFamily: fonts.MURRAY
+  },
 });
 
 const withSaga = injectSaga({ key: 'maps', saga });
