@@ -78,4 +78,5 @@ export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 export const storage = {
     THEME: 'THEME',
     LOCALE: 'LOCALE',
+    AUTH: "AUTH",
 };

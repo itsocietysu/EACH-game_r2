@@ -9,16 +9,18 @@ import { compose } from 'redux';
 import {createStructuredSelector} from "reselect";
 import { changeLanguage } from '../../components/Locales/actions'
 import { changeTheme } from "../../components/Theme/actions";
+import { changeAuth } from "../../components/Auth/actions";
 import injectReducer from "../../utils/injectReducer";
 import reducer from "../../components/Locales/reducer";
 
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectAuth} from "../../components/Auth/selectors";
 import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import { DARK_THEME, LIGHT_THEME } from "../../components/Theme/constants";
 import messages from '../../Messages';
-import {colors, fonts, languages} from "../../utils/constants";
+import {colors, fonts, languages, storage} from "../../utils/constants";
 import {SettingsText, SettingsTitleText, SettingsAddText, SettingsContainer} from "../styles";
 import {renderRow, getKeyByValue} from "../../utils/renderPopUpRow";
 import tupleToArray from "../../utils/tupleToArray";
@@ -74,6 +76,21 @@ class SettingsScreen extends Component {
         try{
             AsyncStorage.setItem('THEME', theme);
             this.props.changeTheme(theme)
+        }
+        catch(e){
+            console.log('Error:: ', e);
+        }
+    }
+
+    async _authChange() {
+        try{
+            let auth = await AsyncStorage.getItem(storage.AUTH);
+            if (auth === null || auth === undefined || auth === false)
+                auth = true;
+            else
+                auth = false;
+            AsyncStorage.setItem('AUTH', auth);
+            this.props.changeAuth(auth)
         }
         catch(e){
             console.log('Error:: ', e);
@@ -152,6 +169,7 @@ class SettingsScreen extends Component {
                         <TouchableOpacity
                             onPress={()=>{revokeToken().then(res => {
                                 console.log(res);
+                                this._authChange();
                                 this.props.navigation.navigate('Login');
                             })}}
                         >
@@ -176,12 +194,17 @@ export function mapDispatchToProps(dispatch) {
             if (evt !== undefined && evt.preventDefault) evt.preventDefault();
             dispatch(changeTheme(evt));
         },
+        changeAuth: evt => {
+            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+            dispatch(changeAuth(evt));
+        },
     };
 }
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
     font: makeSelectFonts(),
+    auth: makeSelectAuth(),
 });
 
 const withConnect = connect(
