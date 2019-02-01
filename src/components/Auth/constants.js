@@ -1,2 +1,2 @@
-export const AUTH_CHANGE = 'each/Theme/THEME_CHANGE';
+export const AUTH_CHANGE = 'each/AUTH/AUTH_CHANGE';
 
