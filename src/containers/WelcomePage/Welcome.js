@@ -17,6 +17,7 @@ import messages from "../../Messages";
 import getSystemLocale from '../../utils/getSystemLocale'
 import { changeLanguage } from '../../components/Locales/actions'
 import {changeTheme} from "../../components/Theme/actions";
+import {changeAuth} from "../../components/Auth/actions"
 import {LIGHT_THEME} from "../../components/Theme/constants";
 
 class WelcomeScreen extends Component {
@@ -39,6 +40,11 @@ class WelcomeScreen extends Component {
             if(theme === null || theme === undefined)
                 theme = LIGHT_THEME;
             store.dispatch(changeTheme(theme));
+
+            let auth = await AsyncStorage.getItem(storage.AUTH);
+            if (auth === null || auth === undefined)
+                auth = false;
+            store.dispatch(changeAuth(auth));
         }
         catch (e) {
             console.log('Error:: ', e);
