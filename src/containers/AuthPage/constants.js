@@ -5,8 +5,8 @@ const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
 const vkontakteClientId = '6682398';
 
 export const redirectUrl = AuthSession.getRedirectUrl();
-export const requestUrlGet = `http://each.itsociety.su:4201/each/token/get?expansion=true`;
-export const requestUrlRevoke = `http://each.itsociety.su:4201/each/token/revoke`;
+export const requestUrlGet = `http://eachdev.itsociety.su:4201/each/token/get?expansion=true`;
+export const requestUrlRevoke = `http://eachdev.itsociety.su:4201/each/token/revoke`;
 
 export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
   `&client_id=${encodeURIComponent(googleClientId)}` +
@@ -14,7 +14,7 @@ export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
   `&response_type=code` +
   `&scope=${encodeURIComponent(['profile','email'].join(' '))}`;
 
-export const eachAuthUrl = `http://each.itsociety.su:5000/oauth2/authorize?` +
+export const eachAuthUrl = `http://eachdev.itsociety.su:5000/oauth2/authorize?` +
   `&client_id=${encodeURIComponent(eachClientId)}` +
   `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
   `&response_type=code` +

@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from 'react-native-remote-svg';
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
+import { FontAwesome } from '@expo/vector-icons';
 
 const IconLeftContainer = styled.TouchableOpacity`
   height: 100%;
@@ -8,13 +8,9 @@ const IconLeftContainer = styled.TouchableOpacity`
   justifyContent: center;
 `;
 
-const GoogleIcon = ({onPress, size}) => (
+const GoogleIcon = ({ onPress, size=25 }) => (
   <IconLeftContainer onPress={onPress}>
-    <Image
-      source={require('../../../assets/icons/logo-google.svg')}
-      fadeDuration={0}
-      style={{width: size, height: size}}
-    />
+    <FontAwesome name="google-plus-square" size={size} color={'rgb(219,68,55)'} />
   </IconLeftContainer>
 );
 

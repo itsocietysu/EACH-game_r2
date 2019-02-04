@@ -9,7 +9,7 @@
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "scheme": "expo.each",
-    "icon": "./assets/icons/app.png",
+    "icon": "./assets/icons/map_logo_128.png",
     "loading": {
       "icon": "./assets/icons/loading.png",
       "hideExponentText": false

@@ -23,6 +23,8 @@ import { makeSelectLanguage } from "../../components/Locales/selectors";
 import { makeSelectAuth } from "../../components/Auth/selectors";
 import { changeAuth } from "../../components/Auth/actions";
 
+// import {revokeToken} from "../../utils/revokeToken";
+
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +41,8 @@ class LoginScreen extends Component {
     this._storeUserData =this._storeUserData.bind(this);
     this._fetchUserData =this._fetchUserData.bind(this);
     this._getUserInfo = this._getUserInfo.bind(this);
+
+    // revokeToken();
   }
 
   componentDidMount() {
