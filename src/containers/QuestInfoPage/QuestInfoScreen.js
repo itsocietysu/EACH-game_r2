@@ -60,7 +60,7 @@ class QuestInfoScreen extends  Component {
 
     async componentDidMount(){
         this.props.init();
-        await tokenInfo();
+        // await tokenInfo();
         const data = await getUserGameData();
         this.setState({userData: data});
     }
@@ -91,7 +91,7 @@ class QuestInfoScreen extends  Component {
                     <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
                         <FormattedMessage message={'Play'}/>->
                     </QuestButtonText>
-                </ArrowButton>
+                </ArrowButton>;
         }
         else
             button =
@@ -105,7 +105,7 @@ class QuestInfoScreen extends  Component {
                     <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
                         <FormattedMessage message={'Auth'}/>->
                     </QuestButtonText>
-                </ArrowButton>
+                </ArrowButton>;
 
         if (loading) {
             return <View><ActivityIndicator/></View>;

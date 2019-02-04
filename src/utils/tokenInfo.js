@@ -31,5 +31,6 @@ export async function tokenInfo(){
     catch(e){
         console.log(e);
         alert(e);
+        return {error: true};
     }
 }
