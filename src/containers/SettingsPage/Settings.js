@@ -56,6 +56,7 @@ class SettingsScreen extends Component {
         }
         catch(e){
             console.log('Error:: ', e);
+            return {Error: true};
         }
     }
 
@@ -66,6 +67,7 @@ class SettingsScreen extends Component {
         }
         catch(e){
             console.log('Error:: ', e);
+            return {Error: true};
         }
     }
 
@@ -79,6 +81,7 @@ class SettingsScreen extends Component {
         }
         catch(e){
             console.log('Error:: ', e);
+            return {Error: true};
         }
     }
 
@@ -94,6 +97,7 @@ class SettingsScreen extends Component {
         }
         catch(e){
             console.log('Error:: ', e);
+            return {Error: true};
         }
     }
 
@@ -169,7 +173,6 @@ class SettingsScreen extends Component {
                         <TouchableOpacity
                             onPress={()=>{revokeToken().then(res => {
                                 console.log(res);
-                                this._authChange();
                                 this.props.navigation.navigate('Login');
                             })}}
                         >

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text, AsyncStorage
+  Text,
 } from "react-native";
 import { AuthSession, SecureStore } from 'expo';
 
@@ -10,7 +10,7 @@ import connect from "react-redux/es/connect/connect";
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import { colors, fonts, storage } from "../../utils/constants";
+import { colors, fonts } from "../../utils/constants";
 
 import buildFormData from '../../utils/buildFormData'
 import EachIcon from "../../components/icons/EachIcon";
@@ -21,9 +21,6 @@ import request from '../../utils/request';
 import messages from '../../Messages';
 import { makeSelectLanguage } from "../../components/Locales/selectors";
 import { makeSelectAuth } from "../../components/Auth/selectors";
-import { changeAuth } from "../../components/Auth/actions";
-
-// import {revokeToken} from "../../utils/revokeToken";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -41,8 +38,6 @@ class LoginScreen extends Component {
     this._storeUserData =this._storeUserData.bind(this);
     this._fetchUserData =this._fetchUserData.bind(this);
     this._getUserInfo = this._getUserInfo.bind(this);
-
-    // revokeToken();
   }
 
   componentDidMount() {
@@ -51,21 +46,6 @@ class LoginScreen extends Component {
         this.props.navigation.navigate('Profile', { userData: data });
       }
     });
-  }
-
-  async _authChange() {
-    try{
-      let auth = await AsyncStorage.getItem(storage.AUTH);
-      if (auth === null || auth === undefined || auth === false)
-        auth = true;
-      else
-        auth = false;
-      AsyncStorage.setItem('AUTH', auth);
-      this.props.changeAuth(auth)
-    }
-    catch(e){
-      console.log('Error:: ', e);
-    }
   }
 
   _getUserInfo = async(Code, App, RedirectUrl) => {
@@ -86,7 +66,6 @@ class LoginScreen extends Component {
     try {
       const result = await request(requestURL, options);
       if (result) {
-        this._authChange();
         this.setState({username: result.name, image: result.image, token: result.access_token, app: App, gameInfo: result.run, gameTime: result.time_in_game,});
         this._storeUserData().then(console.log("user data saved successfully"));
         this._fetchUserData().then((data) => {
@@ -175,22 +154,13 @@ class LoginScreen extends Component {
   }
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    changeAuth: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(changeAuth(evt));
-    },
-  };
-}
-
 const mapStateToProps = createStructuredSelector({
   theme: makeSelectTheme(),
   language: makeSelectLanguage(),
   auth: makeSelectAuth(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps);
 
 export default compose(withConnect)(LoginScreen);
 
