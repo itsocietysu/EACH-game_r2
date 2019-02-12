@@ -20,7 +20,7 @@ export const eachAuthUrl = `http://eachdev.itsociety.su:5000/oauth2/authorize?` 
   `&response_type=code` +
   `&scope=${encodeURIComponent(['email'].join(' '))}`;
 
-export const vkontakteAuthUrl = `https://oauth.vk.com/authorize?` +
+export const vkontakteAuthUrl = `https://oauth.vk.com/authorize?revoke=1` +
   `&client_id=${encodeURIComponent(vkontakteClientId)}` +
   `v=${encodeURIComponent("5.85")}` +
   `display=mobile` +

@@ -1,8 +1,8 @@
 import {AUTH_CHANGE} from "./constants";
 
-export function changeAuth(authType){
+export function changeAuth(auth){
     return{
         type: AUTH_CHANGE,
-        authType,
+        auth,
     }
 }

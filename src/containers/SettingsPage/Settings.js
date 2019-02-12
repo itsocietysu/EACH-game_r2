@@ -60,6 +60,21 @@ class SettingsScreen extends Component {
         }
     }
 
+    async _authChange() {
+        try{
+            let auth = await AsyncStorage.getItem(storage.AUTH);
+            if (auth === null || auth === undefined || auth === 'false')
+                auth = true;
+            else
+                auth = false;
+            AsyncStorage.setItem(storage.AUTH, auth.toString());
+            this.props.changeAuth(auth)
+        }
+        catch(e){
+            console.log('Error:: ', e);
+        }
+    }
+
     _localeChange(locale){
         try{
             AsyncStorage.setItem('LOCALE', locale);
@@ -85,26 +100,10 @@ class SettingsScreen extends Component {
         }
     }
 
-    async _authChange() {
-        try{
-            let auth = await AsyncStorage.getItem(storage.AUTH);
-            if (auth === null || auth === undefined || auth === false)
-                auth = true;
-            else
-                auth = false;
-            AsyncStorage.setItem('AUTH', auth);
-            this.props.changeAuth(auth)
-        }
-        catch(e){
-            console.log('Error:: ', e);
-            return {Error: true};
-        }
-    }
-
     render() {
         const theme = this.props.theme;
         return (
-			<FormattedWrapper locale={this.props.language? this.props.language: 'en'} messages={messages} >
+            /* <FormattedWrapper locale={this.props.language? this.props.language: 'en'} messages={messages} >*/
                 <ContainerView color={colors.BASE[this.props.theme]}>
                     <View style={{height: '18%', alignItems: 'center', justifyContent: 'center'}}>
                           <SettingsTitleText color={colors.MAIN} font={fonts.EACH}>
@@ -171,7 +170,7 @@ class SettingsScreen extends Component {
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
-                            onPress={()=>{revokeToken().then(res => {
+                            onPress={()=>{revokeToken().then(this._authChange()).then(res => {
                                 console.log(res);
                                 this.props.navigation.navigate('Login');
                             })}}
@@ -183,7 +182,7 @@ class SettingsScreen extends Component {
 
                     </View>
                 </ContainerView>
-			</FormattedWrapper>
+        /* </FormattedWrapper>*/
     );
   }
 }

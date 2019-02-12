@@ -1,6 +1,6 @@
 const messages = {
     en: {
-        AuthMsg:         'CHOOSE SERVICE TO LOGIN OR REGISTRATION',
+        AuthMsg:         'CHOOSE SERVICE TO LOG IN OR TO SIGN UP',
         Enter:           'ENTER',
         Beginner:        'Beginner',
         ProcTitle:       'Active',
@@ -17,6 +17,7 @@ const messages = {
         Feeds: 		        'Feeds',
         Maps: 		        'Maps',
         Museums: 	        'Museums',
+        Profile: 	        'Profile',
         Settings: 	        'Settings',
         Games:              'Games',
         Play:               'Play',
@@ -72,6 +73,7 @@ const messages = {
         Feeds: 		        'Новости',
         Maps: 		        'Карты',
         Museums:  	        'Музеи',
+        Profile: 	        'Профиль',
       Settings: 	        'Настройки',
         Games:              'Игры',
         Play:               'Играть',

@@ -17,6 +17,7 @@ import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
 import ResultScreen from "./containers/ResultPage/ResultScreen";
 import LoginScreen from "./containers/AuthPage/Login";
 import ProfileScreen from "./containers/AuthPage/Profile"
+import AuthLoadingScreen from "./containers/AuthPage/AuthLoading"
 
 import { BackIcon, SettingsIcon} from './components/icons';
 
@@ -78,12 +79,14 @@ const MuseumStack = createStackNavigator(
         navigationOptions: ({navigation})=> {
             let content = null;
             if (navigation.state.routeName !== 'Museums') {
-              const key = navigation.state.params.page;
+              if (navigation.state.params) {
+                  const key = navigation.state.params.page;
 
-              if (key === 'Maps' || key === 'Museums') {
-                content = <BackIcon onPress={() => navigation.navigate(key)}/>;
-              } else {
-                content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+                  if (key === 'Maps' || key === 'Museums') {
+                      content = <BackIcon onPress={() => navigation.navigate(key)}/>;
+                  } else {
+                      content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+                  }
               }
             }
             return ({
@@ -142,12 +145,48 @@ const LoginStack = createStackNavigator(
       });
     }
   }
-  );
-const AuthStack = createSwitchNavigator(
-  {
-    Login: {screen: LoginStack},
-    ProfileStack: {screen: ProfileStack},
-  }
+);
+
+const AuthLoadingStack = createStackNavigator(
+    {AuthLoading: AuthLoadingScreen},
+    {
+        navigationOptions: ({navigation})=> {
+            const content = null;
+            const rightContent = null;
+
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content,
+                headerRight: rightContent,
+            });
+        }
+    }
+);
+
+const ProfileAndAuth = createSwitchNavigator(
+    {
+        AuthLoading: AuthLoadingStack,
+        Login: LoginStack,
+        MyProfile: ProfileStack,
+    },
+    {
+        navigationOptions: ({navigation}) => {
+            const content = null;
+            const rightContent = null;
+
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content,
+                headerRight: rightContent,
+            });
+        }
+    }
 );
 
 // Bottom tab containing 4 main stacks
@@ -156,7 +195,7 @@ const  AppBottomTab = createBottomTabNavigator(
         Feeds: {screen: FeedStack},
         Maps: {screen: MapStack},
         Museums: {screen: MuseumStack},
-        Profile: {screen: AuthStack},
+        Profile: {screen: ProfileAndAuth},
     },
     {
         navigationOptions: ({navigation})=>({

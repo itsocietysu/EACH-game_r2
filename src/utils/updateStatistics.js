@@ -11,7 +11,7 @@ export async function updateStatistics(gameId, stepPassed){
     const requestUrl = `http://each.itsociety.su:4201/each/statistic/update`;
     try {
         const token = await SecureStore.getItemAsync('token');
-        const authType = await SecureStore.getItemAsync('App');
+        const authType = await SecureStore.getItemAsync('app');
         const options = {
             method: 'POST',
             headers: {
@@ -28,6 +28,7 @@ export async function updateStatistics(gameId, stepPassed){
     }
     catch (e) {
         alert(e);
+        alert("update failed");
         console.log(e);
     }
 }

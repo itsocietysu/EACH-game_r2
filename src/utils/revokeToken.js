@@ -2,7 +2,7 @@ import { SecureStore } from "expo";
 import request from "./request";
 import { requestUrlRevoke } from "../containers/AuthPage/constants";
 
-const deleteUserData = async() => {
+export const deleteUserData = async() => {
   SecureStore.deleteItemAsync('username');
   SecureStore.deleteItemAsync('email');
   SecureStore.deleteItemAsync('image');
@@ -35,10 +35,12 @@ export async function revokeToken(){
     })
   };
 
+
   try {
+    alert(5);
     const result = await request(requestUrlRevoke, options);
-    if (result) {
-      deleteUserData().then(console.log("user data successfully deleted"));
+    if (true) {
+      deleteUserData().then(alert("user data successfully deleted"));
       return result;
     }
   } catch(e) {

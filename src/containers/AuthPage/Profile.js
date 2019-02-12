@@ -18,10 +18,10 @@ import messages from '../../Messages';
 class ProfileScreen extends Component {
 
   render() {
-    const userData = this.props.navigation.state.params.userData;
+    const userData = this.props.navigation.getParam('userData', '');
     const theme = this.props.theme;
     const lang = this.props.language;
-    const gameInfo = JSON.parse(userData.gameInfo);
+    const gameInfo = userData.gameInfo;
     const bonus = gameInfo.bonus;
     const range = ChooseStatus(bonus);
 

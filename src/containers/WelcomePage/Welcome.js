@@ -10,6 +10,7 @@ import {
     Dimensions,
     AsyncStorage,
 } from 'react-native';
+import {SecureStore} from 'expo';
 import PropTypes from "prop-types";
 
 import { colors, images, storage } from "../../utils/constants";
@@ -19,6 +20,7 @@ import { changeLanguage } from '../../components/Locales/actions'
 import {changeTheme} from "../../components/Theme/actions";
 import {changeAuth} from "../../components/Auth/actions"
 import {LIGHT_THEME} from "../../components/Theme/constants";
+import {deleteUserData} from "../../utils/revokeToken";
 
 class WelcomeScreen extends Component {
     // cheat access to redux store
@@ -31,6 +33,8 @@ class WelcomeScreen extends Component {
         const store = this.context.store;
         // waiting until get device locale
         try{
+            // deleteUserData();
+            // AsyncStorage.clear();
             let locale = await  AsyncStorage.getItem(storage.LOCALE);
             if(locale === null || locale === undefined)
                 locale = await getSystemLocale();
@@ -42,8 +46,10 @@ class WelcomeScreen extends Component {
             store.dispatch(changeTheme(theme));
 
             let auth = await AsyncStorage.getItem(storage.AUTH);
-            if (auth === null || auth === undefined)
+            if (auth === null || auth === undefined || auth === 'false')
                 auth = false;
+            else
+                auth = true;
             store.dispatch(changeAuth(auth));
         }
         catch (e) {

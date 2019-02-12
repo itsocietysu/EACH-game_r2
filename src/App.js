@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Font} from 'expo';
-import { StatusBar, Platform, YellowBox } from 'react-native';
+import {StatusBar, Platform, YellowBox, View} from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components/native';
@@ -8,11 +8,15 @@ import { FormattedWrapper } from 'react-native-globalize';
 
 import messages from './Messages';
 import configureStore from './configureStore';
-
+import FlashMessage from "react-native-flash-message";
 import Navigator from './Navigator';
 import { colors } from './utils/constants';
 import {fontLoaded} from "./components/Fonts/actions";
 import PropTypes from "prop-types";
+import {createStructuredSelector} from "reselect";
+import {makeSelectAuth} from "./components/Auth/selectors";
+import {makeSelectLanguage} from "./components/Locales/selectors";
+import {makeSelectTheme} from "./components/Theme/selectors";
 
 const Root = styled.View`
 flex: 1;
@@ -21,12 +25,12 @@ background-color: ${props => props.theme.WHITE};
 
 const StatusBarAndroid = styled.View`
 height: 24;
-background-color: rgb(255,255,255);
+background-color: ${props => props.color};
 `;
 
 const StatusBarIOS = styled.View`
-height: 24;
-background-color: rgb(255,255,255);
+height: 24
+backgroundColor: ${props => props.color}
 `;
 
 const initialState = {};
@@ -39,17 +43,21 @@ YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` su
 class RootContainer extends Component {
   render() {
     let StatusBarOS = null;
+    const theme = this.props.theme;
     if(Platform.OS === 'android' && Platform.Version >= 20)
-        StatusBarOS = <StatusBarAndroid />;
+        StatusBarOS = <StatusBarAndroid color={colors.BASE[theme]} />;
     else if(Platform.OS === 'ios')
-        StatusBarOS = <StatusBarIOS />;
+        StatusBarOS = <StatusBarIOS color={colors.BASE[theme]}/>;
+
+    const barStyle = (theme === 'light')?'dark-content':'light-content';
     return (
       <ThemeProvider theme={colors}>
-        <FormattedWrapper /*locale={this.props.state.Language.language}*/ messages={messages}>
+        <FormattedWrapper locale={this.props.locale} messages={messages}>
           <Root>
-            <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
+            <StatusBar barStyle={barStyle} translucent />
               {StatusBarOS}
             <Navigator />
+              <FlashMessage position={'top'} duration={3000}/>
           </Root>
         </FormattedWrapper>
       </ThemeProvider>
@@ -57,8 +65,10 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-	state,
+const mapStateToProps = createStructuredSelector({
+    locale: makeSelectLanguage(),
+    theme: makeSelectTheme(),
+    auth: makeSelectAuth(),
 });
 
 const ConnectedRootContainer = connect(mapStateToProps,null)(RootContainer);

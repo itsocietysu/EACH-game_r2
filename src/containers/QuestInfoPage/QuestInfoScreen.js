@@ -36,8 +36,9 @@ import getFont from "../../utils/getFont";
 import Rating from './Rating';
 import SpentTime from './SpentTime';
 import ArrowButton from "../../components/ArrowButton";
-import tokenInfo from './../../utils/tokenInfo';
+import { tokenInfo} from './../../utils/tokenInfo';
 import getUserGameData from "../../utils/getUserGameData";
+import {makeSelectAuth} from "../../components/Auth/selectors";
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -60,7 +61,7 @@ class QuestInfoScreen extends  Component {
 
     async componentDidMount(){
         this.props.init();
-        // await tokenInfo();
+        await tokenInfo();
         const data = await getUserGameData();
         this.setState({userData: data});
     }
@@ -79,7 +80,7 @@ class QuestInfoScreen extends  Component {
         const scenario = this.props.data;
 
         let button;
-        if (this.state.userData && this.state.userData.username){
+        if (this.props.auth){
             button =
                 <ArrowButton
                     onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario, userData: this.state.userData})}
@@ -176,6 +177,7 @@ const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
     font: makeSelectFonts(),
+    auth: makeSelectAuth(),
 });
 const withConnect = connect(
     mapStateToProps,

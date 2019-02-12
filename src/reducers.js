@@ -16,6 +16,7 @@ import themeReducer from "./components/Theme/reducer";
 import imageComparisonReducer from "./components/ValidateImage/reducer";
 import fontReducer from "./components/Fonts/reducer";
 import stepReducer from "./components/GameStep/reducer";
+import authReducer from "./components/Auth/reducer";
 /*
  * routeReducer
  *
@@ -60,6 +61,7 @@ export default function createReducer(injectedReducers) {
         result: imageComparisonReducer,
         font: fontReducer,
         gameStep: stepReducer,
+        auth: authReducer,
         ...injectedReducers,
     });
 }

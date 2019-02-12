@@ -1,6 +1,6 @@
 import {SecureStore} from "expo";
 
-export default function storeUserData(data){
+export default async function storeUserData(data){
     try {
         // SecureStore.setItemAsync('id', data.id);
         SecureStore.setItemAsync('token', data.access_token);
