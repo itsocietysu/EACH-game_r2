@@ -1,5 +1,5 @@
 
-export default function ChoщseStatus(Score) {
+export default function ChooseStatus(Score) {
   let res;
 
   if (Score >= 0 && Score < 1000) res = "Beginner";

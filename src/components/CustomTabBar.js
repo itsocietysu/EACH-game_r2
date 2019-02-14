@@ -18,10 +18,10 @@ class CustomTabBar extends Component{
             this.props,
             {
                 style: {
-                    backgroundColor: colors.BASE[theme],
+                    backgroundColor: colors.HEADERS[theme],
                     height: TabBarHeight,
                 },
-                activeTintColor: colors.SECOND[theme],
+                activeTintColor: colors.ACTIVE[theme],
                 inactiveTintColor: colors.TEXT[theme],
             },
         );

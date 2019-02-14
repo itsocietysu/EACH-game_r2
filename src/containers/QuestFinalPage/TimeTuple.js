@@ -23,7 +23,7 @@ const RowContainer = styled.View`
 class TimeTuple extends Component{
 
     render() {
-        const time = '1ч.59м.';
+        const time = this.props.time;
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
         return (

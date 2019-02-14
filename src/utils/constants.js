@@ -25,6 +25,17 @@ export const colors = {
         light:    '',
         dark:     '',
     },
+
+    HEADERS:{
+        light:    '#FFFFFF',
+        dark:     '#0b1323',
+    },
+
+    ACTIVE: {
+        light:    '#5b7bbc',
+        dark:     '#5b7bbc',
+    },
+
     MAIN: '#5b7bbc',
     FRAME: '#5b7bbc',
     ACCEPTED:   '#37FF33',
@@ -59,7 +70,7 @@ export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
 export const HeaderHeight = SCREEN_HEIGHT*0.8/10.5;
-export const TabBarHeight = SCREEN_HEIGHT*0.8/10.5;
+export const TabBarHeight = SCREEN_HEIGHT*0.9/10.5;
 export const SlidingPanelHeight = SCREEN_HEIGHT*0.8/10.5;
 export const StatusBarHeight = 45;
 export const TabLabelFontSize = 12;

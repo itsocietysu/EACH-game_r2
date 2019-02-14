@@ -86,7 +86,7 @@ class LoginScreen extends Component {
     } catch(e) {
         showMessage({
             message: "Unable to sign in",
-            type: "success",
+            type: "danger",
         });
         deleteUserData();
         return { error: true };
@@ -106,7 +106,7 @@ class LoginScreen extends Component {
     } catch (e) {
       showMessage({
          message: "Unable to get code",
-         type: "success",
+         type: "danger",
       });
       return { error: true };
     }

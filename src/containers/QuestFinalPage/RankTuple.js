@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {withNavigation} from "react-navigation";
 import styled from "styled-components/native";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
@@ -15,15 +15,31 @@ import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
 import getFont from "../../utils/getFont";
 import {KeyText, ValueText} from "../styles";
+import {tokenInfo} from "../../utils/tokenInfo";
+import getUserGameData from "../../utils/getUserGameData";
+import ChooseStatus from '../../utils/ChooseStatus';
 
 const RowContainer = styled.View`
     flexDirection: row
 `;
 
 class RankTuple extends Component{
+    state = {
+        rank: null,
+    };
+
+    async componentWillMount(){
+        await tokenInfo();
+        const data = await getUserGameData();
+        const bonus = data.gameData.bonus;
+        const rank = ChooseStatus(bonus);
+        this.setState({rank});
+    }
 
     render() {
-        const rank = 'СЕРЖАНТ';
+        let rank = <ActivityIndicator/>;
+        if (this.state.rank)
+            rank = <FormattedMessage message={this.state.rank}/>;
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
         return (

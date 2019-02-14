@@ -22,9 +22,8 @@ const RowContainer = styled.View`
 `;
 
 class BonusTuple extends Component{
-
     render() {
-        const bonus = 195;
+        const bonus = this.props.bonus;
         const fontLoaded = this.props.font;
         const theme = this.props.theme;
         return (

@@ -23,14 +23,35 @@ import RankTuple from "./RankTuple";
 import TimeTuple from "./TimeTuple";
 import ArrowButton from "../../components/ArrowButton";
 
+import {updateFeedback} from "../../utils/updateFeedback";
+import {showMessage} from "react-native-flash-message";
+import {updateStatistics} from "../../utils/updateStatistics";
 
 class QuestFinalScreen extends Component{
 
-    state = {
-        stars: 0,
-        length: 0,
-        comment: null,
-    };
+    constructor(props){
+        super(props);
+
+        this.state = {
+            stars: 0,
+            length: 0,
+            comment: null,
+        };
+        this._onPress = this._onPress.bind(this);
+    }
+
+    async _onPress(){
+        if (this.state.stars !== 0) {
+            const gameId = this.props.navigation.getParam('game_id', '');
+            const isFeedbackUpdated = await updateFeedback(gameId, this.state.stars, this.state.comment);
+            this.props.navigation.navigate('Museums')
+        }
+        else
+            showMessage({
+                message: "You have to rate",
+                type: "info",
+            });
+    }
 
     renderComment(){
         return(
@@ -58,6 +79,7 @@ class QuestFinalScreen extends Component{
         const theme = this.props.theme;
         const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
+        const gameData = this.props.navigation.getParam('gameData','');
         return(
             <KeyboardAvoidingView style={{flex: 1}} behavior="position" enabled>
                 <View style={{height: '100%', backgroundColor: colors.BASE[theme]}}>
@@ -69,8 +91,8 @@ class QuestFinalScreen extends Component{
                         </View>
                         <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>
                         <View style={{height: '20%', padding: 5}}>
-                            <TimeTuple/>
-                            <BonusTuple/>
+                            <TimeTuple time={gameData.best_time}/>
+                            <BonusTuple bonus={gameData.bonus}/>
                             <RankTuple/>
                         </View>
                         <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>
@@ -91,7 +113,7 @@ class QuestFinalScreen extends Component{
                             {this.renderComment()}
                             <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
                                 <ArrowButton
-                                    onPress={() => this.props.navigation.navigate('Museums')}
+                                    onPress={this._onPress}
                                     bgColor={colors.BASE[theme]}
                                     borderColor={colors.MAIN}
                                     width={width*0.55}

@@ -43,9 +43,9 @@ class Bonus extends React.Component{
     };
 
     async _onPress(){
-        const success = await updateStatistics(this.props.gameID, this.props.currentStep+1);
+        const updateResult = await updateStatistics(this.props.gameID, this.props.currentStep+1);
         if(this.props.currentStep === this.props.stepsAmount - 1)
-            this.props.navigation.navigate('Finish');
+            this.props.navigation.navigate('Finish', {game_id: this.props.gameID, gameData: updateResult});
         else
         {
             this.props.incrementStep(this.props.currentStep + 1);

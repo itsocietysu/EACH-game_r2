@@ -1,14 +1,15 @@
 import {SecureStore} from "expo";
-import request from "./request";
-import storeUserData from "./storeUserData";
 import {showMessage} from "react-native-flash-message";
+import request from "./request";
 
-export async function updateStatistics(gameId, stepPassed){
+
+export async function updateFeedback(id, weight, comment){
     const body = {
-        game_id: gameId,
-        step_passed: stepPassed,
+        id,
+        text: comment,
+        weight,
     };
-    const requestUrl = `http://eachdev.itsociety.su:4201/each/statistic/update`;
+    const requestUrl = "http://eachdev.itsociety.su:4201/each/game/rating";
     try {
         const token = await SecureStore.getItemAsync('token');
         const authType = await SecureStore.getItemAsync('app');
@@ -22,15 +23,16 @@ export async function updateStatistics(gameId, stepPassed){
             body: JSON.stringify(body),
         };
         const requestResult = await request(requestUrl, options);
-        // await storeUserData(requestResult[0]);
-        alert('done update ' + stepPassed);
-        return requestResult[0];
+        alert(requestResult.text);
+        alert('done feedback update');
+        return true;
     }
     catch (e) {
         showMessage({
-            message: "Cannot update statistics",
+            message: "Cannot update feedback",
             type: "danger",
         });
         console.log(e);
+        return false;
     }
 }
