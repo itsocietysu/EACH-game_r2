@@ -43,7 +43,7 @@ class FailureScreen extends Component{
         const theme = this.props.theme;
         const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
-        const image = (theme === LIGHT_THEME)? require('./../../../assets/images/errorPage.png') : require('./../../../assets/images/errorPage.png');
+        const image = (theme === LIGHT_THEME)? require('./../../../assets/images/errorPage.png') : require('./../../../assets/images/errorPageDark.png');
         return(
             <View style={{flex: 1}}>
                 <FormattedWrapper locale={this.props.locale} messages={messages}>

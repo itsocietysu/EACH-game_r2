@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Font} from 'expo';
+import {Font, AppLoading, Asset} from 'expo';
 import {StatusBar, Platform, YellowBox, View} from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
@@ -11,16 +11,15 @@ import configureStore from './configureStore';
 import FlashMessage from "react-native-flash-message";
 import Navigator from './Navigator';
 import { colors } from './utils/constants';
-import {fontLoaded} from "./components/Fonts/actions";
-import PropTypes from "prop-types";
 import {createStructuredSelector} from "reselect";
 import {makeSelectAuth} from "./components/Auth/selectors";
 import {makeSelectLanguage} from "./components/Locales/selectors";
 import {makeSelectTheme} from "./components/Theme/selectors";
+import {fontLoaded} from "./components/Fonts/actions";
 
 const Root = styled.View`
 flex: 1;
-background-color: ${props => props.theme.WHITE};
+background-color: ${'#ff0000'};
 `;
 
 const StatusBarAndroid = styled.View`
@@ -78,21 +77,37 @@ YellowBox.ignoreWarnings(['You are not currently signed in to Expo on your devel
 YellowBox.ignoreWarnings(['Warning: Failed prop type: Invalid prop `children` of type `object` supplied to `Provider`, expected a single ReactElement.']);
 
 class App extends Component {
-    async componentDidMount(){
-        try{
-                await Font.loadAsync({
-                    eachFont: require('../assets/fonts/eachFont.ttf'),
-                    murray: require('../assets/fonts/MurraySlab.otf'),
-                });
-                store.dispatch(fontLoaded());
-            }
-            catch (e) {
-                console.log('Fonts are not loaded: ', e);
-            }
-        }
+    state = {
+        isReady: false,
+    };
 
-      render() {
-      return (
+    async _loadAssetsAsync() {
+        const images = [
+            require('../assets/images/loading_screen.png'),
+        ];
+
+        const imageAssets = images.map((image) => {
+            return Asset.fromModule(image).downloadAsync();
+        });
+
+        const fontAssets = Font.loadAsync([{
+            eachFont: require('../assets/fonts/eachFont.ttf'),
+            murray: require('../assets/fonts/MurraySlab.otf'),
+        }]);
+        store.dispatch(fontLoaded());
+        await Promise.all([...imageAssets, ...fontAssets]);
+    }
+    render() {
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    startAsync={this._loadAssetsAsync}
+                    onFinish={() => this.setState({ isReady: true })}
+                    onError={alert}
+                />
+            );
+        }
+        return (
         <Provider store={store}>
                 <ConnectedRootContainer />
         </Provider>

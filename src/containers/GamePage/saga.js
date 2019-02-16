@@ -7,7 +7,7 @@ import request from './../../utils/request';
  * Feeds data load handler
  */
 export function* loadGames(museumID) {
-    const requestURL = `http://each.itsociety.su:4201/each/game/all/museum/${museumID.museumID}`;
+    const requestURL = `http://each.itsociety.su:4201/each/game/all/museum/${museumID.museumID}?active=true`;
     try {
         const games = yield call(request, requestURL);
         let data = false;
