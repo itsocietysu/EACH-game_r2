@@ -8,12 +8,10 @@ import messages from "../../Messages";
 import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
 import {createStructuredSelector} from "reselect";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 import connect from "react-redux/es/connect/connect";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {compose} from "redux";
-import getFont from "../../utils/getFont";
 import ArrowButton from "../../components/ArrowButton";
 import HintIcon from "../../components/icons/HintIcon";
 import showDialog from "../../components/CustomPopUpDialog";
@@ -62,7 +60,6 @@ class FreeQuestion extends Component{
     render(){
         const step = this.props.data;
         const theme = this.props.theme;
-        const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
@@ -126,7 +123,6 @@ class FreeQuestion extends Component{
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

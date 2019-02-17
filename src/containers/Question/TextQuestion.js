@@ -9,12 +9,11 @@ import messages from "../../Messages";
 import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
 import {createStructuredSelector} from "reselect";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
+
 import connect from "react-redux/es/connect/connect";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {compose} from "redux";
-import getFont from "../../utils/getFont";
 import ArrowButton from "../../components/ArrowButton";
 import HintIcon from "../../components/icons/HintIcon";
 import showDialog from '../../components/CustomPopUpDialog';
@@ -70,7 +69,6 @@ class TextQuestion extends Component{
     render(){
         const step = this.props.data;
         const theme = this.props.theme;
-        const fontLoaded = this.props.font;
         const {width, height} = Dimensions.get('window');
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
@@ -81,19 +79,19 @@ class TextQuestion extends Component{
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
                             <View style={{flex: 1, paddingLeft: 5}}>
-                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <DescText color={colors.MAIN} font={fonts.MURRAY}>
                                     <FormattedMessage message={'ChoiceTaskDesc'}/>
                                 </DescText>
                             </View>
 
                         </View>
-                        <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
+                        <QuestionText color={colors.TEXT[theme]} font={fonts.MURRAY}>
                             {step.question}
                         </QuestionText>
 
                         <FlatList
                             data={step.choices}
-                            renderItem={(item)=><PickerItem text={item} state={this.state} theme={theme} fontLoaded={fontLoaded} handler={this._changeSelection}/>}
+                            renderItem={(item)=><PickerItem text={item} state={this.state} theme={theme} handler={this._changeSelection}/>}
                             keyExtractor={(item) => step.choices.indexOf(item).toString()}
                             extraData={[theme, this.state]}
                             scrollEnabled={false}
@@ -107,7 +105,7 @@ class TextQuestion extends Component{
                                     width={width*0.55}
                                     height={height*0.075}
                                 >
-                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
+                                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}><FormattedMessage message={'Validate'}/>-></QuestButtonText>
                                 </ArrowButton>
                                 <HintIcon onPress={()=>this.refDialog.show()}/>
                             </View>
@@ -123,7 +121,6 @@ class TextQuestion extends Component{
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

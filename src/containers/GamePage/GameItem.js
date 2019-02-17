@@ -15,7 +15,6 @@ import saga from "../GamePage/saga";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectData, makeSelectError, makeSelectLoading} from "../GamePage/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import {loadGames} from "../GamePage/actions";
 import DataList from "../../components/DataList";
@@ -84,7 +83,6 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 const withConnect = connect(
     mapStateToProps,

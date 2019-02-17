@@ -3,7 +3,7 @@ import {ScrollView, View} from "react-native";
 import {Dialog} from "react-native-popup-dialog";
 import {colors, fonts} from "../utils/constants";
 import {Rectangle, PopUpContentText, PopUpTittleText} from "../containers/styles";
-import getFont from "../utils/getFont";
+
 
 
 

@@ -9,7 +9,6 @@ import {compose} from "redux";
 import {createStructuredSelector} from "reselect";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import QuestMap from "./QuestMap";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -79,7 +78,6 @@ class LocationQuestion extends Component{
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

@@ -1,9 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React from 'react';
 import styled from "styled-components/native";
-import {View, Text, Dimensions} from 'react-native';
+import {View, Text, Dimensions, PixelRatio} from 'react-native';
 import {colors, SCREEN_HEIGHT} from "../utils/constants";
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const {width, height} = Dimensions.get('window');
 
 export const TabBarLabelText = styled.Text`
@@ -96,14 +96,14 @@ export const RatingText = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     paddingLeft: ${props => props.paddingLeft || 0}
-    fontSize: ${0.28/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 export const TimeText = styled.Text`
     color: ${props => props.color}
     fontFamily: ${props => props.font}
     paddingLeft: ${props => props.paddingLeft || 0}
-    fontSize: ${0.28/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 /*

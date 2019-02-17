@@ -9,11 +9,9 @@ import {compose} from "redux";
 import {createStructuredSelector} from "reselect";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
-import getFont from "../../utils/getFont";
 import {KeyText, ValueText} from "../styles";
 import {tokenInfo} from "../../utils/tokenInfo";
 import getUserGameData from "../../utils/getUserGameData";
@@ -40,15 +38,14 @@ class RankTuple extends Component{
         let rank = <ActivityIndicator/>;
         if (this.state.rank)
             rank = <FormattedMessage message={this.state.rank}/>;
-        const fontLoaded = this.props.font;
         const theme = this.props.theme;
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <RowContainer style={{flexDirection: 'row', width: '100%'}}>
-                    <KeyText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}><FormattedMessage
+                    <KeyText color={colors.TEXT[theme]} font={fonts.MURRAY}><FormattedMessage
                         message={'Rank'}/></KeyText>
                     <View style={{flex: 1}}>
-                        <ValueText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)} paddingLeft={12}>
+                        <ValueText color={colors.MAIN} font={fonts.MURRAY} paddingLeft={12}>
                             {rank}
                         </ValueText>
                     </View>
@@ -61,7 +58,6 @@ class RankTuple extends Component{
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

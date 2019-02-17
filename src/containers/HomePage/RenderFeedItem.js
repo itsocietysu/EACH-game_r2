@@ -8,12 +8,10 @@ import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 
-import getFont from '../../utils/getFont';
 import {colors, DESC_BLOCK_HEIGHT, fonts} from "../../utils/constants";
 import {TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextContainer, FeedDescriptionText, FeedMoreText, ImageMask, Rectangle} from "../styles";
 
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import messages from "../../Messages";
 
@@ -27,7 +25,6 @@ class RenderFeedItem extends Component{
         const width = Dimensions.get('window').width;
         const locale = this.props.locale.toUpperCase();
         const theme = this.props.theme;
-        const fontLoaded = this.props.font;
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1}}>
@@ -37,7 +34,7 @@ class RenderFeedItem extends Component{
                             <TittleContainer>
                                 <FeedTittleText
                                     color={colors.TEXT[theme]}
-                                    font={getFont(fontLoaded, fonts.EACH)}
+                                    font={fonts.EACH}
                                 >
                                     {item.title[locale]}
                                 </FeedTittleText>
@@ -52,12 +49,12 @@ class RenderFeedItem extends Component{
                             <FeedDescriptionText
                                 numberOfLines={3}
                                 color={colors.TEXT[theme]}
-                                font={getFont(fontLoaded, fonts.MURRAY)}
+                                font={fonts.MURRAY}
                             >
                                 {item.desc[locale]}
                             </FeedDescriptionText>
                             <FeedMoreText
-                                font={getFont(fontLoaded, fonts.MURRAY)}
+                                font={fonts.MURRAY}
                             >
                                 <FormattedMessage message={'More'}/>
                             </FeedMoreText>
@@ -79,7 +76,6 @@ RenderFeedItem.propTypes = {
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

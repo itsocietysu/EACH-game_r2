@@ -1,4 +1,6 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
+import {Constants} from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const colors = {
     BASE: {
@@ -35,7 +37,7 @@ export const colors = {
         light:    '#5b7bbc',
         dark:     '#5b7bbc',
     },
-
+    LOADING_SCREEN: '#5b7bbc',
     MAIN: '#5b7bbc',
     FRAME: '#5b7bbc',
     ACCEPTED:   '#37FF33',
@@ -65,18 +67,25 @@ export const languages = {
     'en': 'English',
     'ru': 'Русский',
 };
-
+export const StatusBarHeight = Constants.statusBarHeight;
 export const MAX_COMMENT_INPUT_LENGTH = 250;
-export const SCREEN_WIDTH = Dimensions.get('window').width;
-export const SCREEN_HEIGHT = Dimensions.get('window').height;
-export const HeaderHeight = SCREEN_HEIGHT*0.8/10.5;
-export const TabBarHeight = SCREEN_HEIGHT*0.9/10.5;
-export const SlidingPanelHeight = SCREEN_HEIGHT*0.8/10.5;
-export const StatusBarHeight = 45;
-export const TabLabelFontSize = 12;
-export const HeaderLabelWidth = SCREEN_WIDTH*1.9/5.9;
-export const HeaderLabelHeight = SCREEN_WIDTH*0.4/10.5;
+export const SCREEN_WIDTH = wp('100%');
+export const SCREEN_HEIGHT = hp('100%');
 
+
+export const PureHeaderHeight = hp('10%');
+export const HeaderPadding = hp('2.5%');
+export const HeaderHeight = StatusBarHeight + PureHeaderHeight;
+export const TabBarHeight = hp('9%');
+export const HeaderLabelWidth = wp('40%');
+export const HeaderLabelHeight = hp('2.25%');
+
+export const SlidingPanelHeight = hp('8%');
+export const SlidingPanelTopPos = SCREEN_HEIGHT;
+export const TabLabelFontSize = 12;
+
+
+export const BACK_ICON_SIZE = wp('6.5%');
 export const DESC_BLOCK_HEIGHT = SCREEN_HEIGHT*1.2/10.5;
 export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
 export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
@@ -89,5 +98,5 @@ export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 export const storage = {
     THEME: 'THEME',
     LOCALE: 'LOCALE',
-    AUTH: "AUTH",
+    AUTH: "auth",
 };

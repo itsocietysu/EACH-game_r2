@@ -7,10 +7,8 @@ import {createStructuredSelector} from "reselect";
 import {compose} from "redux";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {colors, fonts} from "../../utils/constants";
 import connect from "react-redux/es/connect/connect";
-import getFont from "../../utils/getFont";
 import messages from "../../Messages";
 import ArrowButton from "../../components/ArrowButton";
 import styled from "styled-components/native";
@@ -56,7 +54,6 @@ class Bonus extends React.Component{
     render() {
         const {width, height} = Dimensions.get('window');
         const bonus = this.props.bonus;
-        const fontLoaded = this.props.font;
         const theme = this.props.theme;
         let content = <View/>;
 
@@ -89,7 +86,7 @@ class Bonus extends React.Component{
                 <View style={{flex: 1, backgroundColor: colors.BASE[theme], alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{width: '100%', height: '20%', alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 10}}>
                         <TittleText
-                            font={getFont(fontLoaded, fonts.MURRAY)}
+                            font={fonts.MURRAY}
                             color={colors.MAIN}
                         >
                             <FormattedMessage message={'Correct'}/>
@@ -104,7 +101,7 @@ class Bonus extends React.Component{
                             width={width*0.55}
                             height={height*0.075}
                         >
-                            <ButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                            <ButtonText color={colors.TEXT[theme]} font={fonts.EACH}>
                                 <FormattedMessage message={'Continue'}/>->
                             </ButtonText>
                         </ArrowButton>
@@ -118,7 +115,6 @@ class Bonus extends React.Component{
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
     currentStep: makeSelectGameStep(),
 });
 

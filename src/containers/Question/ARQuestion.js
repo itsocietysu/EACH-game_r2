@@ -23,8 +23,7 @@ import saga from "../../components/ValidateImage/saga";
 import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
-import getFont from "../../utils/getFont";
+
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import styled from "styled-components/native";
@@ -93,7 +92,6 @@ class ARQuestion extends Component{
         const theme = this.props.theme;
         const ratio = step.target.ratio;
         const {width, height} = Dimensions.get('window');
-        const fontLoaded = this.props.font;
 
         let loadingInfo =<View/>;
         let imageTest = loadingInfo;
@@ -118,18 +116,18 @@ class ARQuestion extends Component{
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
                             <View style={{flex: 1, paddingLeft: 5}}>
-                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <DescText color={colors.MAIN} font={fonts.MURRAY}>
                                     <FormattedMessage message={'ARTaskDesc'}/>
                                 </DescText>
                             </View>
 
                         </View>
-                        <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
+                        <QuestionText color={colors.TEXT[theme]} font={fonts.MURRAY}>
                             {step.question}
                         </QuestionText>
                         <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 5, paddingBottom: 15}}>
                             <View style={{justifyContent: 'center', padding: 5}}>
-                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <DescText color={colors.MAIN} font={fonts.MURRAY}>
                                     <FormattedMessage message={'ARTaskAdd'}/>
                                 </DescText>
                             </View>
@@ -144,7 +142,7 @@ class ARQuestion extends Component{
                                     width={width*0.55}
                                     height={height*0.075}
                                 >
-                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
+                                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                 </ArrowButton>
                             </View>*/}
                             <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
@@ -159,7 +157,7 @@ class ARQuestion extends Component{
                                         width={width*0.55}
                                         height={height*0.075}
                                     >
-                                        <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
+                                        <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                     </ArrowButton>
                                     <HintIcon onPress={()=>this.refDialog.show()}/>
                                 </View>
@@ -189,7 +187,6 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     theme: makeSelectTheme(),
     locale: makeSelectLanguage(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

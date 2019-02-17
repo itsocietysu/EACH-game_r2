@@ -10,10 +10,8 @@ import {compose} from "redux";
 import {
     TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextContainer, FeedDescriptionText, FeedMoreText, ImageMask, Rectangle} from "../styles";
 import {colors, fonts, DESC_BLOCK_HEIGHT} from "../../utils/constants";
-import getFont from "../../utils/getFont";
 
 import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import messages from "../../Messages";
 
@@ -26,7 +24,6 @@ class RenderMuseumItem extends Component{
         const width = Dimensions.get('window').width;
         const locale = this.props.locale.toUpperCase();
         const theme = this.props.theme;
-        const fontLoaded = this.props.font;
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <View style={{flex: 1}}>
@@ -36,7 +33,7 @@ class RenderMuseumItem extends Component{
                             <TittleContainer>
                                 <FeedTittleText
                                     color={colors.TEXT[theme]}
-                                    font={getFont(fontLoaded, fonts.EACH)}
+                                    font={fonts.EACH}
                                 >
                                     {item.name[locale]}
                                 </FeedTittleText>
@@ -51,12 +48,12 @@ class RenderMuseumItem extends Component{
                             <FeedDescriptionText
                                 numberOfLines={3}
                                 color={colors.TEXT[theme]}
-                                font={getFont(fontLoaded, fonts.MURRAY)}
+                                font={fonts.MURRAY}
                             >
                                 {item.desc[locale]}
                             </FeedDescriptionText>
                             <FeedMoreText
-                                font={getFont(fontLoaded, fonts.MURRAY)}
+                                font={fonts.MURRAY}
                             >
                                 <FormattedMessage message={'More'}/>
                             </FeedMoreText>
@@ -72,7 +69,6 @@ class RenderMuseumItem extends Component{
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

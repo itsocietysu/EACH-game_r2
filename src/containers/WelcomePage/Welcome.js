@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedWrapper, FormattedMessage } from "react-native-globalize";
-import * as Progress from 'react-native-progress';
+import { FormattedMessage } from "react-native-globalize";
 import {
     StyleSheet,
-    ImageBackground,
     View,
     Text,
     Dimensions,
     AsyncStorage,
 } from 'react-native';
-import {SecureStore} from 'expo';
+import Image from 'react-native-remote-svg';
 import PropTypes from "prop-types";
-
-import { colors, images, storage } from "../../utils/constants";
-import messages from "../../Messages";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {colors, images, SCREEN_WIDTH, storage} from "../../utils/constants";
 import getSystemLocale from '../../utils/getSystemLocale'
 import { changeLanguage } from '../../components/Locales/actions'
 import {changeTheme} from "../../components/Theme/actions";
@@ -63,24 +60,23 @@ class WelcomeScreen extends Component {
 
 
     render() {
-        const dim = Dimensions.get('window');
         return (
-            <FormattedWrapper messages={messages}>
-                <ImageBackground
-                    source = {images.LOADING_SCREEN_IMAGE}
-                    style={{height: dim.height-22, width: dim.width}}
-                    resizeMode = "stretch"
-                >
-                    <View style={{flex: 1}}>
-                        <View style={styles.loaderContainer}>
-                            <Progress.Bar progress={0.3} width={200} color={colors.MAIN} />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={{color: colors.MAIN, paddingRight: 80, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
-                        </View>
-                    </View>
-                </ImageBackground>
-            </FormattedWrapper>
+            <View style={{flex: 1, backgroundColor: colors.LOADING_SCREEN}}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Image
+                        source={require('../../../assets/images/welcome_screen_blue.svg')}
+                        style={{width: wp('140%'), height: wp('140%')}}
+                    />
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={{color: colors.WHITE, paddingRight: 10, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
+                    <Image
+                        source={require('../../../assets/images/its_logo_white.png')}
+                        style={{width: wp('23%'), height: hp('5%')}}
+                        resizeMode={'stretch'}
+                    />
+                </View>
+            </View>
         );
     }
 }
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
         alignItems:  'center',
     },
     textContainer:{
-        flexGrow: 1,
+        flexDirection: 'row',
         justifyContent:  'flex-end',
         alignItems:  'flex-end',
     },

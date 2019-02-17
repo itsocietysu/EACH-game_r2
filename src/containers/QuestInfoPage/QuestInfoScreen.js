@@ -30,8 +30,6 @@ import saga from "../../components/ScenarioPage/saga";
 import {QuestButtonText, FeedPlainText, QuestTittle, Rectangle} from "../styles";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors, fonts} from "../../utils/constants";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
-import getFont from "../../utils/getFont";
 
 import Rating from './Rating';
 import SpentTime from './SpentTime';
@@ -72,7 +70,6 @@ class QuestInfoScreen extends  Component {
         const quest = navigation.getParam('quest', '');
         const theme = this.props.theme;
         const locale = this.props.language.toUpperCase();
-        const fontLoaded = this.props.font;
 
         // loading scenario
         const loading = this.props.loading;
@@ -89,7 +86,7 @@ class QuestInfoScreen extends  Component {
                     width={width*0.55}
                     height={height*0.075}
                 >
-                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}>
                         <FormattedMessage message={'Play'}/>->
                     </QuestButtonText>
                 </ArrowButton>;
@@ -103,7 +100,7 @@ class QuestInfoScreen extends  Component {
                     width={width*0.55}
                     height={height*0.075}
                 >
-                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}>
+                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}>
                         <FormattedMessage message={'Auth'}/>->
                     </QuestButtonText>
                 </ArrowButton>;
@@ -122,7 +119,7 @@ class QuestInfoScreen extends  Component {
                     <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
                         <ScrollView style={{flex: 1}}>
                             <QuestTittle color={colors.MAIN}
-                                         font={getFont(fontLoaded, fonts.EACH)}
+                                         font={fonts.EACH}
                             >
                                 {quest.name[locale]}
                             </QuestTittle>
@@ -133,7 +130,7 @@ class QuestInfoScreen extends  Component {
                             </StatisticsContainer>
 
                                 <DescriptionContainer>
-                                    <FeedPlainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
+                                    <FeedPlainText color={colors.TEXT[theme]} font={fonts.MURRAY}
                                     >
                                         {quest.desc[locale]}
                                     </FeedPlainText>
@@ -176,7 +173,6 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
     auth: makeSelectAuth(),
 });
 const withConnect = connect(

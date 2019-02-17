@@ -16,7 +16,6 @@ import reducer from "../../components/Locales/reducer";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {makeSelectAuth} from "../../components/Auth/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 
 import { DARK_THEME, LIGHT_THEME } from "../../components/Theme/constants";
 import messages from '../../Messages';
@@ -205,7 +204,6 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
     auth: makeSelectAuth(),
 });
 
