@@ -20,6 +20,7 @@ import {loadGames} from "../GamePage/actions";
 import DataList from "../../components/DataList";
 import getUserGameData from "../../utils/getUserGameData";
 import {markDataStatus} from "../../utils/markDataStatus";
+import {makeSelectAuth} from "../../components/Auth/selectors";
 
 const ContainerView = styled.View`
   flex: 1;
@@ -40,7 +41,7 @@ class GameItem extends Component{
         let loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
-        if (this.state.userData && data){
+        if (this.state.userData && data && this.props.auth){
             markDataStatus(data, this.state.userData.gameData);
         }
         else
@@ -83,6 +84,7 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
+    auth: makeSelectAuth(),
 });
 const withConnect = connect(
     mapStateToProps,

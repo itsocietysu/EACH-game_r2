@@ -25,7 +25,7 @@ import {
     ARROW_IMG_WIDTH,
     colors,
     fonts,
-    HeaderHeight, SCREEN_HEIGHT,
+    HeaderHeight, SCREEN_HEIGHT, SlidingPanelBottomPos,
     SlidingPanelHeight, SlidingPanelTopPos,
     StatusBarHeight,
     TabBarHeight
@@ -53,12 +53,12 @@ class MuseumItemScreen extends Component{
     static defaultProps = {
         draggableRange: {
             top: SlidingPanelTopPos,
-            bottom: SlidingPanelTopPos - (SCREEN_HEIGHT - HeaderHeight - TabBarHeight -  SlidingPanelHeight)
+            bottom: SlidingPanelBottomPos,
         },
     };
 
     state={
-        startDragPos: SlidingPanelTopPos - StatusBarHeight,
+        startDragPos: SlidingPanelBottomPos,
         allowDragging: true,
         isAtBottom: true,
     };

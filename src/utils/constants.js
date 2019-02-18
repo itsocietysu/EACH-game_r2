@@ -67,13 +67,14 @@ export const languages = {
     'en': 'English',
     'ru': 'Русский',
 };
+const aspectRatio = hp('100%') / wp('100%');
 export const StatusBarHeight = Constants.statusBarHeight;
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = wp('100%');
 export const SCREEN_HEIGHT = hp('100%');
 
 
-export const PureHeaderHeight = hp('10%');
+export const PureHeaderHeight = hp('8%');
 export const HeaderPadding = hp('2.5%');
 export const HeaderHeight = StatusBarHeight + PureHeaderHeight;
 export const TabBarHeight = hp('9%');
@@ -82,11 +83,12 @@ export const HeaderLabelHeight = hp('2.25%');
 
 export const SlidingPanelHeight = hp('8%');
 export const SlidingPanelTopPos = SCREEN_HEIGHT;
+export const SlidingPanelBottomPos = TabBarHeight + HeaderHeight + SlidingPanelHeight + ((aspectRatio <= 1.8) ? StatusBarHeight : 0);
 export const TabLabelFontSize = 12;
 
 
 export const BACK_ICON_SIZE = wp('6.5%');
-export const DESC_BLOCK_HEIGHT = SCREEN_HEIGHT*1.2/10.5;
+export const DESC_BLOCK_HEIGHT = hp('14%');
 export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
 export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
 
@@ -98,5 +100,5 @@ export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 export const storage = {
     THEME: 'THEME',
     LOCALE: 'LOCALE',
-    AUTH: "auth",
+    AUTH: 'AUTH',
 };

@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, {Component} from 'react';
-import { Image, ScrollView, View, Text, WebView, Dimensions} from 'react-native';
+import { View, WebView, Dimensions} from 'react-native';
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 import {makeSelectLanguage} from "../../components/Locales/selectors";
-import { TextContainer, TittleText, DescriptionText, BasicText } from "../styles";
 import {makeSelectTheme} from "../../components/Theme/selectors";
 import {colors} from "../../utils/constants";
 
@@ -13,7 +12,7 @@ class FeedItemScreen extends Component
 {
     render(){
         const navigation = this.props.navigation;
-        const item = navigation.getParam('data',''); // second parameter is some default value
+        const item = navigation.getParam('data','');
         const locale = this.props.language.toUpperCase();
         const width = Dimensions.get('window').width;
         const theme = this.props.theme;
@@ -33,7 +32,7 @@ class FeedItemScreen extends Component
              <View style={{flex: 1}}>
                 <WebView
                     // source={{html: testHtml1}}
-                    source={{html: htmlContent}}
+                    source={{baseUrl: '', html: htmlContent}}
                     scalesPageToFit={false}
                     mediaPlaybackRequiresUserAction={true}
                     style={{backgroundColor: colors.BASE[theme]}}

@@ -10,7 +10,7 @@ export const TabBarLabelText = styled.Text`
     textAlign: center
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
-    fontSize: ${0.25/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 /*
@@ -19,19 +19,19 @@ export const TabBarLabelText = styled.Text`
 export const FeedTittleText = styled.Text`
     color: ${props=> props.color}
     fontFamily: ${props=> props.font}
-    fontSize: ${0.28/10.5*height}
+    fontSize: ${wp('5%')}
 `;
 
 export const FeedDescriptionText = styled.Text`
     color: ${props=>props.color}
     fontFamily: ${props=> props.font}
-    fontSize: ${0.25/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 export const FeedPlainText = styled.Text`
     color: ${props=>props.color}
     fontFamily: ${props=> props.font}
-    fontSize: ${0.28/10.5*height}
+    fontSize: ${wp('4.5')}
     textAlign: justify
 `;
 
@@ -39,7 +39,7 @@ export const FeedMoreText = styled.Text`
     alignSelf: center
     color: #0000ff
     fontFamily: ${props=> props.font}
-    fontSize: ${0.25/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 /*
@@ -77,7 +77,7 @@ export const QuestButtonText = styled.Text`
     alignSelf: center
     color: ${props => props.color}
     fontFamily: ${props => props.font}
-    fontSize: ${0.35/10.5*height}
+    fontSize: ${wp('4.5%')}
 `;
 
 /*
