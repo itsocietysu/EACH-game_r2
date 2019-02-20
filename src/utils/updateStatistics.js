@@ -2,6 +2,9 @@ import {SecureStore} from "expo";
 import request from "./request";
 import storeUserData from "./storeUserData";
 import {showMessage} from "react-native-flash-message";
+import messages from "../Messages";
+import {FormattedMessage} from "react-native-globalize";
+import React from "react";
 
 export async function updateStatistics(gameId, stepPassed){
     const body = {
@@ -28,7 +31,7 @@ export async function updateStatistics(gameId, stepPassed){
     }
     catch (e) {
         showMessage({
-            message: "Cannot update statistics",
+            message: <FormattedMessage message={'ErrStat'}/>,
             type: "danger",
         });
         console.log(e);

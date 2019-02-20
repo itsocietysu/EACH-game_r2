@@ -1,7 +1,9 @@
 import {SecureStore} from "expo";
 import {showMessage} from "react-native-flash-message";
 import request from "./request";
-
+import messages from "../Messages";
+import {FormattedMessage} from "react-native-globalize";
+import React from "react";
 
 export async function updateFeedback(id, weight, comment){
     const body = {
@@ -29,7 +31,7 @@ export async function updateFeedback(id, weight, comment){
     }
     catch (e) {
         showMessage({
-            message: "Cannot update feedback",
+            message: <FormattedMessage message={'ErrFeed'}/>,
             type: "danger",
         });
         console.log(e);

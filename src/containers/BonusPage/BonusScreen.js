@@ -16,6 +16,7 @@ import {updateCurrentStep} from "../../components/GameStep/actions";
 import {makeSelectGameStep} from "../../components/GameStep/selectors";
 import {BonusText} from "../styles";
 import {updateStatistics} from "../../utils/updateStatistics";
+import VideoComponent from "../../components/VideoComponent";
 
 const PHOTO_BONUS = "photo";
 const TEXT_BONUS = "text";
@@ -73,8 +74,8 @@ class Bonus extends React.Component{
                 break;
             case VIDEO_BONUS:
                 content =
-                    <View>
-                        <Text>Here should be video</Text>
+                    <View style={{flex: 1}}>
+                        <VideoComponent videoUrl={"https://www.1tv.ru/embed/353058:11"}/>
                     </View>;
                 break;
             default:

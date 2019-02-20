@@ -54,6 +54,12 @@ const messages = {
         Process:            'playing',
         Passed:             'passed',
         More:               'more...',
+
+        ErrRate:            'Please, rate the game before exit',
+        ErrFeed:            'Ups... Failed to send feedback',
+        ErrStat:            'Ups... Current progress might not be saved',
+        ErrLogin:           'Ups... Failed to sign in',
+        ErrService:         'Ups... Failed to connect with the service',
     },
 	ru: {
         ProcTitle:       'Активные',
@@ -110,6 +116,12 @@ const messages = {
         Process:            'продолжть',
         Passed:             'пройдено',
         More:               'подробнее...',
+
+        ErrRate:            'Перед выходом оцените игру, пожалуйста',
+        ErrFeed:            'Упс... Ошибка при отправке отзыва',
+        ErrStat:            'Упс... Произошла ошибка. Текущий прогресс может быть утерян',
+        ErrLogin:           'Упс... Не удалось войти, попробуйте еще',
+        ErrService:         'Упс... Не удалось соединиться с социальной сетью',
     },
 	es: {
 		Welcome: 	'Bienvenido',

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import FlashMessage, {showMessage} from "react-native-flash-message";
 import { AuthSession, SecureStore } from 'expo';
-
+import {FormattedMessage} from "react-native-globalize";
 import connect from "react-redux/es/connect/connect";
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -85,7 +85,7 @@ class LoginScreen extends Component {
       }
     } catch(e) {
         showMessage({
-            message: "Unable to sign in",
+            message: <FormattedMessage message={'ErrLogin'}/>,
             type: "danger",
         });
         deleteUserData();
@@ -105,7 +105,7 @@ class LoginScreen extends Component {
       return { cancelled: true };
     } catch (e) {
       showMessage({
-         message: "Unable to get code",
+         message: <FormattedMessage message={'ErrService'}/>,
          type: "danger",
       });
       return { error: true };

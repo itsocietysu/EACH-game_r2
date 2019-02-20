@@ -46,7 +46,7 @@ class QuestFinalScreen extends Component{
         }
         else
             showMessage({
-                message: "You have to rate",
+                message: <FormattedMessage message={'ErrRate'}/>,
                 type: "info",
             });
     }
