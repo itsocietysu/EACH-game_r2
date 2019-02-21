@@ -4,19 +4,26 @@
     "description": "Each mobile app",
     "slug": "each-react-native-app",
     "privacy": "public",
-    "sdkVersion": "29.0.0",
+    "sdkVersion": "31.0.0",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
     "scheme": "expo.each",
-    "icon": "./assets/icons/map_logo_128.png",
-    "loading": {
-      "icon": "./assets/icons/loading.png",
-      "hideExponentText": false
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ITS.each"

@@ -32,7 +32,7 @@ class FeedItemScreen extends Component
              <View style={{flex: 1}}>
                 <WebView
                     // source={{html: testHtml1}}
-                    source={{baseUrl: '', html: htmlContent}}
+                    source={{html: htmlContent}}
                     scalesPageToFit={false}
                     mediaPlaybackRequiresUserAction={true}
                     style={{backgroundColor: colors.BASE[theme]}}

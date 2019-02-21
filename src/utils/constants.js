@@ -88,7 +88,7 @@ export const TabLabelFontSize = 12;
 
 
 export const BACK_ICON_SIZE = wp('6.5%');
-export const DESC_BLOCK_HEIGHT = hp('14%');
+export const DESC_BLOCK_HEIGHT = hp('12%');
 export const ARROW_IMG_HEIGHT = 0.3/10.5*SCREEN_HEIGHT;
 export const ARROW_IMG_WIDTH = 1.2/5.9*SCREEN_WIDTH;
 
