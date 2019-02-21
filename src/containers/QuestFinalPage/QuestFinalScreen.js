@@ -68,7 +68,7 @@ class QuestFinalScreen extends Component{
                         font={fonts.MURRAY}
                         color={colors.MAIN}
                     />
-                    <Text style={{textAlign: 'right'}}>{this.state.length}/{MAX_COMMENT_INPUT_LENGTH}</Text>
+                    <Text style={{textAlign: 'right', fontFamily: fonts.MURRAY, color: colors.MAIN}}>{this.state.length}/{MAX_COMMENT_INPUT_LENGTH}</Text>
                 </View> :
                 <View/>
         )

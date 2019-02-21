@@ -37,17 +37,18 @@ class RankTuple extends Component{
     render() {
         let rank = <ActivityIndicator/>;
         if (this.state.rank)
-            rank = <FormattedMessage message={this.state.rank}/>;
+            rank =
+                <ValueText color={colors.MAIN} font={fonts.MURRAY} paddingLeft={12}>
+                    <FormattedMessage message={this.state.rank}/>
+                </ValueText>;
         const theme = this.props.theme;
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <RowContainer style={{flexDirection: 'row', width: '100%'}}>
-                    <KeyText color={colors.TEXT[theme]} font={fonts.MURRAY}><FormattedMessage
-                        message={'Rank'}/></KeyText>
+                    <KeyText color={colors.TEXT[theme]} font={fonts.MURRAY}>
+                        <FormattedMessage  message={'Rank'}/></KeyText>
                     <View style={{flex: 1}}>
-                        <ValueText color={colors.MAIN} font={fonts.MURRAY} paddingLeft={12}>
-                            {rank}
-                        </ValueText>
+                        {rank}
                     </View>
                 </RowContainer>
             </FormattedWrapper>
