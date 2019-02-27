@@ -41,7 +41,7 @@ class GameItem extends Component{
         let loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
-        if (this.state.userData && data && this.props.auth){
+        if (this.state.userData && data){
             markDataStatus(data, this.state.userData.gameData);
         }
         else

@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Dimensions, ActivityIndicator, PixelRatio } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { View, Text, Dimensions, ActivityIndicator, Platform, PixelRatio } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
 import { ImageManipulator, Permissions, Camera} from 'expo';
 import {MaterialIcons} from '@expo/vector-icons';
-import {colors} from "../../utils/constants";
+import {colors, CAMERA_ASPECT_RATIO, StatusBarHeight} from "../../utils/constants";
 import Back from "../../components/icons/Back";
 
 class CustomCamera extends React.Component {
@@ -14,8 +14,14 @@ class CustomCamera extends React.Component {
         targetWidth: null,
         loading: false,
         _isMounted: false,
+        ratio: '4:3',
     };
 
+    constructor(){
+        super();
+
+        this._getCameraAspectRatio = this._getCameraAspectRatio.bind(this);
+    }
     async componentDidMount(){
         this.setState({_isMounted: true});
         const status =  await Permissions.askAsync(Permissions.CAMERA);
@@ -48,7 +54,7 @@ class CustomCamera extends React.Component {
         }
     }
 
-    componentWillUnmount(){
+    async componentWillUnmount(){
         this.setState({_isMounted: false});
     }
 
@@ -124,9 +130,25 @@ class CustomCamera extends React.Component {
         if(this.state._isMounted && !this.state.loading)
             this.setState({loading: true}, this._takePhoto );
     }
+
+    async _getCameraAspectRatio(){
+        if (Platform.OS === 'android' && this.cameraRef) {
+            const ratios = await this.cameraRef.getSupportedRatiosAsync();
+            alert(ratios);
+            // See if the current device has your desired ratio, otherwise get the maximum supported one
+            // Usually the last element of "ratios" is the maximum supported ratio
+            const ratio = ratios.find((ratio) => ratio === '1:1') || ratios[ratios.length - 1];
+
+            this.setState({
+                ratio
+            });
+        }
+    }
+
     render() {
         const { width, height} = Dimensions.get('window');
         const iconSize = 60;
+        const {isFocused} = this.props;
 
         if (!this.state.permissionGranted) {
             return <ActivityIndicator/>;
@@ -142,18 +164,20 @@ class CustomCamera extends React.Component {
 
             return (
                 <View style={{flex: 1}}>
+                    <View style={{height: StatusBarHeight, width: '100%'}}/>
                     <Camera
                         ref={ref=>{this.cameraRef = ref}}
                         style={{flex: 1}}
+                        onCameraReady={this._getCameraAspectRatio}
+
                     >
-                        {loadingInfo}
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <View style={{
                                 width: this.state.targetWidth,
                                 height: this.state.targetHeight,
                                 borderWidth: 3,
                                 borderColor: colors.FRAME,
-                                backgroundColor: 'transparent'
+                                backgroundColor: 'transparent',
                             }}/>
                         </View>
                         <View style={{position: 'absolute', top: 15}}>
@@ -172,4 +196,4 @@ class CustomCamera extends React.Component {
         return <Text>Ooops! No access to camera</Text>;
     }
 }
-export default (withNavigation)(CustomCamera)
+export default (withNavigationFocus)(CustomCamera)

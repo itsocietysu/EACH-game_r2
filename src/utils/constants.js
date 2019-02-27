@@ -67,8 +67,10 @@ export const languages = {
     'en': 'English',
     'ru': 'Русский',
 };
-const aspectRatio = hp('100%') / wp('100%');
 export const StatusBarHeight = Constants.statusBarHeight;
+export const CAMERA_ASPECT_RATIO = Dimensions.get('window').height / Dimensions.get('window').width; alert(CAMERA_ASPECT_RATIO);
+export const ASPECT_RATIO = (hp('100%')-StatusBarHeight) / wp('100%'); alert(ASPECT_RATIO);
+
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = wp('100%');
 export const SCREEN_HEIGHT = hp('100%');
@@ -83,7 +85,7 @@ export const HeaderLabelHeight = hp('2.25%');
 
 export const SlidingPanelHeight = hp('8%');
 export const SlidingPanelTopPos = SCREEN_HEIGHT;
-export const SlidingPanelBottomPos = TabBarHeight + HeaderHeight + SlidingPanelHeight + ((aspectRatio <= 1.8) ? StatusBarHeight : 0);
+export const SlidingPanelBottomPos = TabBarHeight + HeaderHeight + SlidingPanelHeight + ((ASPECT_RATIO <= 1.8) ? StatusBarHeight : 0);
 export const TabLabelFontSize = 12;
 
 

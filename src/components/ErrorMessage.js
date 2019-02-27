@@ -6,7 +6,8 @@ class ErrorMessage extends Component{
     render(){
         return(
             <View style={{flex: 1}}>
-                <Text>Something went wrong</Text>
+                <Text>Oops, something went wrong</Text>
+                <Text>A team of highly trained monkeys has been dispatched to deal with this situation</Text>
                 <Text>{this.props.message}</Text>
             </View>
         );

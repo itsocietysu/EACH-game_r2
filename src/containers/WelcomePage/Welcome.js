@@ -55,7 +55,7 @@ class WelcomeScreen extends Component {
 
 
         // TODO: change magic constant 3000
-        setTimeout(()=> this.props.navigation.navigate('Home'), 3000)
+        setTimeout(()=> this.props.navigation.navigate('Home'), 5000)
     }
 
 

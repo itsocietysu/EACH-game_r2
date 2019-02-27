@@ -60,8 +60,7 @@ class QuestInfoScreen extends  Component {
     async componentDidMount(){
         this.props.init();
         await tokenInfo();
-        const data = await getUserGameData();
-        this.setState({userData: data});
+        await getUserGameData().then(data => this.setState({userData: data}));
     }
 
     render(){
@@ -105,7 +104,7 @@ class QuestInfoScreen extends  Component {
                     </QuestButtonText>
                 </ArrowButton>;
 
-        if (loading) {
+        if (loading || !this.state.userData) {
             return <View><ActivityIndicator/></View>;
         }
 

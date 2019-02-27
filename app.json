@@ -29,7 +29,13 @@
       "bundleIdentifier": "com.ITS.each"
     },
     "android": {
-      "package": "com.ITS.each"
+      "package": "com.ITS.each",
+      "permissions": [
+        "CAMERA",
+        "MANAGE_DOCUMENTS",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     }
   }
 }
