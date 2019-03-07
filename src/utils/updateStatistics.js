@@ -26,12 +26,15 @@ export async function updateStatistics(gameId, stepPassed){
         };
         const requestResult = await request(requestUrl, options);
         // await storeUserData(requestResult[0]);
-        alert('done update ' + stepPassed);
+        // alert('done update ' + stepPassed);
         return requestResult[0];
     }
     catch (e) {
+        if (e === '401')
+            msg = <FormattedMessage message={'Unauthorized'}/>;
+        else msg = <FormattedMessage message={'ErrStat'}/>;
         showMessage({
-            message: <FormattedMessage message={'ErrStat'}/>,
+            message: msg,
             type: "danger",
         });
         console.log(e);

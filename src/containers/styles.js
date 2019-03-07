@@ -284,6 +284,7 @@ export const LogoAvatar = styled.Image`
     height: 40
     borderRadius: 20
     borderWidth: 1
+    resizeMode: cover
     borderColor: ${props => props.borderColor}   
 `;
 

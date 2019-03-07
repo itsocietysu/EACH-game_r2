@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import Image from 'react-native-remote-svg';
 import {withNavigation} from "react-navigation";
 import PropTypes from "prop-types";
 
-import { Text, View, ScrollView, SectionList, Dimensions } from "react-native";
+import { Text, View, ScrollView, SectionList, Dimensions, Image } from "react-native";
 import { createStructuredSelector } from "reselect";
 import connect from "react-redux/es/connect/connect";
 import { compose } from "redux";
 
 import { colors, fonts } from "../../utils/constants";
-import { makeSelectTheme } from "../../components/Theme/selectors";
-import { makeSelectLanguage } from "../../components/Locales/selectors";
+import { makeSelectTheme } from "../../redux/selectors/themeSelectors";
+import { makeSelectLanguage } from "../../redux/selectors/localesSelectors";
 import ChooseStatus from '../../utils/ChooseStatus'
 import RenderQuestItem from "./RenderQuestItem";
 import messages from '../../Messages';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class ProfileScreen extends Component {
 
@@ -29,27 +29,28 @@ class ProfileScreen extends Component {
       <View
         style={{backgroundColor: colors.BASE[theme],
           alignItems: 'center',
+            flex: 1,
         }}
       >
         <Image
           source={{uri: userData.image}}
           fadeDuration={0}
-          style={{width: 200,
-            height: 200,
+          style={{width: wp('45%'),
+            height: wp('45%'),
             borderWidth: 2,
-            borderRadius: 100,
+            borderRadius: wp('45%') / 2,
             borderColor: colors.MAIN,
-            marginTop: 30,
+            marginTop: hp('4%'),
             flex: 0,
           }}
         />
-        <Text style={{color: colors.MAIN, textAlign: 'center', fontSize: 60, fontFamily: fonts.EACH, marginTop: 10}}>
+        <Text style={{color: colors.MAIN, textAlign: 'center', fontSize: wp('14%'), fontFamily: fonts.EACH, marginTop: 10}}>
           {userData.username}
         </Text>
-        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 10}}>
+        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: wp('7%'), fontFamily: fonts.MURRAY, marginTop: 10}}>
           {messages[lang][range]}  {messages[lang].Score}: {bonus}
         </Text>
-        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 30, fontFamily: fonts.MURRAY, marginTop: 10}}>
+        <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: wp('7%'), fontFamily: fonts.MURRAY, marginTop: 10}}>
           {messages[lang].TimeInGame}:  {userData.gameTime}
         </Text>
         <ScrollView style={{width: Dimensions.get('window').width - 20, height: Dimensions.get('window').height/5 + 10}}>

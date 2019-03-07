@@ -53,7 +53,6 @@ export const colors = {
 };
 
 export const images = {
-    LOADING_SCREEN_IMAGE: require('./../../assets/images/loading_screen.png'),
     HEADER_DARK: require('./../../assets/images/muz_header_dark.png'),
     HEADER_LIGHT: require('./../../assets/images/muz_header_white.png'),
 };
@@ -68,8 +67,8 @@ export const languages = {
     'ru': 'Русский',
 };
 export const StatusBarHeight = Constants.statusBarHeight;
-export const CAMERA_ASPECT_RATIO = Dimensions.get('window').height / Dimensions.get('window').width; alert(CAMERA_ASPECT_RATIO);
-export const ASPECT_RATIO = (hp('100%')-StatusBarHeight) / wp('100%'); alert(ASPECT_RATIO);
+export const CAMERA_ASPECT_RATIO = Dimensions.get('window').height / Dimensions.get('window').width;
+export const ASPECT_RATIO = (hp('100%')-StatusBarHeight) / wp('100%');
 
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = wp('100%');

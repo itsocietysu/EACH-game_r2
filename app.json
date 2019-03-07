@@ -9,12 +9,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "expo.each",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./assets/icons/map_logo_128.png",
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },

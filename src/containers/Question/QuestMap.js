@@ -13,10 +13,10 @@ import {withNavigation} from 'react-navigation';
 import {Entypo, MaterialIcons} from '@expo/vector-icons';
 
 import {colors, fonts} from "../../utils/constants";
-import {LIGHT_THEME} from "../../components/Theme/constants";
-import {LightMapStyle, NightMapStyle} from "../../components/MapStyles";
-import HintIcon from "../../components/icons/HintIcon";
-import showDialog from "../../components/CustomPopUpDialog";
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
+import {LightMapStyle, NightMapStyle} from "../../components/MapStyles/MapStyles";
+import HintIcon from "../../components/Icons/HintIcon";
+import showDialog from "../../components/PopUpDialog/CustomPopUpDialog";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import messages from "../../Messages";
 import {MapText} from "../styles";
@@ -138,7 +138,7 @@ class QuestMap extends Component{
             latitude: this.state.latitude,
             longitude: this.state.longitude,
         };
-        const range = 8000000000;//this.props.stepData.range;
+        const range = 1000000000000; //this.props.stepData.range;
         const result = true;
         // console.log(this._calcDistance(currPos), ' meters');
         if (this._calcDistance(currPos) <= range) {

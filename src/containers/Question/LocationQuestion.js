@@ -7,11 +7,11 @@ import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 
 import {createStructuredSelector} from "reselect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 import QuestMap from "./QuestMap";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 class LocationQuestion extends Component{
 

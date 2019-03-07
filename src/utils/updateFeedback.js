@@ -25,8 +25,8 @@ export async function updateFeedback(id, weight, comment){
             body: JSON.stringify(body),
         };
         const requestResult = await request(requestUrl, options);
-        alert(requestResult.text);
-        alert('done feedback update');
+        // alert(requestResult.text);
+        // alert('done feedback update');
         return true;
     }
     catch (e) {

@@ -8,15 +8,15 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { loadMuseums } from "../MuseumPage/actions";
-import { makeSelectData, makeSelectError, makeSelectLoading } from "../MuseumPage/selectors";
+import { loadMuseums } from "../../redux/actions/museumActions";
+import { makeSelectData, makeSelectError, makeSelectLoading } from "../../redux/selectors/museumSelectors";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../MuseumPage/saga";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import saga from "../../redux/sagas/museumSaga";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
-import {LIGHT_THEME} from "../../components/Theme/constants";
-import {NightMapStyle, LightMapStyle} from "../../components/MapStyles";
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
+import {NightMapStyle, LightMapStyle} from "../../components/MapStyles/MapStyles";
 import {colors, fonts} from "../../utils/constants";
 import {LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA} from "./constants";
 
@@ -67,11 +67,15 @@ class MapsScreen extends Component {
               latitude: parseFloat(location.latitude),
               longitude: parseFloat(location.longitude),
             }}
-            image={require('../../../assets/icons/map_logo_128.png')}
             onPress={() => {
                 this.ShowDialog(museum, location.name);
             }}
-          />
+          >
+            <Image
+                  source={require('../../../assets/icons/map_logo_128.png')}
+                  style={{width: 50, height: 50, borderColor: colors.MAIN, borderWidth: 1, borderRadius: 25, resizeMode: 'stretch'}}
+            />
+          </Marker>
         ));
         marker = marker.concat(arr);
       });

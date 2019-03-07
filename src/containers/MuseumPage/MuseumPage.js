@@ -5,16 +5,16 @@ import { createStructuredSelector, createSelector } from 'reselect';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
-import {makeSelectData, makeSelectError, makeSelectLoading} from "./selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/museumSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 
-import saga from './saga';
-import reducer from './reducer';
+import saga from '../../redux/sagas/museumSaga';
+import reducer from '../../redux/reducers/museumReducer';
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
-import DataList from './../../components/DataList';
-import {loadMuseums} from "./actions";
+import DataList from '../../components/Lists/DataList';
+import {loadMuseums} from "../../redux/actions/museumActions";
 import RenderMuseumItem from "./RenderMuseumItem";
 import {colors} from "../../utils/constants";
 

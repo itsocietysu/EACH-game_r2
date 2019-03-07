@@ -6,18 +6,19 @@ import {
     View,
     Text,
     Dimensions,
+    Image,
     AsyncStorage,
 } from 'react-native';
-import Image from 'react-native-remote-svg';
 import PropTypes from "prop-types";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {colors, images, SCREEN_WIDTH, storage} from "../../utils/constants";
 import getSystemLocale from '../../utils/getSystemLocale'
-import { changeLanguage } from '../../components/Locales/actions'
-import {changeTheme} from "../../components/Theme/actions";
-import {changeAuth} from "../../components/Auth/actions"
-import {LIGHT_THEME} from "../../components/Theme/constants";
+import { changeLanguage } from '../../redux/actions/localesActions'
+import {changeTheme} from "../../redux/actions/themeActions";
+import {changeAuth} from "../../redux/actions/authActions"
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
 import {deleteUserData} from "../../utils/revokeToken";
+import {fetchUserData} from "../../utils/fetchUserData";
 
 class WelcomeScreen extends Component {
     // cheat access to redux store
@@ -48,6 +49,9 @@ class WelcomeScreen extends Component {
             else
                 auth = true;
             store.dispatch(changeAuth(auth));
+            console.log(auth);
+            const userData = await fetchUserData();
+            console.log(userData)
         }
         catch (e) {
             console.log('Error:: ', e);
@@ -55,7 +59,7 @@ class WelcomeScreen extends Component {
 
 
         // TODO: change magic constant 3000
-        setTimeout(()=> this.props.navigation.navigate('Home'), 5000)
+        setTimeout(()=> this.props.navigation.navigate('Home'), 3000)
     }
 
 
@@ -64,7 +68,7 @@ class WelcomeScreen extends Component {
             <View style={{flex: 1, backgroundColor: colors.LOADING_SCREEN}}>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <Image
-                        source={require('../../../assets/images/welcome_screen_blue.svg')}
+                        source={require('../../../assets/images/welcome_screen_blue.png')}
                         style={{width: wp('140%'), height: wp('140%')}}
                     />
                 </View>

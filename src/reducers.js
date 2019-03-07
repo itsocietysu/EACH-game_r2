@@ -7,15 +7,15 @@ import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 // import globalReducer from 'containers/App/reducer';
-import languageReducer from './components/Locales/reducer';
-import feedsReducer from './containers/HomePage/reducer';
-import museumsReducer from './containers/MuseumPage/reducer';
-import gamesReducer from "./containers/GamePage/reducer";
-import scenarioReducer from "./components/ScenarioPage/reducer";
-import themeReducer from "./components/Theme/reducer";
-import imageComparisonReducer from "./components/ValidateImage/reducer";
-import stepReducer from "./components/GameStep/reducer";
-import authReducer from "./components/Auth/reducer";
+import languageReducer from './redux/reducers/localesReducer';
+import feedsReducer from './redux/reducers/feedReducer';
+import museumsReducer from './redux/reducers/museumReducer';
+import gamesReducer from "./redux/reducers/gameReducer";
+import scenarioReducer from "./redux/reducers/scenarioReducer";
+import themeReducer from "./redux/reducers/themeReducer";
+import imageComparisonReducer from "./redux/reducers/imageValidationReducer";
+import stepReducer from "./redux/reducers/gameStepReducer";
+import authReducer from "./redux/reducers/authReducer";
 /*
  * routeReducer
  *

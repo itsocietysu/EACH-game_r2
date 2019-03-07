@@ -6,8 +6,8 @@ import {
 } from 'react-navigation';
 import {Text} from 'react-native';
 import WelcomeScreen from './containers/WelcomePage/Welcome';
-import FeedScreen from './containers/HomePage/FeedPage';
-import FeedItemScreen from "./containers/HomePage/FeedItem";
+import FeedScreen from './containers/FeedPage/FeedPage';
+import FeedItemScreen from "./containers/FeedPage/FeedItem";
 import MapScreen from './containers/MapPage/MapPage';
 import MuseumsScreen from './containers/MuseumPage/MuseumPage';
 import MuseumItemScreen from './containers/MuseumPage/MuseumItem';
@@ -19,15 +19,16 @@ import LoginScreen from "./containers/AuthPage/Login";
 import ProfileScreen from "./containers/AuthPage/Profile"
 import AuthLoadingScreen from "./containers/AuthPage/AuthLoading"
 
-import { BackIcon, SettingsIcon} from './components/icons';
+import BackIcon from './components/Icons/Back';
+import SettingsIcon from './components/Icons/Settings';
 
-import TabIconContent from "./components/TabIconContent";
-import CustomTabBar from "./components/CustomTabBar";
-import LogoTitle from "./components/CustomHeader";
+import TabIconContent from "./components/TabBar/TabIconContent";
+import CustomTabBar from "./components/TabBar/CustomTabBar";
+import LogoTitle from "./components/Header/CustomHeader";
 import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
 import CustomCamera from "./containers/Question/CustomCamera";
 import QuestFinalScreen from "./containers/QuestFinalPage/QuestFinalScreen";
-import TabBarLabels from "./components/TabBarLabels";
+import TabBarLabels from "./components/TabBar/TabBarLabels";
 
 const FeedStack = createStackNavigator(
     {

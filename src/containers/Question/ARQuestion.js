@@ -13,23 +13,23 @@ import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
-import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../components/ValidateImage/selectors";
-import {imageCompare} from "../../components/ValidateImage/actions";
+import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../redux/selectors/imageValidationSelectors";
+import {imageCompare} from "../../redux/actions/imageValidationActions";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../../components/ValidateImage/reducer";
+import reducer from "../../redux/reducers/imageValidationReducer";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../../components/ValidateImage/saga";
+import saga from "../../redux/sagas/imageValidationSaga";
 
 import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
 
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 import styled from "styled-components/native";
-import ArrowButton from "../../components/ArrowButton";
-import showDialog from "../../components/CustomPopUpDialog";
-import HintIcon from "../../components/icons/HintIcon";
+import ArrowButton from "../../components/Button/ArrowButton";
+import showDialog from "../../components/PopUpDialog/CustomPopUpDialog";
+import HintIcon from "../../components/Icons/HintIcon";
 
 const QuestionText = styled.Text`
     color: ${props => props.color}
@@ -103,9 +103,9 @@ class ARQuestion extends Component{
                     <ActivityIndicator size={'large'} color={colors.SECOND.light}/>
                 </View>;
         }
-        if (this.state.selectedImage !== null) {
+        /* if (this.state.selectedImage !== null) {
             imageTest = <WebView source={{uri: this.state.selectedImage.uri}} style={{width: width, height: width}}/>;
-        }
+        }*/
 
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
@@ -164,7 +164,7 @@ class ARQuestion extends Component{
                             </View>
                         </View>
 
-                    {imageTest}
+                    {/* imageTest*/}
                 </View>
             </FormattedWrapper>
         );

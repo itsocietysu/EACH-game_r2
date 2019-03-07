@@ -15,28 +15,28 @@ import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 import PropTypes from "prop-types";
 
 
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 import messages from "../../Messages"
 
 
 import styled from "styled-components/native";
 
-import {loadScenario} from "../../components/ScenarioPage/actions";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../../components/ScenarioPage/selectors";
+import {loadScenario} from "../../redux/actions/scenarioActions";
+import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/scenarioSelectors";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../../components/ScenarioPage/reducer";
+import reducer from "../../redux/reducers/scenarioReducer";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../../components/ScenarioPage/saga";
+import saga from "../../redux/sagas/scenarioSaga";
 import {QuestButtonText, FeedPlainText, QuestTittle, Rectangle} from "../styles";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {colors, fonts} from "../../utils/constants";
 
-import Rating from './Rating';
-import SpentTime from './SpentTime';
-import ArrowButton from "../../components/ArrowButton";
+import Rating from '../../components/Tuples/RatingTuple';
+import SpentTime from '../../components/Tuples/SpentTimeTuple';
+import ArrowButton from "../../components/Button/ArrowButton";
 import { tokenInfo} from './../../utils/tokenInfo';
 import getUserGameData from "../../utils/getUserGameData";
-import {makeSelectAuth} from "../../components/Auth/selectors";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
 const StatisticsContainer = styled.View`
     flexDirection: row

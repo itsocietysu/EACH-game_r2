@@ -12,19 +12,19 @@ import {FormattedMessage} from "react-native-globalize";
 import connect from "react-redux/es/connect/connect";
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import { colors, fonts, storage } from "../../utils/constants";
 
 import buildFormData from '../../utils/buildFormData'
-import EachIcon from "../../components/icons/EachIcon";
-import GoogleIcon from "../../components/icons/GoogleIcon";
-import VkontakteIcon from "../../components/icons/VkontakteIcon";
+import EachIcon from "../../components/Icons/EachIcon";
+import GoogleIcon from "../../components/Icons/GoogleIcon";
+import VkontakteIcon from "../../components/Icons/VkontakteIcon";
 import {googleAuthUrl, eachAuthUrl, vkontakteAuthUrl, redirectUrl, requestUrlGet} from "./constants";
 import request from '../../utils/request';
 import messages from '../../Messages';
-import { makeSelectLanguage } from "../../components/Locales/selectors";
-import { makeSelectAuth } from "../../components/Auth/selectors";
-import {changeAuth} from "../../components/Auth/actions";
+import { makeSelectLanguage } from "../../redux/selectors/localesSelectors";
+import { makeSelectAuth } from "../../redux/selectors/authSelectors";
+import {changeAuth} from "../../redux/actions/authActions";
 
 import storeUserData from '../../utils/storeUserData';
 import {deleteUserData} from "../../utils/revokeToken";
@@ -43,7 +43,7 @@ class LoginScreen extends Component {
               auth = true;
           else
               auth = false;
-          AsyncStorage.setItem('AUTH', auth.toString());
+          AsyncStorage.setItem(storage.AUTH, auth.toString());
           this.props.changeAuth(auth)
       }
       catch(e){
@@ -88,7 +88,6 @@ class LoginScreen extends Component {
             message: <FormattedMessage message={'ErrLogin'}/>,
             type: "danger",
         });
-        deleteUserData();
         return { error: true };
     }
   };

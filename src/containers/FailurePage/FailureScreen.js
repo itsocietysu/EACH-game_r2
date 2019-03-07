@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {withNavigation} from 'react-navigation';
 import {createStructuredSelector} from "reselect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import connect from "react-redux/es/connect/connect";
 import {mapDispatchToProps} from "../QuestInfoPage/QuestInfoScreen";
 import {compose} from "redux";
@@ -11,8 +11,8 @@ import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
 import styled from "styled-components/native";
-import {LIGHT_THEME} from "../../components/Theme/constants";
-import ArrowButton from "../../components/ArrowButton";
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
+import ArrowButton from "../../components/Button/ArrowButton";
 
 const ErrorText = styled.Text`
     alignSelf: center

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Alert, Image, FlatList, Dimensions, ScrollView} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import PickerItem from "../../components/Picker";
+import PickerItem from "../../components/Picker/Picker";
 import styled from "styled-components/native";
 import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
@@ -11,12 +11,13 @@ import {colors, fonts} from "../../utils/constants";
 import {createStructuredSelector} from "reselect";
 
 import connect from "react-redux/es/connect/connect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {compose} from "redux";
-import ArrowButton from "../../components/ArrowButton";
-import HintIcon from "../../components/icons/HintIcon";
-import showDialog from '../../components/CustomPopUpDialog';
+import ArrowButton from "../../components/Button/ArrowButton";
+import HintIcon from "../../components/Icons/HintIcon";
+import showDialog from '../../components/PopUpDialog/CustomPopUpDialog';
+import {showMessage} from "react-native-flash-message";
 
 const QuestionText = styled.Text`
     color: ${props => props.color}
@@ -53,7 +54,10 @@ class TextQuestion extends Component{
 
     _validateResult(){
         if (this.state.pickerSelection === -1) {
-            Alert.alert('Not selected!');
+            showMessage({
+                message: <FormattedMessage message={'NotSet'}/>,
+                type: "info",
+            });
             return;
         }
         let result = false;

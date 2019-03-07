@@ -9,12 +9,13 @@ import {FormattedWrapper, FormattedMessage} from "react-native-globalize";
 import {colors, fonts} from "../../utils/constants";
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {compose} from "redux";
-import ArrowButton from "../../components/ArrowButton";
-import HintIcon from "../../components/icons/HintIcon";
-import showDialog from "../../components/CustomPopUpDialog";
+import ArrowButton from "../../components/Button/ArrowButton";
+import HintIcon from "../../components/Icons/HintIcon";
+import showDialog from "../../components/PopUpDialog/CustomPopUpDialog";
+import {showMessage} from "react-native-flash-message";
 
 
 const QuestionText = styled.Text`
@@ -45,7 +46,10 @@ class FreeQuestion extends Component{
 
     _validateResult(){
         if (this.state.answer === null) {
-            Alert.alert('Fill the input field!');
+            showMessage({
+                message: <FormattedMessage message={'FillIn'}/>,
+                type: "info",
+            });
             return;
         }
         let result = false;

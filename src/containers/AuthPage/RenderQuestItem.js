@@ -8,8 +8,8 @@ import {compose} from "redux";
 import {colors, fonts} from "../../utils/constants";
 import {MainText} from "../../containers/styles";
 
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 
 class RenderQuestItem extends Component{
   render(){
@@ -26,7 +26,7 @@ class RenderQuestItem extends Component{
             <MainText color={colors.TEXT[theme]} font={fonts.EACH}>{item.item.name[locale]}</MainText>
           </View>
           <View style={{flex:1, paddingLeft: 10, justifyContent: 'center'}}>
-            <MainText color={colors.MAIN} font={fonts.EACH}>{item.item.rating}/5</MainText>
+            <MainText color={colors.MAIN} font={fonts.EACH}>{(Math.round(item.item.rating *100)/100)}/5</MainText>
           </View>
         </View>
     );

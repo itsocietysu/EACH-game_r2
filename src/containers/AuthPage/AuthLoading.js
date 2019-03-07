@@ -7,7 +7,7 @@ import {compose} from "redux";
 
 import { fetchUserData } from "../../utils/fetchUserData";
 import {colors} from "../../utils/constants";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 
 class AuthLoadingScreen extends Component {

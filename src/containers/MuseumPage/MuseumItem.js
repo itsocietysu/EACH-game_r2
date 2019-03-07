@@ -14,12 +14,12 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 
 import {TittleContainer, FeedTittleText, HeaderContainer, MuseumItemPanelHeader, MuseumItemPanelText, MainTextContainer, FeedPlainText, Rectangle} from "../styles";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import CustomList from "../../components/CustomList";
-import LocationItem from "../../components/LocationItem";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import CustomList from "../../components/Lists/CustomList";
+import LocationItem from "../../components/LocationItem/LocationItem";
 import GameItem from "../GamePage/GameItem";
 import messages from "../../Messages";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {
     ARROW_IMG_HEIGHT,
     ARROW_IMG_WIDTH,

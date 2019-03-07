@@ -12,10 +12,10 @@ import FreeQuestion from '../Question/FreeQuestion';
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
-import {makeSelectGameStep} from "../../components/GameStep/selectors";
+import {makeSelectGameStep} from "../../redux/selectors/gameStepSelectors";
 import {mapDispatchToProps} from "../BonusPage/BonusScreen";
 import PropTypes from "prop-types";
-import {updateCurrentStep} from "../../components/GameStep/actions";
+import {updateCurrentStep} from "../../redux/actions/gameStepActions";
 import {updateStatistics} from "../../utils/updateStatistics";
 
 class PlayQuestScreen extends Component{
@@ -47,7 +47,7 @@ class PlayQuestScreen extends Component{
             step = 0;
         }
 
-        alert(step);
+        // alert(step);
         this.context.store.dispatch(updateCurrentStep(step));
     }
 

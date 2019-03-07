@@ -11,8 +11,8 @@ import {
     TittleContainer, FeedTittleText, HeaderContainer, LogoAvatar, MainTextContainer, FeedDescriptionText, FeedMoreText, ImageMask, Rectangle} from "../styles";
 import {colors, fonts, DESC_BLOCK_HEIGHT} from "../../utils/constants";
 
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 import messages from "../../Messages";
 
 
@@ -29,7 +29,7 @@ class RenderMuseumItem extends Component{
                 <View style={{flex: 1}}>
                     <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.navigation.navigate('MuseumItem', {data: item, page: 'Museums'});}}>
                         <HeaderContainer bgColor={colors.BASE[theme]}>
-                            <LogoAvatar source={{uri : item.image}} borderColor={colors.MAIN}/>
+                            <LogoAvatar source={require('../../../assets/icons/logo.png')} borderColor={colors.MAIN}/>
                             <TittleContainer>
                                 <FeedTittleText
                                     color={colors.TEXT[theme]}

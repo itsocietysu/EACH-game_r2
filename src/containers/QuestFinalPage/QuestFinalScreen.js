@@ -9,17 +9,17 @@ import { FontAwesome } from '@expo/vector-icons';
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
 import {createStructuredSelector} from "reselect";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 import {Rectangle, FinishTitleText, QuestButtonText, CommentTextInput} from "../styles";
 import {colors, fonts, MAX_COMMENT_INPUT_LENGTH} from "../../utils/constants";
 import messages from "../../Messages";
 
-import BonusTuple from "./BonusTuple";
-import RankTuple from "./RankTuple";
-import TimeTuple from "./TimeTuple";
-import ArrowButton from "../../components/ArrowButton";
+import BonusTuple from "../../components/Tuples/BonusTuple";
+import RankTuple from "../../components/Tuples/RankTuple";
+import TimeTuple from "../../components/Tuples/TimeTuple";
+import ArrowButton from "../../components/Button/ArrowButton";
 
 import {updateFeedback} from "../../utils/updateFeedback";
 import {showMessage} from "react-native-flash-message";

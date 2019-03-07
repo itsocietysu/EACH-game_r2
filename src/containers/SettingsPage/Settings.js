@@ -7,17 +7,17 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 import { compose } from 'redux';
 import {createStructuredSelector} from "reselect";
-import { changeLanguage } from '../../components/Locales/actions'
-import { changeTheme } from "../../components/Theme/actions";
-import { changeAuth } from "../../components/Auth/actions";
+import { changeLanguage } from '../../redux/actions/localesActions'
+import { changeTheme } from "../../redux/actions/themeActions";
+import { changeAuth } from "../../redux/actions/authActions";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../../components/Locales/reducer";
+import reducer from "../../redux/reducers/localesReducer";
 
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectAuth} from "../../components/Auth/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
-import { DARK_THEME, LIGHT_THEME } from "../../components/Theme/constants";
+import { DARK_THEME, LIGHT_THEME } from "../../redux/constants/themeConstants";
 import messages from '../../Messages';
 import {colors, fonts, languages, storage} from "../../utils/constants";
 import {SettingsText, SettingsTitleText, SettingsAddText, SettingsContainer} from "../styles";
@@ -117,7 +117,7 @@ class SettingsScreen extends Component {
                             <ModalDropdown
                                 defaultIndex={1}
                                 renderRow={renderRow}
-                                dropdownStyle={{height: '30%', width: 2.3/5.9*'100%'}}
+                                dropdownStyle={{height: '30%', width: 2.3/5.9*'100%', backgroundColor: colors.BASE[theme]}}
                                 options={tupleToArray()}
                                 onSelect={(index, value)=>this._localeChange(getKeyByValue(languages, value))}
                             >
