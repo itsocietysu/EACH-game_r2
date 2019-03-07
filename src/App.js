@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Font, AppLoading, Asset, Constants} from 'expo';
-import {StatusBar, YellowBox, View} from 'react-native';
+import {StatusBar, YellowBox, View, SafeAreaView} from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { FormattedWrapper } from 'react-native-globalize';
@@ -12,9 +12,9 @@ import configureStore from './configureStore';
 import Navigator from './Navigator';
 import { colors } from './utils/constants';
 
-import {makeSelectAuth} from "./components/Auth/selectors";
-import {makeSelectLanguage} from "./components/Locales/selectors";
-import {makeSelectTheme} from "./components/Theme/selectors";
+import {makeSelectAuth} from "./redux/selectors/authSelectors";
+import {makeSelectLanguage} from "./redux/selectors/localesSelectors";
+import {makeSelectTheme} from "./redux/selectors/themeSelectors";
 
 const initialState = {};
 const history = {};
@@ -61,7 +61,6 @@ class App extends Component {
 
     async _loadAssetsAsync() {
         const images = [
-            require('../assets/images/welcome_screen_blue.svg'),
             require('../assets/images/errorPage.png'),
             require('../assets/images/errorPageDark.png'),
             require('../assets/images/arrowUp.png'),
@@ -69,13 +68,15 @@ class App extends Component {
             require('../assets/images/muz_header_white.png'),
             require('../assets/images/muz_header_dark.png'),
             require('../assets/images/its_logo_white.png'),
-            require('../assets/icons/logo-google.svg'),
-            require('../assets/icons/logo-each.svg'),
-            require('../assets/icons/logo-vk.svg'),
+            require('../assets/icons/map_logo_128.png'),
+            require('../assets/icons/logo-google.png'),
+            require('../assets/icons/logo-each.png'),
+            require('../assets/icons/logo-vk.png'),
+            require('../assets/images/welcome_screen_blue.png'),
             // TODO: add logo social networks
         ];
 
-        const imageAssets = images.map((image) => Asset.fromModule(image).downloadAsync());
+        const imageAssets = Asset.loadAsync(images);
 
         const fontAssets = Font.loadAsync({
             eachFont: require('../assets/fonts/eachFont.ttf'),
@@ -90,7 +91,7 @@ class App extends Component {
                 <AppLoading
                     startAsync={this._loadAssetsAsync}
                     onFinish={() => this.setState({ isReady: true })}
-                    onError={alert}
+                    onError={console.warn}
                 />
             );
         }

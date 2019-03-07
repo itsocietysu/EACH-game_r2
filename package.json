@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "expo": "^31.0.2",
+    "expo-firebase-app": "^2.0.0",
+    "expo-firebase-crashlytics": "^2.0.0",
     "fetch-everywhere": "1.0.5",
     "haversine": "^1.1.0",
     "hoist-non-react-statics": "^2.5.5",
@@ -46,11 +48,11 @@
     "utils": "^0.3.1"
   },
   "devDependencies": {
+    "babel-preset-expo": "^5.0.0",
     "eslint": "4.3.0",
     "eslint-config-equimper": "2.2.1",
     "eslint-config-prettier": "2.3.0",
     "prettier": "1.5.3",
-    "redux-devtools-extension": "^2.13.5",
-    "babel-preset-expo": "^5.0.0"
+    "redux-devtools-extension": "^2.13.5"
   }
 }
