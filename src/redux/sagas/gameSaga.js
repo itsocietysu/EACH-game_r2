@@ -2,12 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_GAMES } from '../constants/gameConstants';
 import { gamesLoaded, gamesLoadingError } from '../actions/gameActions';
 import request from '../../utils/request';
+import {backend_api_url} from "../../utils/constants";
 
 /**
  * Feeds data load handler
  */
 export function* loadGames(museumID) {
-    const requestURL = `http://each.itsociety.su:4201/each/game/all/museum/${museumID.museumID}?active=true`;
+    const requestURL = `${backend_api_url}/each/game/all/museum/${museumID.museumID}?active=true`;
     try {
         const games = yield call(request, requestURL);
         let data = false;

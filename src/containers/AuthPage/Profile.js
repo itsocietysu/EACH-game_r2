@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import {withNavigation} from "react-navigation";
 import PropTypes from "prop-types";
 
-import { Text, View, ScrollView, SectionList, Dimensions, Image } from "react-native";
+import {Text, View, ScrollView, SectionList, Dimensions, Image, TouchableOpacity} from "react-native";
 import { createStructuredSelector } from "reselect";
 import connect from "react-redux/es/connect/connect";
 import { compose } from "redux";
 
-import { colors, fonts } from "../../utils/constants";
+import {colors, fonts} from "../../utils/constants";
 import { makeSelectTheme } from "../../redux/selectors/themeSelectors";
 import { makeSelectLanguage } from "../../redux/selectors/localesSelectors";
 import ChooseStatus from '../../utils/ChooseStatus'

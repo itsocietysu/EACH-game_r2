@@ -2,12 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_SCENARIO } from '../constants/scenarioConstants';
 import { scenarioLoaded, scenarioLoadingError } from '../actions/scenarioActions';
 import request from '../../utils/request';
+import {backend_api_url} from "../../utils/constants";
 
 /**
  * Feeds data load handler
  */
 export function* loadScenario(scenarioID) {
-    const requestURL = `http://each.itsociety.su:4201/each/scenario/user/${scenarioID.scenarioID}`;
+    const requestURL = `${backend_api_url}/each/scenario/user/${scenarioID.scenarioID}`;
     try {
         const scenario = yield call(request, requestURL);
         let data = false;

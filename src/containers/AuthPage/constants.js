@@ -1,12 +1,13 @@
 import { AuthSession } from 'expo';
+import {backend_api_url} from "../../utils/constants";
 
 const googleClientId = '190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com';
 const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
 const vkontakteClientId = '6682398';
 
 export const redirectUrl = AuthSession.getRedirectUrl();
-export const requestUrlGet = `http://eachdev.itsociety.su:4201/each/token/get?expansion=true`;
-export const requestUrlRevoke = `http://eachdev.itsociety.su:4201/each/token/revoke`;
+export const requestUrlGet = `${backend_api_url}/each/token/get?expansion=true`;
+export const requestUrlRevoke = `${backend_api_url}/each/token/revoke`;
 
 export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
   `&client_id=${encodeURIComponent(googleClientId)}` +

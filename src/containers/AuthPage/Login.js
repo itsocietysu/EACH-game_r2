@@ -1,19 +1,19 @@
 /* eslint-disable guard-for-in, no-restricted-syntax */
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  AsyncStorage,
-    ActivityIndicator,
+    View,
+    Text,
+    AsyncStorage,
+    ActivityIndicator, TouchableOpacity,
 } from "react-native";
 import FlashMessage, {showMessage} from "react-native-flash-message";
-import { AuthSession, SecureStore } from 'expo';
+import {AuthSession, SecureStore, WebBrowser} from 'expo';
 import {FormattedMessage} from "react-native-globalize";
 import connect from "react-redux/es/connect/connect";
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
-import { colors, fonts, storage } from "../../utils/constants";
+import {bug_report_url, colors, fonts, storage} from "../../utils/constants";
 
 import buildFormData from '../../utils/buildFormData'
 import EachIcon from "../../components/Icons/EachIcon";
@@ -28,6 +28,7 @@ import {changeAuth} from "../../redux/actions/authActions";
 
 import storeUserData from '../../utils/storeUserData';
 import {deleteUserData} from "../../utils/revokeToken";
+import {SettingsAddText} from "../styles";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -111,11 +112,24 @@ class LoginScreen extends Component {
     }
   };
 
-  render() {
+    _openGoogleForm(){
+        WebBrowser.openBrowserAsync(bug_report_url)
+    }
+
+    render() {
     const theme = this.props.theme;
     const lang = this.props.language;
       return (
         <View style={{flex: 1, backgroundColor: colors.BASE[theme]}}>
+            <View style={{padding: 10, justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity
+                    onPress={this._openGoogleForm}
+                >
+                    <SettingsAddText color={'#f00'} font={fonts.MURRAY}>
+                        <Text>Нашли баг? Заполните google-форму</Text>
+                    </SettingsAddText>
+                </TouchableOpacity>
+            </View>
           <Text style={{color: colors.TEXT[theme], textAlign: 'center', fontSize: 80, fontFamily: fonts.MURRAY, marginTop: 20}}>
             {messages[lang].Enter}
           </Text>

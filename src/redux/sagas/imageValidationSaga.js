@@ -2,12 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { IMAGE_COMPARE } from '../constants/imageValidationConstants';
 import { imageCompareFinished, imageComparisonError } from '../actions/imageValidationActions';
 import request from '../../utils/request';
+import {backend_api_url} from "../../utils/constants";
 
 /**
  * Image compare handler
  */
 export function* imageCompare(body) {
-    const requestURL = `http://each.itsociety.su:4201/each/scenario/check_image`;
+    const requestURL = `${backend_api_url}/each/scenario/check_image`;
     try {
         const options = {
             method: 'POST',

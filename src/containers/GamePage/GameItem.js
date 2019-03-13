@@ -21,6 +21,7 @@ import DataList from "../../components/Lists/DataList";
 import getUserGameData from "../../utils/getUserGameData";
 import {markDataStatus} from "../../utils/markDataStatus";
 import {makeSelectAuth} from "../../redux/selectors/authSelectors";
+import {FormattedMessage} from "react-native-globalize";
 
 const ContainerView = styled.View`
   flex: 1;
@@ -42,17 +43,16 @@ class GameItem extends Component{
         const error = this.props.error;
         const data = this.props.data;
 
-        if (this.state.userData && data){
+        if (this.state.userData && data) {
             markDataStatus(data, this.state.userData.gameData);
         }
-        else
-            loading = true;
 
         const dataListProps = {
             loading,
             error,
             data,
             Component: QuestItem,
+            notFoundMsg: <FormattedMessage message={'QuestsNotFound'}/>
         };
         return(
             <ContainerView>

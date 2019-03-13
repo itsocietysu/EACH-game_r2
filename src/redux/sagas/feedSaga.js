@@ -2,12 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_FEEDS } from '../constants/feedConstants';
 import { feedsLoaded, feedsLoadingError } from '../actions/feedActions';
 import request from '../../utils/request';
+import {backend_api_url} from "../../utils/constants";
 
 /**
  * Feeds data load handler
  */
 export function* loadFeeds() {
-    const requestURL = `http://each.itsociety.su:4201/each/feed/all`;
+    const requestURL = `${backend_api_url}/each/feed/all`;
     try {
         const feeds = yield call(request, requestURL);
         let data = false;

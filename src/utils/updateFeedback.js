@@ -4,6 +4,7 @@ import request from "./request";
 import messages from "../Messages";
 import {FormattedMessage} from "react-native-globalize";
 import React from "react";
+import {backend_api_url} from "./constants";
 
 export async function updateFeedback(id, weight, comment){
     const body = {
@@ -11,7 +12,7 @@ export async function updateFeedback(id, weight, comment){
         text: comment,
         weight,
     };
-    const requestUrl = "http://eachdev.itsociety.su:4201/each/game/rating";
+    const requestUrl = `${backend_api_url}/each/game/rating`;
     try {
         const token = await SecureStore.getItemAsync('token');
         const authType = await SecureStore.getItemAsync('app');

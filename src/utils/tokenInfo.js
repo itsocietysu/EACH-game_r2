@@ -2,6 +2,7 @@ import {SecureStore} from "expo";
 import request from "./request";
 import buildFormData from "./buildFormData";
 import storeUserData from "./storeUserData";
+import {backend_api_url} from "./constants";
 
 export async function tokenInfo(){
     try{
@@ -15,7 +16,7 @@ export async function tokenInfo(){
                 authorization: `Bearer ${token} ${authType}`,
             },
         };
-        const requestTokenInfo = 'http://eachdev.itsociety.su:4201/each/token/info';
+        const requestTokenInfo = `${backend_api_url}/each/token/info`;
         const requestParams = {
             access_token: token,
             type: authType,

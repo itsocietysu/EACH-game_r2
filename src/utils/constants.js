@@ -52,6 +52,12 @@ export const colors = {
     SOFT:   '#ffce99'
 };
 
+export const user_agreement_url = 'http://museeach.ru/user_agreement';
+
+export const bug_report_url = 'https://goo.gl/forms/FERJd241NqaOx8EH2';
+
+export const backend_api_url = 'http://museeach.ru:4200';
+
 export const images = {
     HEADER_DARK: require('./../../assets/images/muz_header_dark.png'),
     HEADER_LIGHT: require('./../../assets/images/muz_header_white.png'),

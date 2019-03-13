@@ -2,12 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { LOAD_MUSEUMS} from '../constants/museumConstants';
 import { museumsLoaded, museumsLoadingError } from '../actions/museumActions';
 import request from '../../utils/request';
+import {backend_api_url} from "../../utils/constants";
 
 /**
  * Feeds data load handler
  */
 export function* loadMuseums() {
-    const requestURL = `http://each.itsociety.su:4201/each/museum/all`;
+    const requestURL = `${backend_api_url}/each/museum/all`;
     try {
         const museums = yield call(request, requestURL);
         let data = false;

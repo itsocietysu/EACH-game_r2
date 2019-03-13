@@ -5,13 +5,14 @@ import {showMessage} from "react-native-flash-message";
 import messages from "../Messages";
 import {FormattedMessage} from "react-native-globalize";
 import React from "react";
+import {backend_api_url} from "./constants";
 
 export async function updateStatistics(gameId, stepPassed){
     const body = {
         game_id: gameId,
         step_passed: stepPassed,
     };
-    const requestUrl = `http://eachdev.itsociety.su:4201/each/statistic/update`;
+    const requestUrl = `${backend_api_url}/each/statistic/update`;
     try {
         const token = await SecureStore.getItemAsync('token');
         const authType = await SecureStore.getItemAsync('app');
