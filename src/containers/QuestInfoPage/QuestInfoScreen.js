@@ -37,6 +37,7 @@ import ArrowButton from "../../components/Button/ArrowButton";
 import { tokenInfo} from './../../utils/tokenInfo';
 import getUserGameData from "../../utils/getUserGameData";
 import {makeSelectAuth} from "../../redux/selectors/authSelectors";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -109,7 +110,7 @@ class QuestInfoScreen extends  Component {
         }
 
         if (error !== false) {
-            return <Text>Something went wrong</Text>;
+            return <ErrorMessage/>
         }
 
         if (scenario !== false) {

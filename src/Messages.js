@@ -54,6 +54,7 @@ const messages = {
         Process:            'playing',
         Passed:             'passed',
         More:               'more...',
+        QuestsNotFound:     'Sorry... There are no available games for this museum',
 
         ErrRate:            'Please, rate the game before exit',
         ErrFeed:            'Oops... Failed to send feedback',
@@ -64,6 +65,7 @@ const messages = {
         FillIn:             'Please, enter any value',
         EnableCam:          'To continue, camera should be enabled',
         ErrWrong:           'Oops... something went wrong!',
+        ErrHandle:          'Please, keep calm, a team of highly trained monkeys has been dispatched to deal with this situation',
         Unauthorized:       'Unauthorized... Please, authorize to save current data'
     },
 	ru: {
@@ -121,6 +123,7 @@ const messages = {
         Process:            'продолжть',
         Passed:             'пройдено',
         More:               'подробнее...',
+        QuestsNotFound:     'На текущий момент у этого музея нет доступных квестов',
 
         ErrRate:            'Перед выходом оцените игру, пожалуйста',
         ErrFeed:            'Упс... Ошибка при отправке отзыва',
@@ -131,6 +134,7 @@ const messages = {
         FillIn:             'Пожалуйста, введите вариант ответа в поле',
         EnableCam:          'Чтобы продолжить, откройте доступ к камере устройства',
         ErrWrong:           'Упс... Что то пошло не так',
+        ErrHandle:          'Пожалуйста, сохраняйте спокойствие, команда Фиксиков была выслана для урегулирования сложившейся ситуации',
         Unauthorized:       'Вы не авторизованы. Пожалуйста авторизуйтесь, чтобы продолжить игру',
     },
 	es: {

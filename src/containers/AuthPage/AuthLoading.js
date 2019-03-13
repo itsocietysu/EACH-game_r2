@@ -8,6 +8,7 @@ import {compose} from "redux";
 import { fetchUserData } from "../../utils/fetchUserData";
 import {colors} from "../../utils/constants";
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
 
 class AuthLoadingScreen extends Component {
@@ -19,7 +20,7 @@ class AuthLoadingScreen extends Component {
     _bootstrapAsync = async () => {
         try {
             const userData = await fetchUserData();
-            if (userData)
+            if (userData && this.props.auth)
                 this.props.navigation.navigate('Profile', {userData});
             else this.props.navigation.navigate('Login');
         } catch (error) {
@@ -36,6 +37,7 @@ class AuthLoadingScreen extends Component {
     }
 }
 const mapStateToProps = createStructuredSelector({
+    auth: makeSelectAuth(),
     theme: makeSelectTheme(),
 });
 

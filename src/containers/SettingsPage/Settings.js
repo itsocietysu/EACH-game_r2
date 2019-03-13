@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {WebBrowser} from 'expo';
 import styled from 'styled-components/native';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
-import { Switch, TouchableOpacity, View, AsyncStorage} from 'react-native';
+import { Switch, TouchableOpacity, View, AsyncStorage, Text} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import { compose } from 'redux';
@@ -19,7 +20,7 @@ import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
 import { DARK_THEME, LIGHT_THEME } from "../../redux/constants/themeConstants";
 import messages from '../../Messages';
-import {colors, fonts, languages, storage} from "../../utils/constants";
+import {colors, fonts, languages, storage, user_agreement_url, bug_report_url} from "../../utils/constants";
 import {SettingsText, SettingsTitleText, SettingsAddText, SettingsContainer} from "../styles";
 import {renderRow, getKeyByValue} from "../../utils/renderPopUpRow";
 import tupleToArray from "../../utils/tupleToArray";
@@ -99,6 +100,12 @@ class SettingsScreen extends Component {
         }
     }
 
+    _openUserAgreement(){
+        WebBrowser.openBrowserAsync(user_agreement_url)
+    }
+    _openGoogleForm(){
+        WebBrowser.openBrowserAsync(bug_report_url)
+    }
     render() {
         const theme = this.props.theme;
         return (
@@ -160,13 +167,14 @@ class SettingsScreen extends Component {
                     </SettingsContainer>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
-                            onPress={()=>alert('Пользовательское соглашение')}
+                            onPress={this._openUserAgreement}
                         >
                             <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
                                 <FormattedMessage message={'Terms'}/>
                             </SettingsAddText>
                         </TouchableOpacity>
                     </View>
+
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
                             onPress={()=>{revokeToken().then(this._authChange()).then(res => {
@@ -179,6 +187,15 @@ class SettingsScreen extends Component {
                             </SettingsAddText>
                         </TouchableOpacity>
 
+                    </View>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity
+                            onPress={this._openGoogleForm}
+                        >
+                            <SettingsAddText color={'#f00'} font={fonts.MURRAY}>
+                                <Text>Нашли баг? Заполните google-форму</Text>
+                            </SettingsAddText>
+                        </TouchableOpacity>
                     </View>
                 </ContainerView>
         /* </FormattedWrapper>*/

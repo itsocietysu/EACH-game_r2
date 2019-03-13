@@ -73,7 +73,7 @@ class MapsScreen extends Component {
           >
             <Image
                   source={require('../../../assets/icons/map_logo_128.png')}
-                  style={{width: 50, height: 50, borderColor: colors.MAIN, borderWidth: 1, borderRadius: 25, resizeMode: 'stretch'}}
+                  style={{width: 50, height: 50, borderRadius: 25, borderColor: colors.MAIN, borderWidth: 1}}
             />
           </Marker>
         ));
@@ -86,7 +86,7 @@ class MapsScreen extends Component {
   ShowDialog(museum, locName) {
     const locale = this.props.locale.toLocaleUpperCase();
     const theme = this.props.theme;
-
+    const more = (this.props.locale === 'ru')? 'подробнее': 'more';
     this.setState({
       dialogTheme: theme,
       showDialog : true,
@@ -113,7 +113,7 @@ class MapsScreen extends Component {
           <DialogButton
             textStyle = {styles.dialogButton}
             key = {id++}
-            text="More"
+            text={more}
             onPress={()=>{
               this.refDialog.dismiss();
               this.props.navigation.navigate('MuseumItem', {data: museum, page: "Maps"});

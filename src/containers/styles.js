@@ -340,6 +340,15 @@ export const Rectangle = styled.View`
     backgroundColor:  ${props=> props.backgroundColor || 'transparent'}
 `;
 
+/*
+ * Messages
+ */
+export const  ErrMessageText = styled.Text`
+    color: ${props => props.color}
+    fontFamily: ${props=> props.font}
+    fontSize: ${wp('6%')} 
+`;
+
 export class SpamHello extends React.Component {
     render() {
         return (

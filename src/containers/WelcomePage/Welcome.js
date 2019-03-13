@@ -69,7 +69,7 @@ class WelcomeScreen extends Component {
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <Image
                         source={require('../../../assets/images/welcome_screen_blue.png')}
-                        style={{width: wp('140%'), height: wp('140%')}}
+                        style={{width: wp('100%'), height: wp('100%')}}
                     />
                 </View>
                 <View style={styles.textContainer}>

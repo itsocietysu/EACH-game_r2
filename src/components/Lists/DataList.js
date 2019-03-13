@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {ActivityIndicator, View, Text, FlatList, ScrollView} from 'react-native';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
+import {colors, fonts} from "../../utils/constants";
+import {ErrMessageText} from "../../containers/styles";
+import InfoMessage from "../ErrorMessage/InfoMessage";
 
-function DataList({ loading, error, data, Component }) {
+function DataList({ loading, error, data, Component, notFoundMsg="Not found" }) {
     if (loading) {
         return <View><ActivityIndicator/></View>;
     }
 
-    if (error !== false) {
-        return <Text>Something went wrong</Text>;
+    if (error) {
+        return <ErrorMessage/>;
     }
 
     if (data) {
@@ -23,7 +27,7 @@ function DataList({ loading, error, data, Component }) {
             </ScrollView>
         );
     }
-    return <View/>;
+    return <InfoMessage message={notFoundMsg}/>
 }
 
 DataList.propTypes = {
