@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'react-native';
+import {Image} from 'react-native';
 import styled from "styled-components/native";
 
 const IconLeftContainer = styled.TouchableOpacity`

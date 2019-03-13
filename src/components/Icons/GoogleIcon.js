@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import Image from 'react-native';
+import {Image} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 const IconLeftContainer = styled.TouchableOpacity`

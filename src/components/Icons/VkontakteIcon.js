@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Entypo } from '@expo/vector-icons';
-import Image from 'react-native';
+import {Image} from 'react-native';
 
 const IconLeftContainer = styled.TouchableOpacity`
   height: 100%;
