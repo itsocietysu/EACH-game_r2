@@ -1,165 +1,238 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import {
-  TabNavigator,
-  StackNavigator,
-  DrawerNavigator,
-  HeaderBackButton,
+    createBottomTabNavigator,
+    createStackNavigator,
+    createSwitchNavigator,
 } from 'react-navigation';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import {Text} from 'react-native';
+import WelcomeScreen from './containers/WelcomePage/Welcome';
+import FeedScreen from './containers/FeedPage/FeedPage';
+import FeedItemScreen from "./containers/FeedPage/FeedItem";
+import MapScreen from './containers/MapPage/MapPage';
+import MuseumsScreen from './containers/MuseumPage/MuseumPage';
+import MuseumItemScreen from './containers/MuseumPage/MuseumItem';
+import SettingsScreen from './containers/SettingsPage/Settings';
+import QuestInfoScreen from "./containers/QuestInfoPage/QuestInfoScreen";
+import PlayQuestScreen from "./containers/PlayQuestPage/PlayQuestScreen";
+import ResultScreen from "./containers/ResultPage/ResultScreen";
+import LoginScreen from "./containers/AuthPage/Login";
+import ProfileScreen from "./containers/AuthPage/Profile"
+import AuthLoadingScreen from "./containers/AuthPage/AuthLoading"
 
-import WelcomeScreen from './screens/Welcome';
-import HomeScreen from './containers/HomePage/Home';
-import ProfileScreen from './screens/Profile';
-import FavoritesScreen from './screens/Favorites';
-import SettingsScreen from './screens/Settings';
+import BackIcon from './components/Icons/Back';
+import SettingsIcon from './components/Icons/Settings';
 
-import { HamburgerIcon, SettingsIcon, BackIcon } from './components/icons';
+import TabIconContent from "./components/TabBar/TabIconContent";
+import CustomTabBar from "./components/TabBar/CustomTabBar";
+import LogoTitle from "./components/Header/CustomHeader";
+import { colors, HeaderHeight, TabLabelFontSize } from './utils/constants';
+import CustomCamera from "./containers/Question/CustomCamera";
+import QuestFinalScreen from "./containers/QuestFinalPage/QuestFinalScreen";
+import TabBarLabels from "./components/TabBar/TabBarLabels";
 
-import CustomDrawerContent from './components/CustomDrawerContent';
-import { colors } from './utils/constants';
-import LoginScreen from "./screens/Login";
-import RegistrationScreen from "./screens/Registration"
-
-const AppMainTab = TabNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: 'Sweet home',
-      drawerIcon: ({ tintColor }) => (
-        <FontAwesome name="home" size={23} color={tintColor} />
-      ),
-      tabBarLabel: 'Home',
-      tabBarIcon: ({ tintColor }) => (
-        <FontAwesome name="home" size={23} color={tintColor} />
-      ),
-      headerStyle: {
-        backgroundColor: colors.SOFT,
-      },
-      headerTitle: 'Feed',
-      headerTitleStyle: {
-        color: colors.WHITE,
-      },
-      headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-    })
-  },
-  Favorites: {
-    screen: FavoritesScreen,
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: 'Favorites',
-      drawerIcon: ({ tintColor }) => (
-        <FontAwesome name="heartbeat" size={23} color={tintColor} />
-      ),
-      tabBarLabel: 'Favorites',
-      tabBarIcon: ({ tintColor }) => (
-        <FontAwesome name="heartbeat" size={23} color={tintColor} />
-      ),
-      headerStyle: {
-        backgroundColor: colors.PINK_100,
-      },
-      headerTitle: 'Favorites',
-      headerTitleStyle: {
-        color: colors.WHITE,
-      },
-      headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-    })
-  },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: 'Profile',
-      drawerIcon: ({ tintColor }) => (
-        <FontAwesome name="user-circle" size={23} color={tintColor} />
-      ),
-      tabBarLabel: 'Profile',
-      tabBarIcon: ({ tintColor }) => (
-        <FontAwesome name="user-circle" size={23} color={tintColor} />
-      ),
-      headerStyle: {
-        backgroundColor: colors.PINK_100,
-      },
-      headerTitle: 'Profile',
-      headerTitleStyle: {
-        color: colors.WHITE,
-      },
-      headerLeft: <HamburgerIcon onPress={() => navigation.navigate('DrawerOpen')} />,
-      headerRight: <SettingsIcon onPress={() => navigation.navigate('Settings')} />,
-    })
-  },
-}, {
-  tabBarOptions: {
-    activeTintColor: colors.WHITE,
-    inactiveTintColor: colors.PINK_50,
-    inactiveBackgroundColor: colors.PINK_100,
-    activeBackgroundColor: colors.PINK_100,
-    showIcon: true,
-    showLabel: Platform.OS === 'ios',
-    indicatorStyle: {
-      backgroundColor: colors.PINK_300,
+const FeedStack = createStackNavigator(
+    {
+        Feeds: {screen: FeedScreen},
+        FeedItem: {screen: FeedItemScreen},
     },
-    style: {
-      backgroundColor: colors.PINK_100,
+    {
+        navigationOptions: ({navigation})=> {
+            let content;
+
+            if (navigation.state.routeName !== 'Feeds') {
+              content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+            }
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content
+            });
+        }
+    }
+);
+
+const MapStack = createStackNavigator(
+    {
+        Maps: {screen: MapScreen},
     },
-    upperCaseLabel: false,
-  },
-  tabBarPosition: 'bottom',
-  swipeEnabled: false,
-  animationEnabled: false,
-});
+    {
+        navigationOptions: ()=>({
+            headerBackground: <LogoTitle/>,
+            headerStyle: {
+                height: HeaderHeight,
+            }
+        }),
+    }
+);
 
-const AppMainStack = StackNavigator({
-    Home: { screen: AppMainTab },
-  Settings: { screen: SettingsScreen },
-}, {
-  cardStyle: {
-    backgroundColor: colors.PINK_50,
-  },
-  mode: 'modal',
-});
+const MuseumStack = createStackNavigator(
+    {
+        Museums: {screen: MuseumsScreen},
+        MuseumItem: {screen: MuseumItemScreen},
+        QuestInfo: {screen: QuestInfoScreen},
+        QuestPlay: {screen: PlayQuestScreen},
+        Result: {screen: ResultScreen},
+        Finish: {screen: QuestFinalScreen},
+    },
+    {
+        navigationOptions: ({navigation})=> {
+            let content = null;
+            if (navigation.state.routeName !== 'Museums') {
+              if (navigation.state.params) {
+                  const key = navigation.state.params.page;
 
-const AppDrawer = DrawerNavigator({
-  Home: {
-    screen: AppMainStack,
-  },
-  Settings: {
-    screen: SettingsScreen,
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: 'Settings',
-      drawerIcon: ({ tintColor }) => (
-        <Ionicons name="md-settings" size={23} color={tintColor} />
-      ),
-      headerStyle: {
-        backgroundColor: colors.PINK_100,
-      },
-      headerTitle: 'Settings',
-      headerTitleStyle: {
-        color: colors.WHITE,
-      },
-      headerLeft: <BackIcon onPress={() => navigation.goBack()} />,
-		}),
-  },
-}, {
-  contentComponent: props =>
-    (<CustomDrawerContent
-      {...props}
-		/>),
-  contentOptions: {
-    activeBackgroundColor: colors.PINK_100,
-    activeTintColor: colors.WHITE,
-		inactiveTintColor: colors.PINK_200,
-  },
-});
+                  if (key === 'Maps' || key === 'Museums') {
+                      content = <BackIcon onPress={() => navigation.navigate(key)}/>;
+                  } else {
+                      content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+                  }
+              }
+            }
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content
+            });
+        }
+    }
+);
 
-const Navigator = TabNavigator({
-  Welcome: { screen: WelcomeScreen },
-  Login: { screen: LoginScreen },
-  Registration: {screen: RegistrationScreen},
-  Main: { screen: AppDrawer },
-}, {
-  navigationOptions: {
-    tabBarVisible: false,
+const ProfileStack = createStackNavigator(
+  {
+    Profile: {screen: ProfileScreen},
+    Settings: {screen: SettingsScreen}
   },
-  swipeEnabled: false,
-});
+  {
+    navigationOptions: ({navigation})=> {
+      let content = null;
+      let rightContent = null;
+
+      if(navigation.state.routeName === 'Profile') {
+        rightContent =  <SettingsIcon onPress={() => navigation.navigate('Settings')}/>
+      }
+      else {
+        content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+      }
+      return ({
+        headerBackground: <LogoTitle/>,
+        headerStyle: {
+          height: HeaderHeight,
+        },
+        headerLeft: content,
+        headerRight: rightContent,
+      });
+    }
+  }
+);
+
+const LoginStack = createStackNavigator(
+  {LoginScreen: {screen: LoginScreen}},
+  {
+    navigationOptions: ({navigation})=> {
+      const content = null;
+      const rightContent = null;
+
+      return ({
+        headerBackground: <LogoTitle/>,
+        headerStyle: {
+          height: HeaderHeight,
+        },
+        headerLeft: content,
+        headerRight: rightContent,
+      });
+    }
+  }
+);
+
+const AuthLoadingStack = createStackNavigator(
+    {AuthLoading: AuthLoadingScreen},
+    {
+        navigationOptions: ({navigation})=> {
+            const content = null;
+            const rightContent = null;
+
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content,
+                headerRight: rightContent,
+            });
+        }
+    }
+);
+
+const ProfileAndAuth = createSwitchNavigator(
+    {
+        AuthLoading: AuthLoadingStack,
+        Login: LoginStack,
+        MyProfile: ProfileStack,
+    },
+    {
+        navigationOptions: ({navigation}) => {
+            const content = null;
+            const rightContent = null;
+
+            return ({
+                headerBackground: <LogoTitle/>,
+                headerStyle: {
+                    height: HeaderHeight,
+                },
+                headerLeft: content,
+                headerRight: rightContent,
+            });
+        }
+    }
+);
+
+// Bottom tab containing 4 main stacks
+const  AppBottomTab = createBottomTabNavigator(
+    {
+        Feeds: {screen: FeedStack},
+        Maps: {screen: MapStack},
+        Museums: {screen: MuseumStack},
+        Profile: {screen: ProfileAndAuth},
+    },
+    {
+        navigationOptions: ({navigation})=>({
+            tabBarIcon: ({tintColor,focused})=>(
+                <TabIconContent navigation={navigation} tintColor={tintColor} focused={focused}/>),
+            tabBarLabel: ({tintColor,focused})=>(
+                <TabBarLabels navigation={navigation} tintColor={tintColor} focused={focused}/>),
+
+        }),
+        tabBarComponent: CustomTabBar,
+        tabBarOptions:{
+            labelStyle:{ fontSize: TabLabelFontSize},
+        }
+    }
+);
+
+// separated Auth stack + application tabs
+const MainAppStack = createStackNavigator(
+    {
+        Home: {screen: AppBottomTab},
+        Camera: {screen: CustomCamera},
+    },
+    {
+        navigationOptions:{
+            header: null,
+        }
+    }
+);
+
+// Main navigator:
+// loading screen + main app
+const Navigator = createSwitchNavigator(
+    {
+        Welcome: {screen: WelcomeScreen},
+        Home: {screen: MainAppStack},
+    }
+);
 
 export default Navigator;

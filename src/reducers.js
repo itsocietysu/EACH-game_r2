@@ -7,9 +7,15 @@ import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 // import globalReducer from 'containers/App/reducer';
-// import languageProviderReducer from 'containers/LanguageProvider/reducer';
-import feedsReducer from './containers/HomePage/reducer';
-// import museumsReducer from 'containers/MuseumsPage/reducer';
+import languageReducer from './redux/reducers/localesReducer';
+import feedsReducer from './redux/reducers/feedReducer';
+import museumsReducer from './redux/reducers/museumReducer';
+import gamesReducer from "./redux/reducers/gameReducer";
+import scenarioReducer from "./redux/reducers/scenarioReducer";
+import themeReducer from "./redux/reducers/themeReducer";
+import imageComparisonReducer from "./redux/reducers/imageValidationReducer";
+import stepReducer from "./redux/reducers/gameStepReducer";
+import authReducer from "./redux/reducers/authReducer";
 /*
  * routeReducer
  *
@@ -45,9 +51,15 @@ export default function createReducer(injectedReducers) {
     return combineReducers({
         route: routeReducer,
         // global: globalReducer,
-        // language: languageProviderReducer,
+        locales: languageReducer,
+        theme: themeReducer,
         feeds: feedsReducer,
-        // museums: museumsReducer,
+        museums: museumsReducer,
+        games: gamesReducer,
+        scenario: scenarioReducer,
+        result: imageComparisonReducer,
+        gameStep: stepReducer,
+        auth: authReducer,
         ...injectedReducers,
     });
 }
