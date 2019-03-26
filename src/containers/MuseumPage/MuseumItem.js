@@ -14,28 +14,23 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 
 import {TittleContainer, FeedTittleText, HeaderContainer, MuseumItemPanelHeader, MuseumItemPanelText, MainTextContainer, FeedPlainText, Rectangle} from "../styles";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import CustomList from "../../components/CustomList";
-import LocationItem from "../../components/LocationItem";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import CustomList from "../../components/Lists/CustomList";
+import LocationItem from "../../components/LocationItem/LocationItem";
 import GameItem from "../GamePage/GameItem";
 import messages from "../../Messages";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {
     ARROW_IMG_HEIGHT,
     ARROW_IMG_WIDTH,
     colors,
     fonts,
-    HeaderHeight,
-    SlidingPanelHeight,
+    HeaderHeight, SCREEN_HEIGHT, SlidingPanelBottomPos,
+    SlidingPanelHeight, SlidingPanelTopPos,
     StatusBarHeight,
     TabBarHeight
 } from "../../utils/constants";
-import styled from 'styled-components/native';
-import getFont from "../../utils/getFont";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
 
-
-const {height} = Dimensions.get('window');
 
 const styles = {
     container: {
@@ -57,13 +52,13 @@ const styles = {
 class MuseumItemScreen extends Component{
     static defaultProps = {
         draggableRange: {
-            top: height,
-            bottom: HeaderHeight + TabBarHeight + SlidingPanelHeight + StatusBarHeight,
+            top: SlidingPanelTopPos,
+            bottom: SlidingPanelBottomPos,
         },
     };
 
     state={
-        startDragPos: HeaderHeight + TabBarHeight + SlidingPanelHeight + StatusBarHeight,
+        startDragPos: SlidingPanelBottomPos,
         allowDragging: true,
         isAtBottom: true,
     };
@@ -107,7 +102,6 @@ class MuseumItemScreen extends Component{
         const locale = this.props.locale.toUpperCase();
         const width = Dimensions.get('window').width;
         const theme = this.props.theme;
-        const fontLoaded = this.props.font;
         const arrow = (this.state.isAtBottom)? require("../../../assets/images/arrowUp.png") : require("../../../assets/images/arrowDown.png");
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages} >
@@ -116,7 +110,7 @@ class MuseumItemScreen extends Component{
                         <HeaderContainer bgColor={colors.BASE[theme]}>
                             <TittleContainer>
                                 <FeedTittleText  color={colors.TEXT[theme]}
-                                             font={getFont(fontLoaded, fonts.EACH)}
+                                             font={fonts.EACH}
                                 >
                                     {item.name[locale]}
                                 </FeedTittleText>
@@ -128,7 +122,7 @@ class MuseumItemScreen extends Component{
 
                         <MainTextContainer bgColor={colors.BASE[theme]} width={width}>
                             <FeedPlainText color={colors.TEXT[theme]}
-                                      font={getFont(fontLoaded, fonts.MURRAY)}
+                                      font={fonts.MURRAY}
                             >
                                 {item.desc[locale]}
                             </FeedPlainText>
@@ -150,7 +144,7 @@ class MuseumItemScreen extends Component{
                             <TouchableOpacity activeOpacity={0.9} onPress={()=>this._onTapSlidingPanel(this._panel)}>
                                 <MuseumItemPanelHeader color={colors.MAIN} height={SlidingPanelHeight}>
                                     <Image source={arrow} style={{width: ARROW_IMG_WIDTH, height: ARROW_IMG_HEIGHT}}/>
-                                    <MuseumItemPanelText color={'#fff'} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Games'}/></MuseumItemPanelText>
+                                    <MuseumItemPanelText color={'#fff'} font={fonts.EACH}><FormattedMessage message={'Games'}/></MuseumItemPanelText>
                                 </MuseumItemPanelHeader>
                             </TouchableOpacity>
                             <View style={{flex:1, backgroundColor: colors.BASE[theme]}}>
@@ -164,17 +158,12 @@ class MuseumItemScreen extends Component{
     }
 }
 
-export function mapDispatchToProps(dispatch) {
-    return {}
-}
-
 const mapStateToProps = createStructuredSelector({
     locale: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
 });
 const withConnect = connect(
     mapStateToProps,
-    mapDispatchToProps,
+    {},
 );
 export default compose(withConnect)(MuseumItemScreen);

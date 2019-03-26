@@ -1,28 +1,37 @@
 {
   "expo": {
-    "name": "each",
+    "name": "Museeach",
     "description": "Each mobile app",
     "slug": "each-react-native-app",
     "privacy": "public",
-    "sdkVersion": "29.0.0",
+    "sdkVersion": "31.0.0",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
     "scheme": "expo.each",
-    "icon": "./assets/icons/app.png",
-    "loading": {
-      "icon": "./assets/icons/loading.png",
-      "hideExponentText": false
-    },
+    "icon": "./assets/icons/map_logo_128.png",
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ITS.each"
     },
     "android": {
-      "package": "com.ITS.each"
+      "versionCode": 2,
+      "package": "com.ITS.each",
+      "permissions": [
+        "CAMERA",
+        "MANAGE_DOCUMENTS",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     }
   }
 }

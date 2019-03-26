@@ -6,41 +6,53 @@ import PropTypes from "prop-types";
 import styled from "styled-components/native";
 
 
-import QuestItem from "../../components/QuestItem";
+import QuestItem from "../../components/QuestItem/QuestItem";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../GamePage/reducer";
+import reducer from "../../redux/reducers/gameReducer";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../GamePage/saga";
+import saga from "../../redux/sagas/gameSaga";
 
-import {makeSelectLanguage} from "../../components/Locales/selectors";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../GamePage/selectors";
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
+import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/gameSelectors";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
-import {loadGames} from "../GamePage/actions";
-import DataList from "../../components/DataList";
-
+import {loadGames} from "../../redux/actions/gameActions";
+import DataList from "../../components/Lists/DataList";
+import getUserGameData from "../../utils/getUserGameData";
+import {markDataStatus} from "../../utils/markDataStatus";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
+import {FormattedMessage} from "react-native-globalize";
 
 const ContainerView = styled.View`
   flex: 1;
 `;
 
 class GameItem extends Component{
+    state={
+        userData: null,
+    };
 
-    componentDidMount(){
+    async componentDidMount(){
+        const data = await getUserGameData();
+        this.setState({userData: data});
         this.props.init();
     }
 
     render(){
-        const loading = this.props.loading;
+        let loading = this.props.loading;
         const error = this.props.error;
         const data = this.props.data;
+
+        if (this.state.userData && data) {
+            markDataStatus(data, this.state.userData.gameData);
+        }
 
         const dataListProps = {
             loading,
             error,
             data,
             Component: QuestItem,
+            notFoundMsg: <FormattedMessage message={'QuestsNotFound'}/>
         };
         return(
             <ContainerView>
@@ -73,7 +85,7 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
+    auth: makeSelectAuth(),
 });
 const withConnect = connect(
     mapStateToProps,

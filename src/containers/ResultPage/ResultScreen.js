@@ -9,12 +9,14 @@ class ResultScreen extends Component{
     render() {
         const result = this.props.navigation.getParam('result','');
         const bonus = this.props.navigation.getParam('bonus','');
+        const stepsAmount = this.props.navigation.getParam('stepsAmount','');
+        const gameID = this.props.navigation.getParam('gameID','');
         let answer;
 
-        if (result === 'success')
-            answer = <Bonus bonus={bonus}/>;
+        if (result)
+            answer = <Bonus bonus={bonus} stepsAmount={stepsAmount} gameID={gameID}/>;
         else
-            answer = <FailureScreen/>
+            answer = <FailureScreen/>;
         return (
             <View style={{flex: 1}}>{answer}</View>
         )

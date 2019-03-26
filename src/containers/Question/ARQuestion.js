@@ -13,24 +13,23 @@ import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
 import {createStructuredSelector} from "reselect";
 import connect from "react-redux/es/connect/connect";
 import {compose} from "redux";
-import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../components/ValidateImage/selectors";
-import {imageCompare} from "../../components/ValidateImage/actions";
+import {makeSelectError, makeSelectLoading, makeSelectResult} from "../../redux/selectors/imageValidationSelectors";
+import {imageCompare} from "../../redux/actions/imageValidationActions";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../../components/ValidateImage/reducer";
+import reducer from "../../redux/reducers/imageValidationReducer";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../../components/ValidateImage/saga";
+import saga from "../../redux/sagas/imageValidationSaga";
 
 import {QuestButtonText} from "../styles";
 import messages from "../../Messages";
 import {colors, fonts} from "../../utils/constants";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
-import getFont from "../../utils/getFont";
-import {makeSelectTheme} from "../../components/Theme/selectors";
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 import styled from "styled-components/native";
-import ArrowButton from "../../components/ArrowButton";
-import showDialog from "../../components/CustomPopUpDialog";
-import HintIcon from "../../components/icons/HintIcon";
+import ArrowButton from "../../components/Button/ArrowButton";
+import showDialog from "../../components/PopUpDialog/CustomPopUpDialog";
+import HintIcon from "../../components/Icons/HintIcon";
 
 const QuestionText = styled.Text`
     color: ${props => props.color}
@@ -74,14 +73,9 @@ class ARQuestion extends Component{
             this._validateResult(nextProps.result[0].result);
         }
     }
-    // TODO: debug version => release version
-    _validateResult(res){
-        const bonus = this.props.data.bonus;
-        let result = 'fail';
-        if (res) {
-            result = 'success';
-        }
-        this.props.navigation.navigate('Result', {result, bonus});
+
+    _validateResult(result){
+        this.props.processResult(result);
     }
 
     handler(image){
@@ -90,8 +84,6 @@ class ARQuestion extends Component{
             stepid: this.props.stepID,
             image: image.base64,
         };
-        // this.props.checkImage(body);
-
         this.setState({selectedImage: image, loading: true}, ()=>this.props.checkImage(body));
     }
 
@@ -100,7 +92,6 @@ class ARQuestion extends Component{
         const theme = this.props.theme;
         const ratio = step.target.ratio;
         const {width, height} = Dimensions.get('window');
-        const fontLoaded = this.props.font;
 
         let loadingInfo =<View/>;
         let imageTest = loadingInfo;
@@ -112,9 +103,9 @@ class ARQuestion extends Component{
                     <ActivityIndicator size={'large'} color={colors.SECOND.light}/>
                 </View>;
         }
-        if (this.state.selectedImage !== null) {
+        /* if (this.state.selectedImage !== null) {
             imageTest = <WebView source={{uri: this.state.selectedImage.uri}} style={{width: width, height: width}}/>;
-        }
+        }*/
 
         return(
             <FormattedWrapper locale={this.props.locale} messages={messages}>
@@ -125,18 +116,18 @@ class ARQuestion extends Component{
                             <Image source={{uri: step.avatar.uri}}
                                    style={{width: width*0.45, height: width*0.45}}/>
                             <View style={{flex: 1, paddingLeft: 5}}>
-                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <DescText color={colors.MAIN} font={fonts.MURRAY}>
                                     <FormattedMessage message={'ARTaskDesc'}/>
                                 </DescText>
                             </View>
 
                         </View>
-                        <QuestionText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}>
+                        <QuestionText color={colors.TEXT[theme]} font={fonts.MURRAY}>
                             {step.question}
                         </QuestionText>
                         <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 5, paddingBottom: 15}}>
                             <View style={{justifyContent: 'center', padding: 5}}>
-                                <DescText color={colors.MAIN} font={getFont(fontLoaded, fonts.MURRAY)}>
+                                <DescText color={colors.MAIN} font={fonts.MURRAY}>
                                     <FormattedMessage message={'ARTaskAdd'}/>
                                 </DescText>
                             </View>
@@ -151,7 +142,7 @@ class ARQuestion extends Component{
                                     width={width*0.55}
                                     height={height*0.075}
                                 >
-                                    <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
+                                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                 </ArrowButton>
                             </View>*/}
                             <View style={{flex: 1, justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
@@ -166,14 +157,14 @@ class ARQuestion extends Component{
                                         width={width*0.55}
                                         height={height*0.075}
                                     >
-                                        <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
+                                        <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}><FormattedMessage message={'Photo'}/>-></QuestButtonText>
                                     </ArrowButton>
                                     <HintIcon onPress={()=>this.refDialog.show()}/>
                                 </View>
                             </View>
                         </View>
 
-                    {imageTest}
+                    {/* imageTest*/}
                 </View>
             </FormattedWrapper>
         );
@@ -196,7 +187,6 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     theme: makeSelectTheme(),
     locale: makeSelectLanguage(),
-    font: makeSelectFonts(),
 });
 
 const withConnect = connect(

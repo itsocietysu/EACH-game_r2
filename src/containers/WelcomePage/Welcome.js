@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedWrapper, FormattedMessage } from "react-native-globalize";
-import * as Progress from 'react-native-progress';
+import { FormattedMessage } from "react-native-globalize";
 import {
     StyleSheet,
-    ImageBackground,
     View,
     Text,
     Dimensions,
+    Image,
     AsyncStorage,
 } from 'react-native';
 import PropTypes from "prop-types";
-
-import { colors, images, storage } from "../../utils/constants";
-import messages from "../../Messages";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {colors, images, SCREEN_WIDTH, storage} from "../../utils/constants";
 import getSystemLocale from '../../utils/getSystemLocale'
-import { changeLanguage } from '../../components/Locales/actions'
-import {changeTheme} from "../../components/Theme/actions";
-import {LIGHT_THEME} from "../../components/Theme/constants";
+import { changeLanguage } from '../../redux/actions/localesActions'
+import {changeTheme} from "../../redux/actions/themeActions";
+import {changeAuth} from "../../redux/actions/authActions"
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
+import {deleteUserData} from "../../utils/revokeToken";
+import {fetchUserData} from "../../utils/fetchUserData";
 
 class WelcomeScreen extends Component {
     // cheat access to redux store
@@ -30,6 +31,8 @@ class WelcomeScreen extends Component {
         const store = this.context.store;
         // waiting until get device locale
         try{
+            // deleteUserData();
+            // AsyncStorage.clear();
             let locale = await  AsyncStorage.getItem(storage.LOCALE);
             if(locale === null || locale === undefined)
                 locale = await getSystemLocale();
@@ -39,6 +42,16 @@ class WelcomeScreen extends Component {
             if(theme === null || theme === undefined)
                 theme = LIGHT_THEME;
             store.dispatch(changeTheme(theme));
+
+            let auth = await AsyncStorage.getItem(storage.AUTH);
+            if (auth === null || auth === undefined || auth === 'false')
+                auth = false;
+            else
+                auth = true;
+            store.dispatch(changeAuth(auth));
+            console.log(auth);
+            const userData = await fetchUserData();
+            console.log(userData)
         }
         catch (e) {
             console.log('Error:: ', e);
@@ -51,24 +64,23 @@ class WelcomeScreen extends Component {
 
 
     render() {
-        const dim = Dimensions.get('window');
         return (
-            <FormattedWrapper messages={messages}>
-                <ImageBackground
-                    source = {images.LOADING_SCREEN_IMAGE}
-                    style={{height: dim.height-22, width: dim.width}}
-                    resizeMode = "stretch"
-                >
-                    <View style={{flex: 1}}>
-                        <View style={styles.loaderContainer}>
-                            <Progress.Bar progress={0.3} width={200} color={colors.MAIN} />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={{color: colors.MAIN, paddingRight: 80, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
-                        </View>
-                    </View>
-                </ImageBackground>
-            </FormattedWrapper>
+            <View style={{flex: 1, backgroundColor: colors.LOADING_SCREEN}}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Image
+                        source={require('../../../assets/images/welcome_screen_blue.png')}
+                        style={{width: wp('100%'), height: wp('100%')}}
+                    />
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={{color: colors.WHITE, paddingRight: 10, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
+                    <Image
+                        source={require('../../../assets/images/its_logo_white.png')}
+                        style={{width: wp('23%'), height: hp('5%')}}
+                        resizeMode={'stretch'}
+                    />
+                </View>
+            </View>
         );
     }
 }
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
         alignItems:  'center',
     },
     textContainer:{
-        flexGrow: 1,
+        flexDirection: 'row',
         justifyContent:  'flex-end',
         alignItems:  'flex-end',
     },

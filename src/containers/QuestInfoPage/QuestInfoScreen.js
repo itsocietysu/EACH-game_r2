@@ -15,29 +15,29 @@ import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
 import PropTypes from "prop-types";
 
 
-import {makeSelectLanguage} from "../../components/Locales/selectors";
+import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
 import messages from "../../Messages"
 
 
 import styled from "styled-components/native";
 
-import {loadScenario} from "../../components/ScenarioPage/actions";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../../components/ScenarioPage/selectors";
+import {loadScenario} from "../../redux/actions/scenarioActions";
+import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/scenarioSelectors";
 import injectReducer from "../../utils/injectReducer";
-import reducer from "../../components/ScenarioPage/reducer";
+import reducer from "../../redux/reducers/scenarioReducer";
 import injectSaga from "../../utils/injectSaga";
-import saga from "../../components/ScenarioPage/saga";
-import {QuestButtonText, FeedPlainText, QuestTittle, MainTextContainer, MainText, TextContainer, TittleText, StyledButton, SpamHello} from "../styles";
-import {makeSelectTheme} from "../../components/Theme/selectors";
+import saga from "../../redux/sagas/scenarioSaga";
+import {QuestButtonText, FeedPlainText, QuestTittle, Rectangle} from "../styles";
+import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {colors, fonts} from "../../utils/constants";
-import {makeSelectFonts} from "../../components/Fonts/selectors";
-import getFont from "../../utils/getFont";
 
-import Rating from './Rating';
-import SpentTime from './SpentTime';
-import ArrowButton from "../../components/ArrowButton";
-import Button from "../../components/Button";
-import tokenInfo from './../../utils/tokenInfo';
+import Rating from '../../components/Tuples/RatingTuple';
+import SpentTime from '../../components/Tuples/SpentTimeTuple';
+import ArrowButton from "../../components/Button/ArrowButton";
+import { tokenInfo} from './../../utils/tokenInfo';
+import getUserGameData from "../../utils/getUserGameData";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -47,28 +47,21 @@ const StatisticsContainer = styled.View`
     paddingBottom: 8
 `;
 
-const DescriptionText = styled.Text`
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 16
-`;
-
 const DescriptionContainer = styled.View`
     paddingLeft: 10
-`;
-
-const ButtonText = styled.Text`
-    alignSelf: center
-    color: ${props => props.color}
-    fontFamily: ${props => props.font}
-    fontSize: 20
+    paddingRight: 10
 `;
 
 class QuestInfoScreen extends  Component {
 
+    state = {
+        userData: null,
+    };
+
     async componentDidMount(){
         this.props.init();
         await tokenInfo();
+        await getUserGameData().then(data => this.setState({userData: data}));
     }
 
     render(){
@@ -77,54 +70,75 @@ class QuestInfoScreen extends  Component {
         const quest = navigation.getParam('quest', '');
         const theme = this.props.theme;
         const locale = this.props.language.toUpperCase();
-        const fontLoaded = this.props.font;
 
         // loading scenario
         const loading = this.props.loading;
         const error = this.props.error;
         const scenario = this.props.data;
 
+        let button;
+        if (this.props.auth){
+            button =
+                <ArrowButton
+                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario, userData: this.state.userData})}
+                    bgColor={colors.BASE[theme]}
+                    borderColor={colors.MAIN}
+                    width={width*0.55}
+                    height={height*0.075}
+                >
+                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}>
+                        <FormattedMessage message={'Play'}/>->
+                    </QuestButtonText>
+                </ArrowButton>;
+        }
+        else
+            button =
+                <ArrowButton
+                    onPress={()=>this.props.navigation.navigate('Login')}
+                    bgColor={colors.BASE[theme]}
+                    borderColor={colors.MAIN}
+                    width={width*0.55}
+                    height={height*0.075}
+                >
+                    <QuestButtonText color={colors.TEXT[theme]} font={fonts.EACH}>
+                        <FormattedMessage message={'Auth'}/>->
+                    </QuestButtonText>
+                </ArrowButton>;
 
-        if (loading) {
+        if (loading || !this.state.userData) {
             return <View><ActivityIndicator/></View>;
         }
 
         if (error !== false) {
-            return <Text>Something went wrong</Text>;
+            return <ErrorMessage/>
         }
 
         if (scenario !== false) {
             return (
                 <FormattedWrapper locale={this.props.language} messages={messages}>
                     <View style={{flex: 1,  backgroundColor: colors.BASE[theme]}}>
-                        <QuestTittle color={colors.MAIN}
-                                     font={getFont(fontLoaded, fonts.EACH)}
-                        >
-                            {quest.name[locale]}
-                        </QuestTittle>
-                        <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
-                        <StatisticsContainer>
-                            <Rating/>
-                            <SpentTime/>
-                        </StatisticsContainer>
                         <ScrollView style={{flex: 1}}>
-                            <DescriptionContainer>
-                                <FeedPlainText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.MURRAY)}
-                                >
-                                    {quest.desc[locale]}
-                                </FeedPlainText>
-                            </DescriptionContainer>
-                        </ScrollView>
-                        <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
-                            <ArrowButton
-                                onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
-                                bgColor={colors.BASE[theme]}
-                                borderColor={colors.MAIN}
-                                width={width*0.55}
-                                height={height*0.075}
+                            <QuestTittle color={colors.MAIN}
+                                         font={fonts.EACH}
                             >
-                                <QuestButtonText color={colors.TEXT[theme]} font={getFont(fontLoaded, fonts.EACH)}><FormattedMessage message={'Play'}/>-></QuestButtonText>
-                            </ArrowButton>
+                                {quest.name[locale]}
+                            </QuestTittle>
+                            <Image source={{uri: quest.image}} style={{resizeMode: 'cover', width: width, height: width*0.75}}/>
+                            <StatisticsContainer>
+                                <Rating/>
+                                <SpentTime/>
+                            </StatisticsContainer>
+
+                                <DescriptionContainer>
+                                    <FeedPlainText color={colors.TEXT[theme]} font={fonts.MURRAY}
+                                    >
+                                        {quest.desc[locale]}
+                                    </FeedPlainText>
+                                </DescriptionContainer>
+                        </ScrollView>
+                        <Rectangle width={width} height={1} backgroundColor={colors.MAIN}/>
+                        <View style={{paddingTop: 15, paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
+                            {button}
                         </View>
                     </View>
                 </FormattedWrapper>
@@ -159,7 +173,7 @@ const mapStateToProps = createStructuredSelector({
     error: makeSelectError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
-    font: makeSelectFonts(),
+    auth: makeSelectAuth(),
 });
 const withConnect = connect(
     mapStateToProps,

@@ -2,11 +2,12 @@ import {SecureStore} from "expo";
 import request from "./request";
 import buildFormData from "./buildFormData";
 import storeUserData from "./storeUserData";
+import {backend_api_url} from "./constants";
 
-export default async function tokenInfo(){
+export async function tokenInfo(){
     try{
         const token = await SecureStore.getItemAsync('token');
-        const authType = await SecureStore.getItemAsync('App');
+        const authType = await SecureStore.getItemAsync('app');
         const options = {
             method: 'GET',
             headers: {
@@ -15,8 +16,7 @@ export default async function tokenInfo(){
                 authorization: `Bearer ${token} ${authType}`,
             },
         };
-        const requestTokenInfo = 'http://each.itsociety.su:4201/each/token/info';
-
+        const requestTokenInfo = `${backend_api_url}/each/token/info`;
         const requestParams = {
             access_token: token,
             type: authType,
@@ -24,9 +24,13 @@ export default async function tokenInfo(){
         };
         const requestUrl = [requestTokenInfo, buildFormData(requestParams)].join('?');
         const requestResult = await request(requestUrl, options);
-        storeUserData(requestResult);
+
+        await storeUserData(requestResult);
+        // alert(token);
+        // alert(requestResult.name);
     }
     catch(e){
         console.log(e);
+        return {error: true};
     }
 }

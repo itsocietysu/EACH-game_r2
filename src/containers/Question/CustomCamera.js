@@ -1,27 +1,38 @@
 import React from 'react';
-import { View, Text, Dimensions, ActivityIndicator } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { View, Text, Dimensions, ActivityIndicator, Platform, PixelRatio } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
 import { ImageManipulator, Permissions, Camera} from 'expo';
 import {MaterialIcons} from '@expo/vector-icons';
-import {colors} from "../../utils/constants";
-import Back from "../../components/icons/Back";
+import {colors, CAMERA_ASPECT_RATIO, StatusBarHeight} from "../../utils/constants";
+import Back from "../../components/Icons/Back";
+import {showMessage} from "react-native-flash-message";
+import {FormattedMessage} from "react-native-globalize";
 
 class CustomCamera extends React.Component {
     state = {
         imageLoaded: false,
-        permissionGranted: null,
+        permissionGranted: false,
         targetHeight: null,
         targetWidth: null,
         loading: false,
         _isMounted: false,
+        ratio: '16:9',
     };
 
+    constructor(){
+        super();
+
+        this._getCameraAspectRatio = this._getCameraAspectRatio.bind(this);
+    }
     async componentDidMount(){
         this.setState({_isMounted: true});
         const status =  await Permissions.askAsync(Permissions.CAMERA);
 
         if (status.status !== 'granted') {
-            alert('To continue camera should be enabled');
+            showMessage({
+                message: <FormattedMessage message={'EnableCam'}/>,
+                type: "danger",
+            });
             return;
         }
 
@@ -48,7 +59,7 @@ class CustomCamera extends React.Component {
         }
     }
 
-    componentWillUnmount(){
+    async componentWillUnmount(){
         this.setState({_isMounted: false});
     }
 
@@ -66,7 +77,7 @@ class CustomCamera extends React.Component {
             const x = (W - wToCrop) / 2;
             const y = (H - hToCrop) / 2;
 
-            manipResult = await ImageManipulator.manipulate(
+            manipResult = await ImageManipulator.manipulateAsync(
                 image.uri,
                 [
                     {
@@ -96,14 +107,23 @@ class CustomCamera extends React.Component {
     };
 
     async _takePhoto(){
-
         try {
-            const image = await this.cameraRef.takePictureAsync();
-            if (image === undefined){
-                alert('Ooops! Something went wrong');
+            const status =  await Permissions.askAsync(Permissions.CAMERA);
+            if (status.status !== 'granted') {
+                showMessage({
+                    message: <FormattedMessage message={'EnableCam'}/>,
+                    type: "danger",
+                });
                 return;
             }
-
+            const image = await this.cameraRef.takePictureAsync();
+            if (image === undefined){
+                showMessage({
+                    message: <FormattedMessage message={'ErrWrong'}/>,
+                    type: "danger",
+                });
+                return;
+            }
             const processedImage = await this._cropAndResize(image);
             const _validateImage = this.props.navigation.getParam('handler', '');
             _validateImage(processedImage);
@@ -117,15 +137,30 @@ class CustomCamera extends React.Component {
         this.props.navigation.goBack();
     }
 
-    _process(){
+    async _process(){
         if(this.state._isMounted && !this.state.loading)
             this.setState({loading: true}, this._takePhoto );
     }
+
+    async _getCameraAspectRatio(){
+        if (Platform.OS === 'android' && this.cameraRef) {
+            const ratios = await this.cameraRef.getSupportedRatiosAsync();
+            // See if the current device has your desired ratio, otherwise get the maximum supported one
+            // Usually the last element of "ratios" is the maximum supported ratio
+            const ratio = ratios.find((ratio) => ratio === '16:9') || ratios[ratios.length - 1];
+
+            this.setState({
+                ratio
+            });
+        }
+    }
+
     render() {
         const { width, height} = Dimensions.get('window');
         const iconSize = 60;
+        const {isFocused} = this.props;
 
-        if (this.state.permissionGranted == null) {
+        if (!this.state.permissionGranted) {
             return <ActivityIndicator/>;
         }
         if (this.state.permissionGranted) {
@@ -139,33 +174,36 @@ class CustomCamera extends React.Component {
 
             return (
                 <View style={{flex: 1}}>
+                    <View style={{height: StatusBarHeight, width: '100%'}}/>
                     <Camera
                         ref={ref=>{this.cameraRef = ref}}
-                        style={{flex: 1}}
+                        style={{width, height: width/9*16}}
+                        onCameraReady={this._getCameraAspectRatio}
+                        ratio={this.state.ratio}
                     >
-                        {loadingInfo}
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <View style={{
                                 width: this.state.targetWidth,
                                 height: this.state.targetHeight,
                                 borderWidth: 3,
                                 borderColor: colors.FRAME,
-                                backgroundColor: 'transparent'
+                                backgroundColor: 'transparent',
                             }}/>
                         </View>
                         <View style={{position: 'absolute', top: 15}}>
                             <Back onPress={ ()=>this.props.navigation.goBack() }/>
                         </View>
-                        <View style={{position: 'absolute', left: (width-iconSize)/2, top: height *0.85}}>
-                            <MaterialIcons name="photo-camera" size={iconSize} color={colors.SECOND.light}
-                                        onPress={ ()=> this._process()}/>
-                        </View>
+
 
                     </Camera>
+                    <View style={{position: 'absolute', left: (width-iconSize)/2, top: height *0.92}}>
+                        <MaterialIcons name="photo-camera" size={iconSize} color={colors.SECOND.light}
+                                       onPress={ ()=> this._process()}/>
+                    </View>
                 </View>
             );
         }
         return <Text>Ooops! No access to camera</Text>;
     }
 }
-export default (withNavigation)(CustomCamera)
+export default (withNavigationFocus)(CustomCamera)
