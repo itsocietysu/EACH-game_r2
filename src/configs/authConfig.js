@@ -1,5 +1,5 @@
 import { AuthSession } from 'expo';
-import {backend_api_url} from "../../utils/constants";
+import {backend_api_url} from "../utils/constants";
 
 const googleClientId = '190923403189-srp0gleu6imvtph8gcauf03uhb66q65h.apps.googleusercontent.com';
 const eachClientId = 'Gu2SCEBUwQV3TSlNIu8uMzvKRMYuGP5ePh044jGErO6O9RR0';
@@ -15,7 +15,7 @@ export const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?` +
   `&response_type=code` +
   `&scope=${encodeURIComponent(['profile','email'].join(' '))}`;
 
-export const eachAuthUrl = `http://eachdev.itsociety.su:5000/oauth2/authorize?` +
+export const eachAuthUrl = `http://museeach.ru:5000/oauth2/authorize?` +
   `&client_id=${encodeURIComponent(eachClientId)}` +
   `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
   `&response_type=code` +
