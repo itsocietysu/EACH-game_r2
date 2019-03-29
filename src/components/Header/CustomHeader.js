@@ -21,7 +21,7 @@ class CustomHeader extends React.Component {
         const logo = (theme === DARK_THEME)? images.HEADER_DARK : images.HEADER_LIGHT;
         return (
             <View style={{flex:1}}>
-                <View style={{width: '100%', height: StatusBarHeight, backgroundColor: colors.HEADERS[theme]}}/>
+                {/* <View style={{width: '100%', height: StatusBarHeight, backgroundColor: '#f00'}}/>*/}
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.HEADERS[theme], paddingTop: HeaderPadding}}>
                     <Image
                         source={logo}

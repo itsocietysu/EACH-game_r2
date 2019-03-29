@@ -101,7 +101,7 @@ const MuseumStack = createStackNavigator(
     }
 );
 
-const ProfileStack = createStackNavigator(
+/* const ProfileStack = createStackNavigator(
   {
     Profile: {screen: ProfileScreen},
     Settings: {screen: SettingsScreen}
@@ -146,11 +146,15 @@ const LoginStack = createStackNavigator(
       });
     }
   }
-);
+);*/
 
-const AuthLoadingStack = createStackNavigator(
-    {AuthLoading: AuthLoadingScreen},
+const AuthLoadingStack = createSwitchNavigator(
     {
+        AuthProvider: {screen: AuthLoadingScreen},
+        Login: {screen: LoginScreen},
+        Profile: {screen: ProfileScreen},
+    },
+    /*{
         navigationOptions: ({navigation})=> {
             const content = null;
             const rightContent = null;
@@ -164,20 +168,22 @@ const AuthLoadingStack = createStackNavigator(
                 headerRight: rightContent,
             });
         }
-    }
+    }*/
 );
 
-const ProfileAndAuth = createSwitchNavigator(
+const ProfileAndAuth = createStackNavigator(
     {
-        AuthLoading: AuthLoadingStack,
-        Login: LoginStack,
-        MyProfile: ProfileStack,
+        Auth: AuthLoadingStack,
+        Settings: SettingsScreen,
     },
     {
         navigationOptions: ({navigation}) => {
-            const content = null;
-            const rightContent = null;
+            let content = null;
+            const rightContent = <SettingsIcon onPress={() => navigation.navigate('Settings')}/>;
 
+            if(navigation.state.routeName === 'Settings') {
+                content = <BackIcon onPress={() => navigation.goBack(null)}/>;
+            }
             return ({
                 headerBackground: <LogoTitle/>,
                 headerStyle: {

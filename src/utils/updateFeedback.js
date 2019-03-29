@@ -6,7 +6,7 @@ import {FormattedMessage} from "react-native-globalize";
 import React from "react";
 import {backend_api_url} from "./constants";
 
-export async function updateFeedback(id, weight, comment){
+export async function updateFeedback(id, weight, comment, repeat=false){
     const body = {
         id,
         text: comment,
@@ -17,7 +17,7 @@ export async function updateFeedback(id, weight, comment){
         const token = await SecureStore.getItemAsync('token');
         const authType = await SecureStore.getItemAsync('app');
         const options = {
-            method: 'POST',
+            method: repeat? 'PUT' : 'POST',
             headers: {
                 Accept: 'application/json, text/plain, */*',
                 'Content-Type': 'application/x-www-form-urlencoded',
