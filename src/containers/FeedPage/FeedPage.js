@@ -18,7 +18,7 @@ import DataList from "../../components/Lists/DataList";
 import RenderFeedItem from "./RenderFeedItem";
 import {colors} from "../../utils/constants";
 
-import { makeSelectData, makeSelectError, makeSelectLoading } from '../../redux/selectors/feedSelectors';
+import { makeSelectFeedData, makeSelectFeedError, makeSelectFeedLoading } from '../../redux/selectors/feedSelectors';
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 
@@ -86,9 +86,9 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: makeSelectData(),
-    loading: makeSelectLoading(),
-    error: makeSelectError(),
+    data: makeSelectFeedData(),
+    loading: makeSelectFeedLoading(),
+    error: makeSelectFeedError(),
     theme: makeSelectTheme(),
 });
 

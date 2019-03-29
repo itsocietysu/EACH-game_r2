@@ -26,11 +26,12 @@ export async function tokenInfo(){
         const requestResult = await request(requestUrl, options);
 
         await storeUserData(requestResult);
+        return requestResult;
         // alert(token);
         // alert(requestResult.name);
     }
     catch(e){
         console.log(e);
-        return {error: true};
+        return null;
     }
 }

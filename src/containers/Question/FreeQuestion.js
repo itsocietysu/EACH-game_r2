@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Alert, Image, TextInput, KeyboardAvoidingView, Dimensions} from 'react-native';
+import {View, Alert, Text, Image, TextInput, KeyboardAvoidingView, Dimensions} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import styled from "styled-components/native";
@@ -55,6 +55,7 @@ class FreeQuestion extends Component{
         let result = false;
         const step = this.props.data;
         const choices = step.choices;
+        choices.forEach(item => item.toLowerCase());
         if(choices.includes(this.state.answer.trim().toLowerCase())) {
             result = true;
         }
@@ -96,7 +97,7 @@ class FreeQuestion extends Component{
                                     fontFamily: fonts.MURRAY, color: colors.MAIN, fontSize: 20, textAlign: 'center',
                                     width: '95%', height: 50, borderColor: colors.MAIN, borderWidth: 2
                                 }}
-
+                                onSubmitEditing={() => this._validateResult()}
                             />
                         </View>
 

@@ -1,6 +1,6 @@
 import { SecureStore } from "expo";
 import request from "./request";
-import { requestUrlRevoke } from "../containers/AuthPage/constants";
+import { requestUrlRevoke } from "../configs/authConfig";
 
 export const deleteUserData = async() => {
   SecureStore.deleteItemAsync('username');
@@ -13,37 +13,26 @@ export const deleteUserData = async() => {
 };
 
 export async function revokeToken(){
-  let appToken;
-  let appType;
-
-  try {
-    appToken = await SecureStore.getItemAsync('token');
-    appType = await SecureStore.getItemAsync('app');
-  }
-  catch (e) {
-    return {error: true}
-  }
-
-  const options = {
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${appToken} ${appType}`
-    },
-    body: JSON.stringify({
-      access_token: appToken,
-      type: appType
-    })
-  };
-
-
-  try {
-    const result = await request(requestUrlRevoke, options);
-    if (result) {
-      deleteUserData().then(console.log("user data successfully deleted"));
-      return result;
+    try {
+        const appToken = await SecureStore.getItemAsync('token');
+        const appType = await SecureStore.getItemAsync('app');
+        const options = {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${appToken} ${appType}`
+            },
+            body: JSON.stringify({
+                access_token: appToken,
+                type: appType
+            })
+        };
+        await request(requestUrlRevoke, options);
     }
-  } catch(e) {
-    console.log(e)
-    return { error: e };
-  }
+    catch(e) {
+        console.log(e);
+        return null;
+    }
+    finally {
+        deleteUserData().then(console.log("user data successfully deleted"));
+    }
 }

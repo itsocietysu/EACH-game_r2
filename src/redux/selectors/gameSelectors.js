@@ -7,13 +7,13 @@ import { initialState } from '../reducers/gameReducer';
 
 const selectGames = state => state.get('games', initialState);
 
-const makeSelectLoading = () =>
+const makeSelectGameLoading = () =>
     createSelector(selectGames, gamesState => gamesState.get('loading'));
 
-const makeSelectError = () =>
+const makeSelectGameError = () =>
     createSelector(selectGames, gamesState => gamesState.get('error'));
 
-const makeSelectData = () =>
+const makeSelectGameData = () =>
     createSelector(selectGames, gamesState => gamesState.get('data'));
 
-export { selectGames, makeSelectLoading, makeSelectError, makeSelectData };
+export { selectGames, makeSelectGameLoading, makeSelectGameError, makeSelectGameData };

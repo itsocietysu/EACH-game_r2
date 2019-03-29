@@ -22,7 +22,7 @@ import messages from "../../Messages"
 import styled from "styled-components/native";
 
 import {loadScenario} from "../../redux/actions/scenarioActions";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/scenarioSelectors";
+import {makeSelectScenarioData, makeSelectScenarioError, makeSelectScenarioLoading} from "../../redux/selectors/scenarioSelectors";
 import injectReducer from "../../utils/injectReducer";
 import reducer from "../../redux/reducers/scenarioReducer";
 import injectSaga from "../../utils/injectSaga";
@@ -38,6 +38,7 @@ import { tokenInfo} from './../../utils/tokenInfo';
 import getUserGameData from "../../utils/getUserGameData";
 import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import {loadUserData} from "../../redux/actions/userDataActions";
 
 const StatisticsContainer = styled.View`
     flexDirection: row
@@ -60,7 +61,8 @@ class QuestInfoScreen extends  Component {
 
     async componentDidMount(){
         this.props.init();
-        await tokenInfo();
+        const data = await tokenInfo();
+        this.props.loadUserData(data);
         await getUserGameData().then(data => this.setState({userData: data}));
     }
 
@@ -80,7 +82,7 @@ class QuestInfoScreen extends  Component {
         if (this.props.auth){
             button =
                 <ArrowButton
-                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario, userData: this.state.userData})}
+                    onPress={()=>this.props.navigation.navigate('QuestPlay', {scenario})}
                     bgColor={colors.BASE[theme]}
                     borderColor={colors.MAIN}
                     width={width*0.55}
@@ -105,7 +107,7 @@ class QuestInfoScreen extends  Component {
                     </QuestButtonText>
                 </ArrowButton>;
 
-        if (loading || !this.state.userData) {
+        if (loading) {
             return <View><ActivityIndicator/></View>;
         }
 
@@ -164,13 +166,17 @@ export function mapDispatchToProps(dispatch, ownProps) {
             if (evt !== undefined && evt.preventDefault) evt.preventDefault();
             dispatch(loadScenario(scenarioID));
         },
+        loadUserData: evt => {
+            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+            dispatch(loadUserData(evt))
+        }
     }
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: makeSelectData(),
-    loading: makeSelectLoading(),
-    error: makeSelectError(),
+    data: makeSelectScenarioData(),
+    loading: makeSelectScenarioLoading(),
+    error: makeSelectScenarioError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
     auth: makeSelectAuth(),

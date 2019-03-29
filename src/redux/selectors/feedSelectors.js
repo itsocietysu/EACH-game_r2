@@ -7,13 +7,13 @@ import { initialState } from '../reducers/feedReducer';
 
 const selectFeeds = state => state.get('feeds', initialState);
 
-const makeSelectLoading = () =>
+const makeSelectFeedLoading = () =>
     createSelector(selectFeeds, feedsState => feedsState.get('loading'));
 
-const makeSelectError = () =>
+const makeSelectFeedError = () =>
     createSelector(selectFeeds, feedsState => feedsState.get('error'));
 
-const makeSelectData = () =>
+const makeSelectFeedData = () =>
     createSelector(selectFeeds, feedsState => feedsState.get('data'));
 
-export { selectFeeds, makeSelectLoading, makeSelectError, makeSelectData };
+export { selectFeeds, makeSelectFeedLoading, makeSelectFeedError, makeSelectFeedData };

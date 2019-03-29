@@ -24,7 +24,7 @@
       "bundleIdentifier": "com.ITS.each"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "package": "com.ITS.each",
       "permissions": [
         "CAMERA",

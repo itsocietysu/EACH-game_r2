@@ -7,13 +7,13 @@ import { initialState } from '../reducers/museumReducer';
 
 const selectMuseums = state => state.get('museums', initialState);
 
-const makeSelectLoading = () =>
+const makeSelectMuseumLoading = () =>
     createSelector(selectMuseums, museumsState => museumsState.get('loading'));
 
-const makeSelectError = () =>
+const makeSelectMuseumError = () =>
     createSelector(selectMuseums, museumsState => museumsState.get('error'));
 
-const makeSelectData = () =>
+const makeSelectMuseumData = () =>
     createSelector(selectMuseums, museumsState => museumsState.get('data'));
 
-export { selectMuseums, makeSelectLoading, makeSelectError, makeSelectData };
+export { selectMuseums, makeSelectMuseumLoading, makeSelectMuseumError, makeSelectMuseumData };

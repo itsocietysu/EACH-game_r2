@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {WebBrowser} from 'expo';
 import styled from 'styled-components/native';
-import { FormattedWrapper, FormattedMessage } from 'react-native-globalize';
+import { FormattedMessage } from 'react-native-globalize';
 import { Switch, TouchableOpacity, View, AsyncStorage, Text} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 
@@ -19,12 +18,16 @@ import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
 import { DARK_THEME, LIGHT_THEME } from "../../redux/constants/themeConstants";
-import messages from '../../Messages';
 import {colors, fonts, languages, storage, user_agreement_url, bug_report_url} from "../../utils/constants";
 import {SettingsText, SettingsTitleText, SettingsAddText, SettingsContainer} from "../styles";
 import {renderRow, getKeyByValue} from "../../utils/renderPopUpRow";
 import tupleToArray from "../../utils/tupleToArray";
 import { revokeToken } from "../../utils/revokeToken"
+import {openBugReportGoogleForm} from "../../utils/openBugReportGoogleForm";
+import {loadUserData} from "../../redux/actions/userDataActions";
+import {openBrowser} from "../../utils/openBrowser";
+import {fetchAuthData} from "../../utils/fetchAuthData";
+import {fetchUserData} from "../../utils/fetchUserData";
 
 const ContainerView = styled.View`
       flex: 1
@@ -100,105 +103,97 @@ class SettingsScreen extends Component {
         }
     }
 
-    _openUserAgreement(){
-        WebBrowser.openBrowserAsync(user_agreement_url)
+    async _onLogOut(){
+        await revokeToken();
+        this.props.changeAuth(false);
+        this.props.updateUserData(false);
+        const data = fetchAuthData();
+        const d = fetchUserData();
+        console.log(data);
+        console.log(d);
+        this.props.navigation.navigate('AuthProvider');
     }
-    _openGoogleForm(){
-        WebBrowser.openBrowserAsync(bug_report_url)
-    }
+
     render() {
         const theme = this.props.theme;
+        let logout = <View/>;
+        if(this.props.auth)
+            logout = <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity
+                onPress={ () => this._onLogOut() }
+            >
+                <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
+                    <FormattedMessage message={'Logout'}/>
+                </SettingsAddText>
+            </TouchableOpacity>
+        </View>;
         return (
-            /* <FormattedWrapper locale={this.props.language? this.props.language: 'en'} messages={messages} >*/
-                <ContainerView color={colors.BASE[this.props.theme]}>
-                    <View style={{height: '18%', alignItems: 'center', justifyContent: 'center'}}>
-                          <SettingsTitleText color={colors.MAIN} font={fonts.EACH}>
-                              <FormattedMessage message={'Settings'}/>
-                          </SettingsTitleText>
-                    </View>
-                    <SettingsContainer>
-                        <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
-                            <FormattedMessage message={'Language'}/>
-                        </SettingsText>
-                        <View style={{flex: 1, alignItems: 'flex-end'}}>
-                            <ModalDropdown
-                                defaultIndex={1}
-                                renderRow={renderRow}
-                                dropdownStyle={{height: '30%', width: 2.3/5.9*'100%', backgroundColor: colors.BASE[theme]}}
-                                options={tupleToArray()}
-                                onSelect={(index, value)=>this._localeChange(getKeyByValue(languages, value))}
-                            >
-                                {renderRow(languages[this.props.language])}
-                            </ModalDropdown>
-                        </View>
-                    </SettingsContainer>
-                    <SettingsContainer>
-                        <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
-                            <FormattedMessage message={'NightMode'}/>
-                        </SettingsText>
-                        <View style={{flex: 1, alignItems: 'flex-end'}}>
-                            <Switch
-                                onValueChange={ (value) => this._themeChange(value)}
-                                value={this.state.nightValue}
-                            />
-                        </View>
-                    </SettingsContainer>
-                    <SettingsContainer>
-                        <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
-                            <FormattedMessage message={'Notifications'}/>
-                        </SettingsText>
-                        <View style={{flex: 1, alignItems: 'flex-end'}}>
-                            <Switch
-                                onValueChange={ (value) => alert('In development')}
-                                value={this.state.notifyValue}
-                            />
-                        </View>
-                    </SettingsContainer>
-                    <SettingsContainer>
-                        <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
-                            <FormattedMessage message={'CompressImg'}/>
-                        </SettingsText>
-                        <View style={{flex: 1, alignItems: 'flex-end'}}>
-                            <Switch
-                                onValueChange={ (value) => alert('In development')}
-                                value={this.state.compressValue}
-                            />
-                        </View>
-                    </SettingsContainer>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            onPress={this._openUserAgreement}
+            <ContainerView color={colors.BASE[this.props.theme]}>
+                <View style={{height: '18%', alignItems: 'center', justifyContent: 'center'}}>
+                      <SettingsTitleText color={colors.MAIN} font={fonts.EACH}>
+                          <FormattedMessage message={'Settings'}/>
+                      </SettingsTitleText>
+                </View>
+                <SettingsContainer>
+                    <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
+                        <FormattedMessage message={'Language'}/>
+                    </SettingsText>
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                        <ModalDropdown
+                            defaultIndex={1}
+                            renderRow={renderRow}
+                            dropdownStyle={{height: '30%', width: 2.3/5.9*'100%', backgroundColor: colors.BASE[theme]}}
+                            options={tupleToArray()}
+                            onSelect={(index, value)=>this._localeChange(getKeyByValue(languages, value))}
                         >
-                            <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
-                                <FormattedMessage message={'Terms'}/>
-                            </SettingsAddText>
-                        </TouchableOpacity>
+                            {renderRow(languages[this.props.language])}
+                        </ModalDropdown>
                     </View>
-
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            onPress={()=>{revokeToken().then(this._authChange()).then(res => {
-                                console.log(res);
-                                this.props.navigation.navigate('Login');
-                            })}}
-                        >
-                            <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
-                                <FormattedMessage message={'Logout'}/>
-                            </SettingsAddText>
-                        </TouchableOpacity>
-
+                </SettingsContainer>
+                <SettingsContainer>
+                    <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
+                        <FormattedMessage message={'NightMode'}/>
+                    </SettingsText>
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                        <Switch
+                            onValueChange={ (value) => this._themeChange(value)}
+                            value={this.state.nightValue}
+                        />
                     </View>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            onPress={this._openGoogleForm}
-                        >
-                            <SettingsAddText color={'#f00'} font={fonts.MURRAY}>
-                                <Text>Нашли баг? Заполните google-форму</Text>
-                            </SettingsAddText>
-                        </TouchableOpacity>
+                </SettingsContainer>
+                <SettingsContainer>
+                    <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
+                        <FormattedMessage message={'Notifications'}/>
+                    </SettingsText>
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                        <Switch
+                            onValueChange={ (value) => alert('In development')}
+                            value={this.state.notifyValue}
+                        />
                     </View>
-                </ContainerView>
-        /* </FormattedWrapper>*/
+                </SettingsContainer>
+                <SettingsContainer>
+                    <SettingsText color={colors.TEXT[theme]} font={fonts.MURRAY}>
+                        <FormattedMessage message={'CompressImg'}/>
+                    </SettingsText>
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                        <Switch
+                            onValueChange={ (value) => alert('In development')}
+                            value={this.state.compressValue}
+                        />
+                    </View>
+                </SettingsContainer>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <TouchableOpacity
+                        onPress={() => openBrowser(user_agreement_url)}
+                    >
+                        <SettingsAddText color={colors.MAIN} font={fonts.MURRAY}>
+                            <FormattedMessage message={'Terms'}/>
+                        </SettingsAddText>
+                    </TouchableOpacity>
+                </View>
+                {logout}
+            </ContainerView>
     );
   }
 }
@@ -215,6 +210,10 @@ export function mapDispatchToProps(dispatch) {
         changeAuth: evt => {
             if (evt !== undefined && evt.preventDefault) evt.preventDefault();
             dispatch(changeAuth(evt));
+        },
+        updateUserData: evt => {
+            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+            dispatch(loadUserData(evt));
         },
     };
 }

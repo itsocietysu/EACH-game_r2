@@ -5,7 +5,7 @@ import { createStructuredSelector, createSelector } from 'reselect';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/museumSelectors";
+import {makeSelectMuseumData, makeSelectMuseumError, makeSelectMuseumLoading} from "../../redux/selectors/museumSelectors";
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 
@@ -16,7 +16,7 @@ import injectSaga from '../../utils/injectSaga';
 import DataList from '../../components/Lists/DataList';
 import {loadMuseums} from "../../redux/actions/museumActions";
 import RenderMuseumItem from "./RenderMuseumItem";
-import {colors} from "../../utils/constants";
+import {colors, SCREEN_HEIGHT, TabBarHeight} from "../../utils/constants";
 
 const ContainerView = styled.View`
   flex: 1;
@@ -70,9 +70,9 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: makeSelectData(),
-    loading: makeSelectLoading(),
-    error: makeSelectError(),
+    data: makeSelectMuseumData(),
+    loading: makeSelectMuseumLoading(),
+    error: makeSelectMuseumError(),
     theme: makeSelectTheme(),
 });
 
