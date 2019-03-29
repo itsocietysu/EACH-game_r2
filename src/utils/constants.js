@@ -1,6 +1,7 @@
-import {Dimensions, Platform} from 'react-native';
+import {Dimensions, Platform, SafeAreaView} from 'react-native';
 import {Constants} from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Insets from 'safe-area-insets';
 
 export const colors = {
     BASE: {
@@ -76,21 +77,30 @@ export const StatusBarHeight = Constants.statusBarHeight;
 export const CAMERA_ASPECT_RATIO = Dimensions.get('window').height / Dimensions.get('window').width;
 export const ASPECT_RATIO = (hp('100%')-StatusBarHeight) / wp('100%');
 
+const golden_ratio = 1.7788;
+
+let inset_top = 0;
+let inset_bottom = 0;
+
+if (Platform.OS === 'ios' && Constants.platform.ios.model === 'iPhone X') {
+    inset_bottom = 44;
+    inset_top = 34;
+}
 export const MAX_COMMENT_INPUT_LENGTH = 250;
 export const SCREEN_WIDTH = wp('100%');
-export const SCREEN_HEIGHT = hp('100%');
+export const SCREEN_HEIGHT = (ASPECT_RATIO < golden_ratio)? hp('100%'): wp('100%')*golden_ratio;
 
+export const TabBarHeight = SCREEN_HEIGHT*0.09;
 
-export const PureHeaderHeight = hp('8%');
+export const PureHeaderHeight = SCREEN_HEIGHT*0.1;
 export const HeaderPadding = hp('2.5%');
-export const HeaderHeight = StatusBarHeight + PureHeaderHeight;
-export const TabBarHeight = hp('9%');
+export const HeaderHeight = PureHeaderHeight;
 export const HeaderLabelWidth = wp('40%');
 export const HeaderLabelHeight = hp('2.25%');
 
-export const SlidingPanelHeight = hp('8%');
-export const SlidingPanelTopPos = SCREEN_HEIGHT;
-export const SlidingPanelBottomPos = TabBarHeight + HeaderHeight + SlidingPanelHeight + ((ASPECT_RATIO <= 1.8) ? StatusBarHeight : 0);
+export const SlidingPanelHeight = SCREEN_HEIGHT*0.08;
+export const SlidingPanelTopPos = hp('100%');
+export const SlidingPanelBottomPos = TabBarHeight + HeaderHeight + SlidingPanelHeight + inset_top + inset_bottom + ((ASPECT_RATIO <= 1.8) ? StatusBarHeight : 0) ;
 export const TabLabelFontSize = 12;
 
 

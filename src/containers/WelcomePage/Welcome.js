@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from "react-native-globalize";
-import {
-    StyleSheet,
-    View,
-    Text,
-    Dimensions,
-    Image,
-    AsyncStorage,
-} from 'react-native';
+import { View, Text, Image, AsyncStorage} from 'react-native';
 import PropTypes from "prop-types";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {colors, images, SCREEN_WIDTH, storage} from "../../utils/constants";
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+import {colors, storage} from "../../utils/constants";
+import {LIGHT_THEME} from "../../redux/constants/themeConstants";
+
 import getSystemLocale from '../../utils/getSystemLocale'
-import { changeLanguage } from '../../redux/actions/localesActions'
+import {changeLanguage} from '../../redux/actions/localesActions'
 import {changeTheme} from "../../redux/actions/themeActions";
 import {changeAuth} from "../../redux/actions/authActions"
-import {LIGHT_THEME} from "../../redux/constants/themeConstants";
-import {deleteUserData} from "../../utils/revokeToken";
-import {fetchUserData} from "../../utils/fetchUserData";
+import {loadUserData} from "../../redux/actions/userDataActions";
+import {tokenInfo} from "../../utils/tokenInfo";
+
 
 class WelcomeScreen extends Component {
-    // cheat access to redux store
     static contextTypes = {
         store: PropTypes.object.isRequired,
     };
@@ -43,20 +40,17 @@ class WelcomeScreen extends Component {
                 theme = LIGHT_THEME;
             store.dispatch(changeTheme(theme));
 
-            let auth = await AsyncStorage.getItem(storage.AUTH);
-            if (auth === null || auth === undefined || auth === 'false')
-                auth = false;
+            const data = await tokenInfo();
+            if (data)
+                store.dispatch(changeAuth(true));
             else
-                auth = true;
-            store.dispatch(changeAuth(auth));
-            console.log(auth);
-            const userData = await fetchUserData();
-            console.log(userData)
+                store.dispatch(changeAuth(false));
+            store.dispatch(loadUserData(data));
+            console.log(data)
         }
         catch (e) {
             console.log('Error:: ', e);
         }
-
 
         // TODO: change magic constant 3000
         setTimeout(()=> this.props.navigation.navigate('Home'), 3000)
@@ -72,7 +66,7 @@ class WelcomeScreen extends Component {
                         style={{width: wp('100%'), height: wp('100%')}}
                     />
                 </View>
-                <View style={styles.textContainer}>
+                <View style={{flexDirection: 'row', justifyContent:  'flex-end', alignItems:  'flex-end',}}>
                     <Text style={{color: colors.WHITE, paddingRight: 10, paddingBottom: 10}}><FormattedMessage message="Powered"/></Text>
                     <Image
                         source={require('../../../assets/images/its_logo_white.png')}
@@ -85,21 +79,4 @@ class WelcomeScreen extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    curState: state
-});
-
-export default connect(mapStateToProps, {})(WelcomeScreen);
-
-const styles = StyleSheet.create({
-    loaderContainer:{
-        flex: 6,
-        justifyContent:  'flex-end',
-        alignItems:  'center',
-    },
-    textContainer:{
-        flexDirection: 'row',
-        justifyContent:  'flex-end',
-        alignItems:  'flex-end',
-    },
-});
+export default WelcomeScreen;

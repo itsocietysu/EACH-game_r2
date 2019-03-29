@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { loadMuseums } from "../../redux/actions/museumActions";
-import { makeSelectData, makeSelectError, makeSelectLoading } from "../../redux/selectors/museumSelectors";
+import { makeSelectMuseumData, makeSelectMuseumError, makeSelectMuseumLoading } from "../../redux/selectors/museumSelectors";
 import injectSaga from "../../utils/injectSaga";
 import saga from "../../redux/sagas/museumSaga";
 import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
@@ -44,6 +44,8 @@ class MapsScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.theme !== this.props.theme)
+      return;
     if (this.props.data && prevProps.loading)
       this.BuildMarkers();
     if (this.state.dialog !== prevState.dialog) {
@@ -176,9 +178,9 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  data: makeSelectData(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  data: makeSelectMuseumData(),
+  loading: makeSelectMuseumLoading(),
+  error: makeSelectMuseumError(),
   locale: makeSelectLanguage(),
   theme: makeSelectTheme(),
 });

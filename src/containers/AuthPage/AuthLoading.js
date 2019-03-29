@@ -9,25 +9,26 @@ import { fetchUserData } from "../../utils/fetchUserData";
 import {colors} from "../../utils/constants";
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 import {makeSelectAuth} from "../../redux/selectors/authSelectors";
+import ProfileScreen from "./Profile";
+import LoginScreen from "./Login";
 
 
 class AuthLoadingScreen extends Component {
-    constructor(){
-        super();
-        this._bootstrapAsync();
-    };
 
-    _bootstrapAsync = async () => {
-        try {
-            const userData = await fetchUserData();
-            if (userData && this.props.auth)
-                this.props.navigation.navigate('Profile', {userData});
-            else this.props.navigation.navigate('Login');
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    componentDidUpdate(){
+        this._proceed()
+    }
 
+    componentDidMount(){
+        this._proceed()
+    }
+
+    _proceed(){
+        if (this.props.auth)
+            this.props.navigation.navigate('Profile');
+        else
+            this.props.navigation.navigate('Login');
+    }
     render(){
         return(
             <View style={{flex: 1, backgroundColor: colors.BASE[this.props.theme]}}>
