@@ -17,6 +17,10 @@ import {mapDispatchToProps} from "../BonusPage/BonusScreen";
 import PropTypes from "prop-types";
 import {updateCurrentStep} from "../../redux/actions/gameStepActions";
 import {updateStatistics} from "../../utils/updateStatistics";
+import {makeSelectUserData} from "../../redux/selectors/userDataSelectors";
+import InfoMessage from "../../components/ErrorMessage/InfoMessage";
+import {FormattedMessage} from "react-native-globalize";
+import {makeSelectAuth} from "../../redux/selectors/authSelectors";
 
 class PlayQuestScreen extends Component{
     static contextTypes = {
@@ -31,11 +35,11 @@ class PlayQuestScreen extends Component{
     async componentDidMount(){
         const navigation = this.props.navigation;
         const scenario = navigation.getParam('scenario', '');
-        const userData = navigation.getParam('userData', '');
+        const userData = this.props.userData;
         const gameId = scenario[0].scenario.game_id;
         let step = -1;
-        if (userData && userData.gameData && userData.gameData.game_process){
-            for(let item of userData.gameData.game_process){
+        if (userData && userData.run && userData.run.game_process){
+            for(let item of userData.run.game_process){
                 if(item.eid === gameId) {
                     step = Number.parseInt(item.step_passed, 10);
                     break;
@@ -69,6 +73,8 @@ class PlayQuestScreen extends Component{
 
         const step = scenario[0].scenario.steps[currentStep];
         const scenarioID = scenario[0].scenario.scenario_id;
+        if (!this.props.auth)
+            return <InfoMessage message={<FormattedMessage message={'Auth'}/>}/>;
         switch (step.type) {
             case TEXT_QUESTION:
                return <TextQuestion key={currentStep} data={step.desc} processResult={this._processResult}/>;
@@ -85,6 +91,8 @@ class PlayQuestScreen extends Component{
 }
 const mapStateToProps = createStructuredSelector({
     currentStep: makeSelectGameStep(),
+    userData: makeSelectUserData(),
+    auth: makeSelectAuth(),
 });
 
 const withConnect = connect(

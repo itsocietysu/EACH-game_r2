@@ -16,6 +16,7 @@ import themeReducer from "./redux/reducers/themeReducer";
 import imageComparisonReducer from "./redux/reducers/imageValidationReducer";
 import stepReducer from "./redux/reducers/gameStepReducer";
 import authReducer from "./redux/reducers/authReducer";
+import userDataReducer from "./redux/reducers/userDataReducer";
 /*
  * routeReducer
  *
@@ -60,6 +61,7 @@ export default function createReducer(injectedReducers) {
         result: imageComparisonReducer,
         gameStep: stepReducer,
         auth: authReducer,
+        userData: userDataReducer,
         ...injectedReducers,
     });
 }

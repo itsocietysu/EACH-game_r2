@@ -13,7 +13,7 @@ import injectSaga from "../../utils/injectSaga";
 import saga from "../../redux/sagas/gameSaga";
 
 import {makeSelectLanguage} from "../../redux/selectors/localesSelectors";
-import {makeSelectData, makeSelectError, makeSelectLoading} from "../../redux/selectors/gameSelectors";
+import {makeSelectGameData, makeSelectGameError, makeSelectGameLoading} from "../../redux/selectors/gameSelectors";
 import {makeSelectTheme} from "../../redux/selectors/themeSelectors";
 
 import {loadGames} from "../../redux/actions/gameActions";
@@ -80,9 +80,9 @@ export function mapDispatchToProps(dispatch, ownProps) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: makeSelectData(),
-    loading: makeSelectLoading(),
-    error: makeSelectError(),
+    data: makeSelectGameData(),
+    loading: makeSelectGameLoading(),
+    error: makeSelectGameError(),
     language: makeSelectLanguage(),
     theme: makeSelectTheme(),
     auth: makeSelectAuth(),
