@@ -103,7 +103,7 @@ class QuestFinalScreen extends Component{
     render(){
         const theme = this.props.theme;
         const {width, height} = Dimensions.get('window');
-        const gameData = this.props.navigation.getParam('gameData','');
+        const gameData = this.props.userData.run;
         return(
             <KeyboardAvoidingView style={{flex: 1}} behavior="position" enabled>
                 <View style={{height: '100%', backgroundColor: colors.BASE[theme]}}>
