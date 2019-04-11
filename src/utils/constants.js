@@ -1,7 +1,7 @@
 import {Dimensions, Platform, SafeAreaView} from 'react-native';
 import {Constants} from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import Insets from 'safe-area-insets';
+
 
 export const colors = {
     BASE: {

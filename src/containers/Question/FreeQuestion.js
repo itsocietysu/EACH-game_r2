@@ -45,7 +45,7 @@ class FreeQuestion extends Component{
 
 
     _validateResult(){
-        if (this.state.answer === null) {
+        if (this.state.answer === null || this.state.answer === '') {
             showMessage({
                 message: <FormattedMessage message={'FillIn'}/>,
                 type: "info",
