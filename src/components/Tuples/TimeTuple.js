@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {withNavigation} from "react-navigation";
 import styled from "styled-components/native";
 import {FormattedMessage, FormattedWrapper} from "react-native-globalize";
@@ -23,6 +23,9 @@ class TimeTuple extends Component{
     render() {
         const time = this.props.time;
         const theme = this.props.theme;
+        if(!time){
+            return <ActivityIndicator/>
+        }
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <RowContainer style={{flexDirection: 'row', width: '100%'}}>

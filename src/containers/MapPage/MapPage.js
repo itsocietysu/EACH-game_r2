@@ -1,7 +1,8 @@
 /* eslint-disable array-callback-return */
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import {MapView} from 'expo';
+// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, Text, Image } from "react-native";
 import PopupDialog, { DialogButton, SlideAnimation } from 'react-native-popup-dialog';
 import { createStructuredSelector } from 'reselect';
@@ -63,7 +64,7 @@ class MapsScreen extends Component {
     if (data) {
       data.map(museum => {
         const arr = museum.location.map(location => (
-          <Marker
+          <MapView.Marker
             key={id++}
             coordinate={{
               latitude: parseFloat(location.latitude),
@@ -77,7 +78,7 @@ class MapsScreen extends Component {
                   source={require('../../../assets/icons/map_logo_128.png')}
                   style={{width: 50, height: 50, borderRadius: 25, borderColor: colors.MAIN, borderWidth: 1}}
             />
-          </Marker>
+          </MapView.Marker>
         ));
         marker = marker.concat(arr);
       });
@@ -150,7 +151,7 @@ class MapsScreen extends Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}
-            provider={PROVIDER_GOOGLE}
+            // provider={PROVIDER_GOOGLE}
             customMapStyle={mapStyle}
         >
           { this.state.markers }

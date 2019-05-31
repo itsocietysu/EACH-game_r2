@@ -95,7 +95,7 @@ class Bonus extends React.Component{
                         </TittleText>
                     </View>
                     {content}
-                    <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 15}}>
+                    <View style={{justifyContent: 'flex-end', alignItems: 'center', paddingTop: 20, paddingBottom: 15}}>
                         <ArrowButton
                             onPress={()=>this._onPress()}
                             bgColor={colors.BASE[theme]}

@@ -9,7 +9,15 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "expo.each",
-    "icon": "./assets/icons/map_logo_128.png",
+    "icon": "./assets/icons/each_icon.png",
+    "loading": {
+      "icon": "./assets/icons/loading_icon.png"
+    },
+    "notification": {
+      "icon": "./assets/icons/notification-icon.png",
+      "color": "#000000"
+    },
+
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
@@ -25,6 +33,11 @@
     },
     "android": {
       "versionCode": 3,
+      "config":{
+        "googleMaps": {
+          "apiKey": "AIzaSyDU2_RvB1pkPqXsiqg2YIZPZbnEAhrn4sQ"
+        }
+      },
       "package": "com.ITS.each",
       "permissions": [
         "CAMERA",

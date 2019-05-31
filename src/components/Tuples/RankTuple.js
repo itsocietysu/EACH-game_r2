@@ -26,29 +26,22 @@ class RankTuple extends Component{
         rank: null,
     };
 
-    async componentWillMount(){
-        await tokenInfo();
-        const data = await getUserGameData();
-        const bonus = data.gameData.bonus;
-        const rank = ChooseStatus(bonus);
-        this.setState({rank});
-    }
 
     render() {
-        let rank = <ActivityIndicator/>;
-        if (this.state.rank)
-            rank =
-                <ValueText color={colors.MAIN} font={fonts.MURRAY} paddingLeft={12}>
-                    <FormattedMessage message={this.state.rank}/>
-                </ValueText>;
         const theme = this.props.theme;
+        const rank = this.props.rank;
+        if(!rank){
+            return <ActivityIndicator/>
+        }
         return (
             <FormattedWrapper locale={this.props.locale} messages={messages}>
                 <RowContainer style={{flexDirection: 'row', width: '100%'}}>
                     <KeyText color={colors.TEXT[theme]} font={fonts.MURRAY}>
                         <FormattedMessage  message={'Rank'}/></KeyText>
                     <View style={{flex: 1}}>
-                        {rank}
+                        <ValueText color={colors.MAIN} font={fonts.MURRAY} paddingLeft={12}>
+                            <FormattedMessage message={rank}/>
+                        </ValueText>
                     </View>
                 </RowContainer>
             </FormattedWrapper>
