@@ -6,7 +6,8 @@ import {
     Platform,
     Dimensions
 } from 'react-native';
-import MapView, { Marker, AnimatedRegion, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import {MapView} from 'expo';
+// import MapView, { Marker, AnimatedRegion, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import PropTypes from "prop-types";
 import {Location, Permissions} from 'expo';
 import {withNavigation} from 'react-navigation';
@@ -29,7 +30,7 @@ class QuestMap extends Component{
             latitude: null,
             longitude: null,
             prevLatLng: {},
-            markerRegion: new AnimatedRegion({
+            markerRegion: new MapView.AnimatedRegion({
                 latitude: 0,
                 longitude: 0,
             }),
@@ -222,18 +223,17 @@ class QuestMap extends Component{
                         zoomEnabled
                         onMapReady={this._fitToElements}
                         initialRegion={this._getMapRegion()}
-                        provider={PROVIDER_GOOGLE}
                         customMapStyle={mapStyle}
                     >
-                        <Polyline coordinates={this.state.borders} strokeWidth={2} strokeColor={colors.MAIN}/>
-                        <Marker.Animated
+                        <MapView.MapPolyline coordinates={this.state.borders} strokeWidth={2} strokeColor={colors.MAIN}/>
+                        <MapView.Marker.Animated
                             ref={marker => {
                                 this.marker = marker;
                             }}
 
                             coordinate={this.state.markerRegion}
                         />
-                        <Marker
+                        <MapView.Marker
                             coordinate={coordsToGo}
                             image={require('../../../assets/icons/map_icon_128.png')}
                         />

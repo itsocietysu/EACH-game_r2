@@ -27,6 +27,8 @@ import {makeSelectScenarioData} from "../../redux/selectors/scenarioSelectors";
 import {tokenInfo} from "../../utils/tokenInfo";
 import {loadScenario} from "../../redux/actions/scenarioActions";
 import {loadUserData} from "../../redux/actions/userDataActions";
+import getUserGameData from "../../utils/getUserGameData";
+import ChooseStatus from "../../utils/ChooseStatus";
 
 class QuestFinalScreen extends Component{
 
@@ -37,16 +39,34 @@ class QuestFinalScreen extends Component{
         const stars = (defaultWeight === - 1)? 0: defaultWeight;
 
         this.state = {
+            loading: true,
             stars: stars,
             length: 0,
             comment: null,
             voted: voted,
             update: voted,
             was_updated: false,
+            time: null,
+            rank: null,
         };
         this._onPress = this._onPress.bind(this);
     }
 
+    async componentWillMount(){
+        await tokenInfo();
+        const game_id = this.props.navigation.getParam('game_id', '');
+        const game_passed_arr = this.props.userData.run.game_passed;
+        const bonus = this.props.userData.run.bonus;
+        let current_game = null;
+        game_passed_arr.forEach((item) => {
+                if (item.eid === game_id) {
+                    current_game = item;
+                }
+            }
+        );
+        this.setState({rank: ChooseStatus(bonus)});
+        this.setState({time: current_game.best_time});
+    }
     async _onPress(){
         if (this.state.voted) {
             const gameId = this.props.navigation.getParam('game_id', '');
@@ -92,7 +112,7 @@ class QuestFinalScreen extends Component{
         let weight = -1;
         game_passed_arr.forEach((item) => {
                 if (item.eid === game_id) {
-                    alert(item.rate[0].weight);
+                    // alert(item.rate[0].weight);
                     weight =  Number(item.rate[0].weight);
                 }
             }
@@ -114,9 +134,9 @@ class QuestFinalScreen extends Component{
                     </View>
                     <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>
                     <View style={{height: '20%', padding: 5}}>
-                        <TimeTuple time={gameData.best_time}/>
-                        <BonusTuple bonus={gameData.bonus}/>
-                        <RankTuple/>
+                        <TimeTuple time={this.state.time}/>
+                        <BonusTuple bonus={this.props.scenario[0].scenario.difficulty_bounty}/>
+                        <RankTuple rank={this.state.rank}/>
                     </View>
                     <Rectangle width={'100%'} height={1} backgroundColor={colors.MAIN}/>
                     <View style={{flex: 1}}>

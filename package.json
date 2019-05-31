@@ -24,6 +24,7 @@
     "react-native-flags": "^1.0.0",
     "react-native-flash-message": "^0.1.10",
     "react-native-globalize": "^1.2.3",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-maps": "^0.21.0",
     "react-native-masked-text": "^1.9.1",
     "react-native-modal-dropdown": "^0.6.2",
